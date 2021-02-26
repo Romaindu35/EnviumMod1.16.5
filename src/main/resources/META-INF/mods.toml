@@ -1,0 +1,48 @@
+modLoader="javafml"
+
+loaderVersion="[31,)"
+license="All right reserved"
+
+[[mods]]
+
+modId="enviummod" #mandatory
+
+version="${file.jarVersion}" #mandatory
+
+displayName="Envium Mod" #mandatory
+
+displayURL="https://envium.fr/" #optional
+
+# logoFile="examplemod.png" #optional
+
+credits=""
+
+authors="Romaindu35, Leonardlasardine" #Mdr je m'incruste
+
+description='''
+Mod officel du serveur envium
+'''
+
+[[mods]]
+
+modId="theoneprobe_envium" #mandatory
+
+version="${file.jarVersion}" #mandatory
+
+displayName="The One Probe" #mandatory
+
+[[mods]]
+
+modId="ironchest" #mandatory
+
+version="${file.jarVersion}" #mandatory
+
+displayName="Iron Chest" #mandatory
+
+[[mods]]
+
+modId="neat" #mandatory
+
+version="${file.jarVersion}" #mandatory
+
+displayName="Neat" #mandatory

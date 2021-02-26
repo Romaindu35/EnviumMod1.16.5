@@ -1,0 +1,67 @@
+{
+  "itemGroup.envium_creative_tabs": "Envium Mod",
+  "itemGroup.envium_creative_tabs_animal" : "Animals",
+  "key.categories.enviummod" : "Envium Mod",
+
+  "enviummod.keybind.guiadmin" : "Gui Admin",
+  "enviummod.keybind.guimetier" : "Gui Metier",
+  "enviummod.keybind.toggle" : "Inverser la barre de vie",
+  "key.categories.spacebosstools" : "SpaceBoosTools",
+
+  "block.enviummod.envium_block": "Block d'Envium",
+  "block.enviummod.envium_ore": "Minerai d'Envium",
+  "block.enviummod.cave_block": "Cave Block",
+  "block.enviummod.envium_chest": "Envium Chest",
+  "block.enviummod.envium_furnace": "Envium Furnace",
+  "block.enviummod.pillow": "Coussin",
+
+  "item.enviummod.envium_lingot": "Lingot en Envium",
+
+  "item.enviummod.envium_sword": "Epée en Envium",
+  "item.enviummod.envium_axe": "Hache en Envium",
+  "item.enviummod.envium_pickaxe": "Pioche en Envium",
+  "item.enviummod.envium_shovel": "Pelle en Envium",
+  "item.enviummod.envium_hoe": "Hoe en Envium",
+
+  "item.enviummod.frites": "Frites",
+  "item.enviummod.frites_citrouille": "Frites de Citrouille",
+
+  "item.enviummod.envium_shard_random": "Envium Schard Aléatoire",
+  "item.enviummod.envium_shard": "Envium Schard",
+  "item.enviummod.envium_shard_quantity": "Envium shard de quantité",
+
+  "item.enviummod.envium_helmet": "Casque en Envium",
+  "item.enviummod.envium_chestplate": "Plastron en Envium",
+  "item.enviummod.envium_leggings": "Pantalon en Envium",
+  "item.enviummod.envium_boots": "Botte en Envium",
+
+  "item.enviummod.toucan_spawn_eggs" : "Oeuf d'apparition de Toucan",
+  "item.enviummod.lirondel_spawn_eggs" : "Oeuf d'apparition de Lirondel",
+  "item.enviummod.marmot_spawn_eggs" : "Oeuf d'apparition de Marmotte",
+  "item.enviummod.meerkat_spawn_eggs" : "Oeuf d'apparition de Suricate",
+
+  "block.enviummod.crimson_stem" : "Tige carmin",
+  "block.enviummod.crimson_planks" : "Planche carmin",
+  "block.enviummod.crimson_door" : "Porte carmin",
+  "block.enviummod.crimson_hyphae" : "Hyphes carmin",
+
+  "block.enviummod.warped_stem" : "Tige biscornue",
+  "block.enviummod.warped_planks" : "Planches biscornues",
+  "block.enviummod.warped_door" : "Porte biscornues",
+  "block.enviummod.warped_wart" : "Bloc de verrues biscornues",
+  "block.enviummod.warped_hyphae" : "Hyphes biscornues",
+
+  "entity.enviummod.toucan_entity" : "Toucan",
+  "entity.enviummod.lirondel_entity" : "Lirondel",
+  "entity.enviummod.marmot_entity" : "Marmotte",
+  "entity.enviummod.meerkat_entity" : "Suricate",
+
+  //String Message
+  "jobs.win_xp_message" : "Vous avez gagné ",
+
+  //Main menu text
+  "menu.enviummod.play" : "Jouer",
+  "menu.enviummod.options" : "Options",
+  "menu.enviummod.quit" : "Quitter",
+  "menu.enviummod.dev" : "Dev"
+}

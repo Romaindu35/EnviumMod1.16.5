@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "enviummod:blocks/crimson/stripped_crimson_stem",
+    "side": "enviummod:blocks/crimson/stripped_crimson_stem"
+  }
+}

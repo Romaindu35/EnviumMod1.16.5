@@ -1,0 +1,31 @@
+package fr.envium.enviummod.addons.probe.theoneprobe.commands;
+
+import com.mojang.brigadier.Command;
+import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.builder.ArgumentBuilder;
+import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import fr.envium.enviummod.addons.probe.theoneprobe.network.PacketHandler;
+import fr.envium.enviummod.addons.probe.theoneprobe.network.PacketOpenGui;
+import net.minecraft.command.CommandSource;
+import net.minecraft.command.Commands;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraftforge.fml.network.NetworkDirection;
+
+public class CommandTopCfg implements Command<CommandSource> {
+
+    private static final CommandTopCfg CMD = new CommandTopCfg();
+
+    public static ArgumentBuilder<CommandSource, ?> register(CommandDispatcher<CommandSource> dispatcher) {
+        return Commands.literal("config")
+                .requires(cs -> cs.hasPermissionLevel(0))
+                .executes(CMD);
+    }
+
+    @Override
+    public int run(CommandContext<CommandSource> context) throws CommandSyntaxException {
+        ServerPlayerEntity player = context.getSource().asPlayer();
+        PacketHandler.INSTANCE.sendTo(new PacketOpenGui(PacketOpenGui.GUI_CONFIG), player.connection.netManager, NetworkDirection.PLAY_TO_CLIENT);
+        return 0;
+    }
+}

@@ -1,0 +1,8 @@
+{
+  "parent": "block/orientable",
+  "textures": {
+    "top": "enviummod:blocks/pillow_top",
+    "front": "enviummod:blocks/blank",
+    "side": "enviummod:blocks/blank"
+  }
+}

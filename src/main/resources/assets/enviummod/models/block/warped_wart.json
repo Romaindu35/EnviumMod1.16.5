@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "enviummod:blocks/warped/warped_wart"
+  }
+}

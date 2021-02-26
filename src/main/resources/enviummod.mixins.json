@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "package": "fr.envium.enviummod.core.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "enviummod.refmap.json",
+  "mixins": [
+
+  ],
+  "client":[
+    "MixinMinecraft"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "minVersion": "0.8.1"
+}

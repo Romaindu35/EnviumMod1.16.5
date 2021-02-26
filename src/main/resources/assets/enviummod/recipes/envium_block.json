@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "enviummod:envium_lingot",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "enviummod:envium_block",
+    "data": 0
+  }
+}

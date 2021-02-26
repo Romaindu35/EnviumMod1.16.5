@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/door_bottom",
+  "textures": {
+    "top": "enviummod:blocks/crimson/crimson_door_top",
+    "bottom": "enviummod:blocks/crimson/crimson_door_bottom"
+  }
+}

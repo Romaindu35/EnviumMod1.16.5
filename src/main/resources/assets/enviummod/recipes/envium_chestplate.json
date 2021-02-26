@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X X",
+    "XXX",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "enviummod:envium_lingot"
+    }
+  },
+  "result": {
+    "item": "enviummod:envium_chestplate"
+  }
+}

@@ -1,0 +1,6 @@
+{
+    "parent": "item/handheld",
+    "textures": {
+        "layer0": "enviummod:items/envium_hammer"
+    }
+}

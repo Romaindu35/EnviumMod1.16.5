@@ -1,0 +1,52 @@
+package fr.envium.enviummod.addons.probe.theoneprobe.apiimpl.providers;
+
+import fr.envium.enviummod.addons.probe.theoneprobe.TheOneProbe;
+import fr.envium.enviummod.addons.probe.theoneprobe.api.*;
+import fr.envium.enviummod.addons.probe.theoneprobe.apiimpl.styles.LayoutStyle;
+import fr.envium.enviummod.addons.probe.theoneprobe.config.Config;
+import net.minecraft.entity.AgeableEntity;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.World;
+
+public class DebugProbeInfoEntityProvider implements IProbeInfoEntityProvider {
+
+    @Override
+    public String getID() {
+        return TheOneProbe.MODID + ":entity.debug";
+    }
+
+    @Override
+    public void addProbeEntityInfo(ProbeMode mode, IProbeInfo probeInfo, PlayerEntity player, World world, Entity entity, IProbeHitEntityData data) {
+        if (mode == ProbeMode.DEBUG && Config.showDebugInfo.get()) {
+            IProbeInfo vertical = null;
+            if (entity instanceof MobEntity) {
+                vertical = probeInfo.vertical(new LayoutStyle().borderColor(0xffff4444).spacing(2));
+
+                MobEntity entityLivingBase = (MobEntity) entity;
+                int totalArmorValue = entityLivingBase.getTotalArmorValue();
+                int age = entityLivingBase.getIdleTime();
+                float absorptionAmount = entityLivingBase.getAbsorptionAmount();
+                float aiMoveSpeed = entityLivingBase.getAIMoveSpeed();
+                int revengeTimer = entityLivingBase.getRevengeTimer();
+                vertical
+                        .text(CompoundText.createLabelInfo("Tot armor: ", totalArmorValue))
+                        .text(CompoundText.createLabelInfo("Age: ", age))
+                        .text(CompoundText.createLabelInfo("Absorption: ", absorptionAmount))
+                        .text(CompoundText.createLabelInfo("AI Move Speed: ", aiMoveSpeed))
+                        .text(CompoundText.createLabelInfo("Revenge Timer: ", revengeTimer));
+            }
+            if (entity instanceof AgeableEntity) {
+                if (vertical == null) {
+                    vertical = probeInfo.vertical(new LayoutStyle().borderColor(0xffff4444).spacing(2));
+                }
+
+                AgeableEntity entityAgeable = (AgeableEntity) entity;
+                int growingAge = entityAgeable.getGrowingAge();
+                vertical
+                        .text(CompoundText.createLabelInfo("Growing Age: ", growingAge));
+            }
+        }
+    }
+}

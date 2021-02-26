@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/door_bottom_rh",
+  "textures": {
+    "top": "enviummod:blocks/warped/warped_door_top",
+    "bottom": "enviummod:blocks/warped/warped_door_bottom"
+  }
+}

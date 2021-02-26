@@ -1,0 +1,12 @@
+{
+    "variants": {
+        "facing=north,lit=false": { "model": "enviummod:block/envium_furnace", "y": 180},
+        "facing=south,lit=false": { "model": "enviummod:block/envium_furnace", "y": 0 },
+        "facing=west,lit=false":  { "model": "enviummod:block/envium_furnace", "y": 90 },
+        "facing=east,lit=false":  { "model": "enviummod:block/envium_furnace", "y": 270 },
+        "facing=north,lit=true": { "model": "enviummod:block/lit_envium_furnace" },
+        "facing=south,lit=true": { "model": "enviummod:block/lit_envium_furnace", "y": 180 },
+        "facing=west,lit=true":  { "model": "enviummod:block/lit_envium_furnace", "y": 270 },
+        "facing=east,lit=true":  { "model": "enviummod:block/lit_envium_furnace", "y": 90 }
+    }
+}
