@@ -9,8 +9,8 @@ import fr.envium.enviummod.addons.probe.theoneprobe.config.Config;
 import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.attributes.IAttributeInstance;
+import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.entity.item.ItemFrameEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.passive.WolfEntity;
@@ -145,7 +145,7 @@ public class DefaultProbeInfoEntityProvider implements IProbeInfoEntityProvider 
                 double jumpStrength = ((HorseEntity) entity).getHorseJumpStrength();
                 double jumpHeight = -0.1817584952 * jumpStrength * jumpStrength * jumpStrength + 3.689713992 * jumpStrength * jumpStrength + 2.128599134 * jumpStrength - 0.343930367;
                 probeInfo.text(CompoundText.createLabelInfo("Jump height: ", dfCommas.format(jumpHeight)));
-                IAttributeInstance iattributeinstance = ((HorseEntity) entity).getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
+                ModifiableAttributeInstance iattributeinstance = ((HorseEntity) entity).getAttribute(Attributes.MOVEMENT_SPEED);
                 probeInfo.text(CompoundText.createLabelInfo("Speed: ", dfCommas.format(iattributeinstance.getValue())));
             }
         }
@@ -153,7 +153,7 @@ public class DefaultProbeInfoEntityProvider implements IProbeInfoEntityProvider 
         if (entity instanceof WolfEntity && Config.showCollarColor.get()) {
             if (((WolfEntity) entity).isTamed()) {
                 DyeColor collarColor = ((WolfEntity) entity).getCollarColor();
-                probeInfo.text(CompoundText.createLabelInfo("Collar: ", collarColor.getName()));
+                probeInfo.text(CompoundText.createLabelInfo("Collar: ", collarColor.getString()));
             }
         }
     }
