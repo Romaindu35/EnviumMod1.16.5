@@ -14,7 +14,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class RegisterEntity {
 
-    public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = new DeferredRegister<>(ForgeRegistries.ENTITIES, References.MODID);
+    public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITIES, References.MODID);
     public static final RegistryObject<EntityType<Toucan>> TOUCAN_ENTITY = ENTITY_TYPES
             .register("toucan_entity",
                     () -> EntityType.Builder.<Toucan>create(Toucan::new, EntityClassification.CREATURE)

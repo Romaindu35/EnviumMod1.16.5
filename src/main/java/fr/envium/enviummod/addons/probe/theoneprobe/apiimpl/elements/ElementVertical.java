@@ -1,5 +1,6 @@
 package fr.envium.enviummod.addons.probe.theoneprobe.apiimpl.elements;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import fr.envium.enviummod.addons.probe.theoneprobe.api.ElementAlignment;
 import fr.envium.enviummod.addons.probe.theoneprobe.api.IElement;
 import fr.envium.enviummod.addons.probe.theoneprobe.apiimpl.TheOneProbeImp;
@@ -18,8 +19,8 @@ public class ElementVertical extends AbstractElementPanel {
     }
 
     @Override
-    public void render(int x, int y) {
-        super.render(x, y);
+    public void render(MatrixStack matrixStack, int x, int y) {
+        super.render(matrixStack, x, y);
         if (borderColor != null) {
             x += 3;
             y += 3;
@@ -38,7 +39,7 @@ public class ElementVertical extends AbstractElementPanel {
                     cx = x + totWidth - w;
                     break;
             }
-            element.render(cx, y);
+            element.render(matrixStack, cx, y);
             y += element.getHeight() + spacing;
         }
     }

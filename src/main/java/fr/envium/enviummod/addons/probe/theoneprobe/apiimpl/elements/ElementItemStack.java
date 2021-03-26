@@ -1,6 +1,7 @@
 package fr.envium.enviummod.addons.probe.theoneprobe.apiimpl.elements;
 
-import fr.envium.enviummod.addons.probe.theoneprobe.api.IElementNew;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import fr.envium.enviummod.addons.probe.theoneprobe.api.IElement;
 import fr.envium.enviummod.addons.probe.theoneprobe.api.IItemStyle;
 import fr.envium.enviummod.addons.probe.theoneprobe.apiimpl.TheOneProbeImp;
 import fr.envium.enviummod.addons.probe.theoneprobe.apiimpl.client.ElementItemStackRender;
@@ -9,7 +10,7 @@ import fr.envium.enviummod.addons.probe.theoneprobe.network.NetworkTools;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 
-public class ElementItemStack implements IElementNew {
+public class ElementItemStack implements IElement {
 
     private final ItemStack itemStack;
     private final IItemStyle style;
@@ -31,8 +32,8 @@ public class ElementItemStack implements IElementNew {
     }
 
     @Override
-    public void render(int x, int y) {
-        ElementItemStackRender.render(itemStack, style, x, y);
+    public void render(MatrixStack matrixStack, int x, int y) {
+        ElementItemStackRender.render(itemStack, style, matrixStack, x, y);
     }
 
     @Override

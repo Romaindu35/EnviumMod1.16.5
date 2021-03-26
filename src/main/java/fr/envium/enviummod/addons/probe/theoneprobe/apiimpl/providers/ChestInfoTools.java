@@ -1,6 +1,7 @@
 package fr.envium.enviummod.addons.probe.theoneprobe.apiimpl.providers;
 
 import fr.envium.enviummod.addons.probe.theoneprobe.Tools;
+import fr.envium.enviummod.addons.probe.theoneprobe.api.CompoundText;
 import fr.envium.enviummod.addons.probe.theoneprobe.api.*;
 import fr.envium.enviummod.addons.probe.theoneprobe.apiimpl.styles.ItemStyle;
 import fr.envium.enviummod.addons.probe.theoneprobe.apiimpl.styles.LayoutStyle;

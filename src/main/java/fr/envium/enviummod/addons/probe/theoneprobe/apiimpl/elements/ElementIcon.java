@@ -1,6 +1,7 @@
 package fr.envium.enviummod.addons.probe.theoneprobe.apiimpl.elements;
 
-import fr.envium.enviummod.addons.probe.theoneprobe.api.IElementNew;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import fr.envium.enviummod.addons.probe.theoneprobe.api.IElement;
 import fr.envium.enviummod.addons.probe.theoneprobe.api.IIconStyle;
 import fr.envium.enviummod.addons.probe.theoneprobe.apiimpl.TheOneProbeImp;
 import fr.envium.enviummod.addons.probe.theoneprobe.apiimpl.client.ElementIconRender;
@@ -8,7 +9,7 @@ import fr.envium.enviummod.addons.probe.theoneprobe.apiimpl.styles.IconStyle;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 
-public class ElementIcon implements IElementNew {
+public class ElementIcon implements IElement {
 
     private final ResourceLocation icon;
     private final int u;
@@ -40,8 +41,8 @@ public class ElementIcon implements IElementNew {
     }
 
     @Override
-    public void render(int x, int y) {
-        ElementIconRender.render(icon, x, y, w, h, u, v, style.getTextureWidth(), style.getTextureHeight());
+    public void render(MatrixStack matrixStack, int x, int y) {
+        ElementIconRender.render(icon, matrixStack, x, y, w, h, u, v, style.getTextureWidth(), style.getTextureHeight());
     }
 
     @Override

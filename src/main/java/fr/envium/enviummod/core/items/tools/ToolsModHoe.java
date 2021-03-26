@@ -8,6 +8,6 @@ import net.minecraft.item.Item;
 public class ToolsModHoe extends HoeItem
 {
 	public ToolsModHoe() {
-		super(ModMaterial.EnviumMaterial.ENVIUM_MATERIAL, 8.0F, new Item.Properties().group(EnviumTab.TAB));
+		super(ModMaterial.EnviumMaterial.ENVIUM_MATERIAL, 8, 2.0F, new Item.Properties().group(EnviumTab.TAB));
 	}
 }

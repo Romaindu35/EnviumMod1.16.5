@@ -1,5 +1,6 @@
 package fr.envium.enviummod.core.client.gui;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import fr.envium.enviummod.References;
 import fr.envium.enviummod.api.packets.NetworkRegistryHandler;
 import fr.envium.enviummod.core.packets.MetierPackets;
@@ -44,19 +45,19 @@ public class MetierScreen {
         }
         private static final ResourceLocation texture = new ResourceLocation(References.MODID, "textures/gui/gui_metier.png");
         @Override
-        public void render(int mouseX, int mouseY, float partialTicks) {
-            this.renderBackground();
-            drawGuiContainerBackgroundLayer();
-            drawGuiContainerForegroundLayer();
-            super.render(mouseX, mouseY, partialTicks);
+        public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+            this.renderBackground(matrixStack);
+            drawGuiContainerBackgroundLayer(matrixStack);
+            drawGuiContainerForegroundLayer(matrixStack);
+            super.render(matrixStack, mouseX, mouseY, partialTicks);
         }
 
-        protected void drawGuiContainerBackgroundLayer() {
+        protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack) {
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             Minecraft.getInstance().getTextureManager().bindTexture(texture);
             int k = (this.width - this.xSize) / 2;
             int l = (this.height - this.ySize) / 2;
-            this.blit(k, l, 0, 0, this.xSize, this.ySize);
+            this.blit(matrixStack, k, l, 0, 0, this.xSize, this.ySize);
         }
 
         @Override
@@ -73,24 +74,24 @@ public class MetierScreen {
             super.tick();
         }
 
-        protected void drawGuiContainerForegroundLayer() {
-            this.font.drawString("Metier", this.width /2 - 20, this.height /2 - 70, -16777216);
-            this.font.drawString(xp_miner, this.width /2 - 90, this.height /2 - 25, -16777216);
-            this.font.drawString(xp_lumberjack, this.width /2 + 40, this.height /2 - 25, -16777216);
-            this.font.drawString(xp_chasseur, this.width /2 -30, this.height /2 + 55, -16777216);
+        protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack) {
+            this.font.drawString(matrixStack, "Metier", this.width /2 - 20, this.height /2 - 70, -16777216);
+            this.font.drawString(matrixStack, xp_miner, this.width /2 - 90, this.height /2 - 25, -16777216);
+            this.font.drawString(matrixStack, xp_lumberjack, this.width /2 + 40, this.height /2 - 25, -16777216);
+            this.font.drawString(matrixStack, xp_chasseur, this.width /2 -30, this.height /2 + 55, -16777216);
         }
 
         @Override
         public void init(Minecraft minecraft, int width, int height) {
             super.init(minecraft, width, height);
             minecraft.keyboardListener.enableRepeatEvents(true);
-            this.addButton(new Button(this.width /2 - 100, this.height /2  - 50, 50, 20, "Miner", e -> {
+            this.addButton(new Button(this.width /2 - 100, this.height /2  - 50, 50, 20, new StringTextComponent("Miner"), e -> {
 
             }));
-            this.addButton(new Button(this.width /2  + 30, this.height /2 - 50, 80, 20, "Bucheron", e -> {
+            this.addButton(new Button(this.width /2  + 30, this.height /2 - 50, 80, 20, new StringTextComponent("Bucheron"), e -> {
 
             }));
-            this.addButton(new Button(this.width /2 - 40, this.height /2 + 30, 80, 20, "Chasseur", e -> {
+            this.addButton(new Button(this.width /2 - 40, this.height /2 + 30, 80, 20, new StringTextComponent("Chasseur"), e -> {
 
             }));
             //Miner////Bucheron
@@ -117,13 +118,13 @@ public class MetierScreen {
             super.init();
         }
 
-        public void render(int p_render_1_, int p_render_2_, float p_render_3_) {
+        public void render(MatrixStack matrixStack, int p_render_1_, int p_render_2_, float p_render_3_) {
             int i = (this.width - this.xSize) / 2;
             int j = (this.height - this.ySize) / 2;
-            this.renderBackground();
+            this.renderBackground(matrixStack);
             this.minecraft.getTextureManager().bindTexture(TEXTURE);
-            this.blit(i, j, 0, 0, this.xSize, this.ySize);
-            super.render(p_render_1_, p_render_2_, p_render_3_);
+            this.blit(matrixStack, i, j, 0, 0, this.xSize, this.ySize);
+            super.render(matrixStack, p_render_1_, p_render_2_, p_render_3_);
         }
     }
 }

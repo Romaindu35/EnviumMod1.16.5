@@ -1,9 +1,10 @@
 package fr.envium.enviummod.addons.probe.theoneprobe.apiimpl.providers;
 
-import fr.envium.enviummod.addons.probe.theoneprobe.RegisterItem;
 import fr.envium.enviummod.addons.probe.theoneprobe.TheOneProbe;
+import fr.envium.enviummod.addons.probe.theoneprobe.api.CompoundText;
 import fr.envium.enviummod.addons.probe.theoneprobe.api.*;
 import fr.envium.enviummod.addons.probe.theoneprobe.config.Config;
+import fr.envium.enviummod.addons.probe.theoneprobe.items.ModItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -55,7 +56,7 @@ public class HarvestInfoTools {
     }
 
     static void showCanBeHarvested(IProbeInfo probeInfo, World world, BlockPos pos, Block block, PlayerEntity player) {
-        if (RegisterItem.isProbeInHand(player.getHeldItemMainhand())) {
+        if (ModItems.isProbeInHand(player.getHeldItemMainhand())) {
             // If the player holds the probe there is no need to show harvestability information as the
             // probe cannot harvest anything. This is only supposed to work in off hand.
             return;

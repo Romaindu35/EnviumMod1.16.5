@@ -1,9 +1,11 @@
 package fr.envium.enviummod.core.client.render;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import fr.envium.enviummod.core.packets.GetInventoryTypePacket;
 import fr.envium.enviummod.api.packets.NetworkRegistryHandler;
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.PacketDistributor;
@@ -18,7 +20,7 @@ public class RenderOverlay {
 
     public static boolean change = true;
 
-    public static void drawText(MainWindow window) {
+    public static void drawText(MatrixStack matrixStack, MainWindow window) {
         if (change) {
             String player = Minecraft.getInstance().player.getName().getString();
             //NetworkRegistryHandler.network.send(PacketDistributor.SERVER.noArg(), new InventoryPacket(player, InventoryAction.READ));
@@ -26,7 +28,7 @@ public class RenderOverlay {
             change = false;
         }
         //System.out.println("[RenderOverlay] " + (window.getWidth() - 100));
-        Minecraft.getInstance().fontRenderer.drawString("Inventaire : " + inventoryType, 0,0, 255);
+        Minecraft.getInstance().fontRenderer.drawString(matrixStack, new StringTextComponent("Inventaire : ") + inventoryType, 0,0, 255);
     }
 
 }

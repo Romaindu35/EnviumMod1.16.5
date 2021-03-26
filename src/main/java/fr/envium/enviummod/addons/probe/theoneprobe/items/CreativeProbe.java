@@ -10,7 +10,6 @@ public class CreativeProbe extends Item {
                 .maxStackSize(1)
                 .group(TheOneProbe.tabProbe)
         );
-        //setRegistryName("creativeprobe");
     }
 
 }

@@ -111,5 +111,10 @@ public class ModMaterial {
         public float getToughness() {
             return this.toughness;
         }
+
+        @Override
+        public float getKnockbackResistance() {
+            return 0;
+        }
     }
 }

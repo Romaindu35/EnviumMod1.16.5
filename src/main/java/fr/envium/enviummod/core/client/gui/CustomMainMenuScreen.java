@@ -2,50 +2,33 @@ package fr.envium.enviummod.core.client.gui;
 
 import com.google.common.util.concurrent.Runnables;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mrcrayfish.obfuscate.client.ClientHandler;
 import fr.envium.enviummod.EnviumMod;
 import fr.envium.enviummod.References;
 import fr.envium.enviummod.Status;
-import fr.envium.enviummod.api.client.DiscordInitialise;
 import fr.envium.enviummod.core.client.gui.button.ScreenButton;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.AccessibilityScreen;
 import net.minecraft.client.gui.screen.*;
-import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.gui.widget.button.ImageButton;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.network.ServerPinger;
-import net.minecraft.client.network.play.ClientPlayNetHandler;
 import net.minecraft.client.renderer.RenderSkybox;
 import net.minecraft.client.renderer.RenderSkyboxCube;
-import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.realms.RealmsBridge;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SharedConstants;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.storage.SaveFormat;
-import net.minecraft.world.storage.WorldInfo;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.loading.FMLClientLaunchProvider;
-import net.minecraftforge.fml.loading.FMLCommonLaunchHandler;
-import org.lwjgl.glfw.GLFW;
 
 import javax.annotation.Nullable;
 import java.net.UnknownHostException;
-import java.util.List;
 import java.util.Random;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -129,10 +112,10 @@ public class CustomMainMenuScreen extends Screen {
         }));
 
         if (EnviumMod.status.equals(Status.DEVELOPMENT)) {
-            this.addButton(new Button(this.width - 50, 2, 50, 20, I18n.format("menu.enviummod.dev"), (p_213089_1_) -> {
+            this.addButton(new Button(this.width - 50, 2, 50, 20, new TranslationTextComponent("menu.enviummod.dev"), (p_213089_1_) -> {
                 this.minecraft.displayGuiScreen(new WorldSelectionScreen(this));
             }));
-            this.addButton(new Button(this.width - 100, 2, 50, 20, I18n.format("menu.enviummod.dev"), (p_213089_1_) -> {
+            this.addButton(new Button(this.width - 100, 2, 50, 20, new TranslationTextComponent("menu.enviummod.dev"), (p_213089_1_) -> {
                 this.minecraft.displayGuiScreen(new ConnectingScreen(this, this.minecraft, new ServerData("Envium", "localhost:25565", false)));
             }));
         }
@@ -145,11 +128,11 @@ public class CustomMainMenuScreen extends Screen {
      * Adds Singleplayer and Multiplayer buttons on Main Menu for players who have bought the game.
      */
     private void addSinglePlayerMultiplayerButtons(int yIn, int rowHeightIn) {
-        this.addButton(new Button(this.width / 2 - 100, yIn, 200, 20, I18n.format("menu.singleplayer"), (p_213089_1_) -> {
+        this.addButton(new Button(this.width / 2 - 100, yIn, 200, 20, new TranslationTextComponent("menu.singleplayer"), (p_213089_1_) -> {
             this.minecraft.displayGuiScreen(new WorldSelectionScreen(this));
         }));
-        this.addButton(new Button(this.width / 2 - 100, yIn + rowHeightIn * 1, 200, 20, I18n.format("menu.multiplayer"), (p_213086_1_) -> {
-            if (this.minecraft.gameSettings.field_230152_Z_) {
+        this.addButton(new Button(this.width / 2 - 100, yIn + rowHeightIn * 1, 200, 20, new TranslationTextComponent("menu.multiplayer"), (p_213086_1_) -> {
+            if (this.minecraft.gameSettings.skipMultiplayerWarning) {
                 this.minecraft.displayGuiScreen(new MultiplayerScreen(this));
             } else {
                 this.minecraft.displayGuiScreen(new MultiplayerWarningScreen(this));
@@ -158,36 +141,38 @@ public class CustomMainMenuScreen extends Screen {
         }));
     }
 
-    public void render(int p_render_1_, int p_render_2_, float p_render_3_) {
+    @Override
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+        super.render(matrixStack, mouseX, mouseY, partialTicks);
         if (this.firstRenderTime == 0L && this.showFadeInAnimation) {
             this.firstRenderTime = Util.milliTime();
         }
         float f = this.showFadeInAnimation ? (float)(Util.milliTime() - this.firstRenderTime) / 1000.0F : 1.0F;
-        fill(0, 0, this.width, this.height, -1);
-        this.panorama.render(p_render_3_, MathHelper.clamp(f, 0.0F, 1.0F));
+        fill(matrixStack, 0, 0, this.width, this.height, -1);
+        this.panorama.render(partialTicks, MathHelper.clamp(f, 0.0F, 1.0F));
         this.minecraft.getTextureManager().bindTexture(PANORAMA_OVERLAY_TEXTURES);
         RenderSystem.enableBlend();
         RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, this.showFadeInAnimation ? (float)MathHelper.ceil(MathHelper.clamp(f, 0.0F, 1.0F)) : 1.0F);
-        blit(0, 0, this.width, this.height, 0.0F, 0.0F, 16, 128, 16, 128);
+        blit(matrixStack, 0, 0, this.width, this.height, 0.0F, 0.0F, 16, 128, 16, 128);
         serverInfoPing();
-        serverInfoRender();
+        serverInfoRender(matrixStack);
         float f1 = this.showFadeInAnimation ? MathHelper.clamp(f - 1.0F, 0.0F, 1.0F) : 1.0F;
         int l = MathHelper.ceil(f1 * 255.0F) << 24;
         if ((l & -67108864) != 0) {
             this.minecraft.getTextureManager().bindTexture(MINECRAFT_TITLE_TEXTURES);
             RenderSystem.color4f(1.0F, 1.0F, 1.0F, f1);
-            this.blit(this.width / 2 - 50, this.height/ 2 - 90, 0.0F, 0.0F, 100, 100, 100, 100);
+            this.blit(matrixStack, this.width / 2 - 50, this.height/ 2 - 90, 0.0F, 0.0F, 100, 100, 100, 100);
             //x, y, ?, ?, postion_x, taille_X, position_y, taille_Y
 
             this.widthCopyrightRest = this.width - this.font.getStringWidth("Copyright Mojang AB.") - 2;
-            this.drawString(this.font, "Copyright Mojang AB.", this.widthCopyrightRest, this.height - 20, 16777215 | l);
+            this.drawString(matrixStack, this.font, "Copyright Mojang AB.", this.widthCopyrightRest, this.height - 20, 16777215 | l);
             this.widthCopyrightRest = this.width - this.font.getStringWidth("Not affiliated with Mojang AB.") - 2;
-            this.drawString(this.font, "Not affiliated with Mojang AB.", this.widthCopyrightRest, this.height - 10, 16777215 | l);
+            this.drawString(matrixStack, this.font, "Not affiliated with Mojang AB.", this.widthCopyrightRest, this.height - 10, 16777215 | l);
             for(Widget widget : this.buttons) {
                 widget.setAlpha(f1);
             }
-            super.render(p_render_1_, p_render_2_, p_render_3_);
+            super.render(matrixStack, mouseX, mouseY, partialTicks);
 
         }
     }
@@ -208,8 +193,8 @@ public class CustomMainMenuScreen extends Screen {
         {
             this.server.pinged = true;
             this.server.pingToServer = -2L;
-            this.server.serverMOTD = "";
-            this.server.populationInfo = "";
+            this.server.serverMOTD = new StringTextComponent("");
+            this.server.populationInfo = new StringTextComponent("");
             EXECUTOR.submit(new Runnable()
             {
                 @Override
@@ -217,28 +202,29 @@ public class CustomMainMenuScreen extends Screen {
                 {
                     try
                     {
-                        CustomMainMenuScreen.this.serverPinger.ping(CustomMainMenuScreen.this.server);
+                        CustomMainMenuScreen.this.serverPinger.ping(CustomMainMenuScreen.this.server, this);
                     }
                     catch(UnknownHostException unknowHostException)
                     {
                         CustomMainMenuScreen.this.server.pingToServer = -1L;
-                        CustomMainMenuScreen.this.server.serverMOTD = TextFormatting.DARK_RED + "Impossible de résoudre le nom d'hôte";
+                        CustomMainMenuScreen.this.server.serverMOTD = new StringTextComponent(TextFormatting.DARK_RED + "Impossible de résoudre le nom d'hôte");
                         // on peut aussi utiliser I18n pour passer par les fichiers de langage
                     }
                     catch(Exception exception)
                     {
                         CustomMainMenuScreen.this.server.pingToServer = -1L;
-                        CustomMainMenuScreen.this.server.serverMOTD = TextFormatting.DARK_RED + "Impossible de se connecter au serveur";
+                        CustomMainMenuScreen.this.server.serverMOTD = new StringTextComponent( TextFormatting.DARK_RED + "Impossible de se connecter au serveur");
                     }
                 }
             });
         }
     }
 
-    private void serverInfoRender() {
+    private void serverInfoRender(MatrixStack matrixStack) {
         if(this.server.pingToServer >= 0L) {
-            this.drawString(this.minecraft.fontRenderer, this.server.populationInfo + TextFormatting.RESET + " joueurs", 2, 2, 0x245791);
-            this.drawString(this.minecraft.fontRenderer, this.server.pingToServer + " ms", 2, 12, 0x245791);
+            this.drawString(matrixStack, this.minecraft.fontRenderer, new StringTextComponent(this.server.populationInfo.getString() + TextFormatting.RESET + " joueurs"), 2, 2, 0x245791);
+            this.drawString(matrixStack, this.minecraft.fontRenderer, this.server.pingToServer + " ms", 2, 12, 0x245791);
+
         }
     }
 }

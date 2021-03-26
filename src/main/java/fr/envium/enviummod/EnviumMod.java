@@ -47,7 +47,8 @@ public class EnviumMod
         bus.addListener(new ClientManager()::clientSetup);
         bus.addListener(new ClientManager()::loadComplete);
         bus.addListener(this::setup);
-        bus.addListener(this::serverStarting);
+        //bus.addListener(this::serverStarting);
+        //bus.addListener(ModOreGen::gen);
 
 
         RegisterItem.init();
@@ -75,8 +76,8 @@ public class EnviumMod
 
     private void serverStarting(final FMLServerStartingEvent event)
     {
-        JobsCommands.register(event.getCommandDispatcher());
-        CommandRegenChunk.register(event.getCommandDispatcher());
+        /*JobsCommands.register(event.getCommandDispatcher());
+        CommandRegenChunk.register(event.getCommandDispatcher());*/
     }
 
     @SubscribeEvent

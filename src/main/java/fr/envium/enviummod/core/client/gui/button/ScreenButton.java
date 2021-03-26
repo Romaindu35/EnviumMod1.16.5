@@ -1,5 +1,6 @@
 package fr.envium.enviummod.core.client.gui.button;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import fr.envium.enviummod.References;
@@ -10,6 +11,7 @@ import net.minecraft.client.gui.widget.button.AbstractButton;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -69,12 +71,12 @@ public class ScreenButton extends AbstractButton {
     protected ResourceLocation WIDGETS_TEXTURES = new ResourceLocation(References.MODID, "textures/gui/transparent.png");
 
     public ScreenButton(int widthIn, int heightIn, int width, int height, String text, ScreenButton.IPressable onPress) {
-        super(widthIn, heightIn, width, height, text);
+        super(widthIn, heightIn, width, height, ITextComponent.getTextComponentOrEmpty(text));
         this.onPress = onPress;
     }
 
     @Override
-    public void renderButton(int p_renderButton_1_, int p_renderButton_2_, float p_renderButton_3_) {
+    public void renderButton(MatrixStack matrixStack, int p_renderButton_1_, int p_renderButton_2_, float p_renderButton_3_) {
         alpha = 0.0F;
         Minecraft minecraft = Minecraft.getInstance();
         FontRenderer fontrenderer = minecraft.fontRenderer;
@@ -85,11 +87,11 @@ public class ScreenButton extends AbstractButton {
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-        this.blit(this.x, this.y, 0, 46 + i * 20, this.width / 2, this.height);
-        this.blit(this.x + this.width / 2, this.y, 200 - this.width / 2, 46 + i * 20, this.width / 2, this.height);
-        this.renderBg(minecraft, p_renderButton_1_, p_renderButton_2_);
+        this.blit(matrixStack, this.x, this.y, 0, 46 + i * 20, this.width / 2, this.height);
+        this.blit(matrixStack, this.x + this.width / 2, this.y, 200 - this.width / 2, 46 + i * 20, this.width / 2, this.height);
+        this.renderBg(matrixStack, minecraft, p_renderButton_1_, p_renderButton_2_);
         int j = getFGColor();
-        this.drawCenteredString(fontrenderer, this.getMessage(), this.x + this.width / 2, this.y + (this.height - 8) / 2, j | MathHelper.ceil(this.alpha * 255.0F) << 24);
+        this.drawCenteredString(matrixStack, fontrenderer, this.getMessage(), this.x + this.width / 2, this.y + (this.height - 8) / 2, j | MathHelper.ceil(this.alpha * 255.0F) << 24);
     }
 
     @Override

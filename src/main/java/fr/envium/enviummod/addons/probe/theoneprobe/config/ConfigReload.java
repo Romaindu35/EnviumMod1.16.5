@@ -8,7 +8,7 @@ import net.minecraftforge.fml.config.ModConfig;
 
 import static net.minecraftforge.fml.Logging.CORE;
 
-@Mod.EventBusSubscriber(modid = "theoneprobe_envium", bus = Mod.EventBusSubscriber.Bus.MOD)
+@Mod.EventBusSubscriber(modid = TheOneProbe.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ConfigReload {
 
 

@@ -4,11 +4,11 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import fr.envium.enviummod.api.init.RegisterEntity;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.LogBlock;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.controller.FlyingMovementController;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.passive.AnimalEntity;
@@ -28,14 +28,14 @@ import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -94,6 +94,7 @@ public class Toucan extends ShoulderRidingEntity implements IFlyingAnimal {
     private float flapping = 1.0F;
     private boolean partyParrot;
     private BlockPos jukeboxPosition;
+    public SitGoal sitGoal;
 
     public Toucan(EntityType<? extends ShoulderRidingEntity> type, World worldIn) {
         super(type, worldIn);
@@ -104,11 +105,10 @@ public class Toucan extends ShoulderRidingEntity implements IFlyingAnimal {
     }
 
     @Nullable
-    public ILivingEntityData onInitialSpawn(IWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
+    public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
         this.setVariant(this.rand.nextInt(5));
         if (spawnDataIn == null) {
-            spawnDataIn = new AgeableEntity.AgeableData();
-            ((AgeableEntity.AgeableData)spawnDataIn).setCanBabySpawn(false);
+            spawnDataIn = new AgeableEntity.AgeableData(false);
         }
 
         return super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
@@ -126,12 +126,9 @@ public class Toucan extends ShoulderRidingEntity implements IFlyingAnimal {
         this.goalSelector.addGoal(3, new FollowMobGoal(this, 1.0D, 3.0F, 7.0F));
     }
 
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttributes().registerAttribute(SharedMonsterAttributes.FLYING_SPEED);
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(15.0D);
-        this.getAttribute(SharedMonsterAttributes.FLYING_SPEED).setBaseValue(0.4F);
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.2F);
+
+    public static AttributeModifierMap.MutableAttribute func_234188_eI_() {
+        return MobEntity.func_233666_p_().createMutableAttribute(Attributes.MAX_HEALTH, 10.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, (double)0.25D).createMutableAttribute(Attributes.FLYING_SPEED, 0.4F);
     }
 
     /**
@@ -188,7 +185,7 @@ public class Toucan extends ShoulderRidingEntity implements IFlyingAnimal {
         }
 
         this.flapping = (float)((double)this.flapping * 0.9D);
-        Vec3d vec3d = this.getMotion();
+        Vector3d vec3d = this.getMotion();
         if (!this.onGround && vec3d.y < 0.0D) {
             this.setMotion(vec3d.mul(1.0D, 0.6D, 1.0D));
         }
@@ -214,10 +211,11 @@ public class Toucan extends ShoulderRidingEntity implements IFlyingAnimal {
         }
     }
 
-    public boolean processInteract(PlayerEntity player, Hand hand) {
+    @Override
+    public ActionResultType applyPlayerInteraction(PlayerEntity player, Vector3d vec, Hand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
         if (itemstack.getItem() instanceof SpawnEggItem) {
-            return super.processInteract(player, hand);
+            return super.applyPlayerInteraction(player, vec, hand);
         } else if (!this.isTamed() && TAME_ITEMS.contains(itemstack.getItem())) {
             if (!player.abilities.isCreativeMode) {
                 itemstack.shrink(1);
@@ -236,7 +234,7 @@ public class Toucan extends ShoulderRidingEntity implements IFlyingAnimal {
                 }
             }
 
-            return true;
+            return ActionResultType.SUCCESS;
         } else if (itemstack.getItem() == DEADLY_ITEM) {
             if (!player.abilities.isCreativeMode) {
                 itemstack.shrink(1);
@@ -247,15 +245,9 @@ public class Toucan extends ShoulderRidingEntity implements IFlyingAnimal {
                 this.attackEntityFrom(DamageSource.causePlayerDamage(player), Float.MAX_VALUE);
             }
 
-            return true;
-        } else if (!this.isFlying() && this.isTamed() && this.isOwner(player)) {
-            if (!this.world.isRemote) {
-                this.sitGoal.setSitting(!this.isSitting());
-            }
-
-            return true;
+            return ActionResultType.SUCCESS;
         } else {
-            return super.processInteract(player, hand);
+            return super.applyPlayerInteraction(player, vec, hand);
         }
     }
 
@@ -265,11 +257,6 @@ public class Toucan extends ShoulderRidingEntity implements IFlyingAnimal {
      */
     public boolean isBreedingItem(ItemStack stack) {
         return false;
-    }
-
-    public static boolean func_223317_c(EntityType<Toucan> parrotIn, IWorld worldIn, SpawnReason reason, BlockPos p_223317_3_, Random random) {
-        Block block = worldIn.getBlockState(p_223317_3_.down()).getBlock();
-        return (block.isIn(BlockTags.LEAVES) || block == Blocks.GRASS_BLOCK || block instanceof LogBlock || block == Blocks.AIR) && worldIn.getLightSubtracted(p_223317_3_, 0) > 8;
     }
 
     public boolean onLivingFall(float distance, float damageMultiplier) {
@@ -286,22 +273,16 @@ public class Toucan extends ShoulderRidingEntity implements IFlyingAnimal {
         return false;
     }
 
-    @Nullable
-    public AgeableEntity createChild(AgeableEntity ageable) {
-
+    @org.jetbrains.annotations.Nullable
+    @Override
+    public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
         Toucan toucan = new Toucan(RegisterEntity.TOUCAN_ENTITY.get(), this.world);
-        toucan.onInitialSpawn(this.world, this.world.getDifficultyForLocation(new BlockPos(toucan)), SpawnReason.BREEDING, (ILivingEntityData)null, (CompoundNBT)null);
+        toucan.onInitialSpawn(serverWorld, this.world.getDifficultyForLocation(toucan.getPosition()), SpawnReason.BREEDING, (ILivingEntityData)null, (CompoundNBT)null);
         toucan.setGlowing(false);
 
         return toucan;
     }
 
-    public static void playAmbientSound(World worldIn, Entity parrotIn) {
-        if (!parrotIn.isSilent() && !playMimicSound(worldIn, parrotIn) && worldIn.rand.nextInt(200) == 0) {
-            worldIn.playSound((PlayerEntity)null, parrotIn.getPosX(), parrotIn.getPosY(), parrotIn.getPosZ(), getAmbientSound(worldIn.rand), parrotIn.getSoundCategory(), 1.0F, getPitch(worldIn.rand));
-        }
-
-    }
 
     public boolean attackEntityAsMob(Entity entityIn) {
         return entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), 3.0F);
@@ -371,21 +352,6 @@ public class Toucan extends ShoulderRidingEntity implements IFlyingAnimal {
     protected void collideWithEntity(Entity entityIn) {
         if (!(entityIn instanceof PlayerEntity)) {
             super.collideWithEntity(entityIn);
-        }
-    }
-
-    /**
-     * Called when the entity is attacked.
-     */
-    public boolean attackEntityFrom(DamageSource source, float amount) {
-        if (this.isInvulnerableTo(source)) {
-            return false;
-        } else {
-            if (this.sitGoal != null) {
-                this.sitGoal.setSitting(false);
-            }
-
-            return super.attackEntityFrom(source, amount);
         }
     }
 

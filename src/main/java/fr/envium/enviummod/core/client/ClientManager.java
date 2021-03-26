@@ -1,6 +1,5 @@
 package fr.envium.enviummod.core.client;
 
-import com.mrcrayfish.obfuscate.client.event.PlayerModelEvent;
 import fr.envium.enviummod.animals.client.entity.render.LirondelRenderer;
 import fr.envium.enviummod.animals.client.entity.render.MarmotRenderer;
 import fr.envium.enviummod.animals.client.entity.render.MeerkatRenderer;
@@ -24,7 +23,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DeferredWorkQueue;
@@ -37,8 +35,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-
-import static org.lwjgl.glfw.GLFW.glfwSetWindowTitle;
 
 public class ClientManager {
 
@@ -125,10 +121,10 @@ public class ClientManager {
         ObfuscationReflectionHelper.setPrivateValue(Minecraft.class, Minecraft.getInstance(), new JobsToastGui(), "field_193034_aS");
     }
 
-    @SubscribeEvent
+    /*@SubscribeEvent
     public void setupPlayerRotations(PlayerModelEvent.SetupAngles.Post event)
     {
-            /*event.getModelPlayer().getModelHead().rotateAngleX = (float) Math.toRadians(90f);
-            event.getModelPlayer().bipedBody.rotateAngleX = (float) Math.toRadians(180F);*/
-    }
+            event.getModelPlayer().getModelHead().rotateAngleX = (float) Math.toRadians(90f);
+            event.getModelPlayer().bipedBody.rotateAngleX = (float) Math.toRadians(180F);
+    }*/
 }

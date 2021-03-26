@@ -3,7 +3,6 @@ package fr.envium.enviummod.core.tileentity.renderer;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import fr.envium.enviummod.References;
-import fr.envium.enviummod.addons.ironchest.IronChests;
 import fr.envium.enviummod.api.init.RegisterBlock;
 import fr.envium.enviummod.core.blocks.EnviumChest;
 import fr.envium.enviummod.core.tileentity.TileEnviumChest;
@@ -12,22 +11,18 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.Atlases;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.Vector3f;
-import net.minecraft.client.renderer.model.Material;
 import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.client.renderer.model.RenderMaterial;
 import net.minecraft.client.renderer.tileentity.DualBrightnessCallback;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.tileentity.IChestLid;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityMerger;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.world.World;
 
-import java.sql.Ref;
-
-public class EnviumChestEntityRenderer<T extends TileEntity & IChestLid> extends TileEntityRenderer<T> {
+public class EnviumChestEntityRenderer extends TileEntityRenderer<TileEnviumChest> {
 
     private final ModelRenderer chestLid;
     private final ModelRenderer chestBottom;
@@ -50,8 +45,8 @@ public class EnviumChestEntityRenderer<T extends TileEntity & IChestLid> extends
     }
 
     @Override
-    public void render(T tileEntityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
-        TileEnviumChest tileEntity = (TileEnviumChest) tileEntityIn;
+    public void render(TileEnviumChest tileEntityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
+        TileEnviumChest tileEntity = tileEntityIn;
 
         World world = tileEntity.getWorld();
         boolean flag = world != null;
@@ -80,7 +75,7 @@ public class EnviumChestEntityRenderer<T extends TileEntity & IChestLid> extends
             f1 = 1.0F - f1 * f1 * f1;
             int i = iCallbackWrapper.apply(new DualBrightnessCallback<>()).applyAsInt(combinedLightIn);
 
-            Material material = new Material(Atlases.CHEST_ATLAS, ENVIUM_CHEST_LOCATION);
+            RenderMaterial material = new RenderMaterial(Atlases.CHEST_ATLAS, ENVIUM_CHEST_LOCATION);
             IVertexBuilder ivertexbuilder = material.getBuffer(bufferIn, RenderType::getEntityCutout);
 
             this.handleModelRender(matrixStackIn, ivertexbuilder, this.chestLid, this.chestLock, this.chestBottom, f1, i, combinedOverlayIn);

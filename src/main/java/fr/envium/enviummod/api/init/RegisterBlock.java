@@ -1,16 +1,11 @@
 package fr.envium.enviummod.api.init;
 
 import fr.envium.enviummod.References;
-import fr.envium.enviummod.addons.ironchest.IronChests;
-import fr.envium.enviummod.addons.ironchest.client.tileentity.IronChestItemStackRenderer;
-import fr.envium.enviummod.addons.ironchest.common.block.IronChestBlock;
-import fr.envium.enviummod.addons.ironchest.common.block.tileentity.IronChestTileEntity;
 import fr.envium.enviummod.api.tab.EnviumTab;
 import fr.envium.enviummod.core.blocks.*;
+import fr.envium.enviummod.core.client.render.ItemRenderer;
 import fr.envium.enviummod.core.tileentity.TileEnviumChest;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.BlockModelRenderer;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -18,17 +13,12 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.ObjectHolder;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber(modid = References.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 @ObjectHolder(References.MODID)
@@ -92,6 +82,6 @@ public class RegisterBlock {
 
     @OnlyIn(Dist.CLIENT)
     private static Callable<ItemStackTileEntityRenderer> enviumChestRenderer() {
-        return () -> new IronChestItemStackRenderer(TileEnviumChest::new);
+        return () -> new ItemRenderer(TileEnviumChest::new);
     }
 }

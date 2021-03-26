@@ -11,7 +11,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class RegisterContainer {
 
-    public static final DeferredRegister<ContainerType<?>> CONTAINERS = new DeferredRegister(ForgeRegistries.CONTAINERS, References.MODID);
+    public static final DeferredRegister<ContainerType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.CONTAINERS, References.MODID);
 
     public static final RegistryObject<ContainerType<ContainerEnviumChest>> ENVIUM_CHEST = CONTAINERS.register("envium_chest", () -> IForgeContainerType.create(ContainerEnviumChest::new));
     public static final RegistryObject<ContainerType<ContainerEnviumFurnace>> ENVIUM_FURNACE = CONTAINERS.register("envium_furnace", () -> IForgeContainerType.create(ContainerEnviumFurnace::new));

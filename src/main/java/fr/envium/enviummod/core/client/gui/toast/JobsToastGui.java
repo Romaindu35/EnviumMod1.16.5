@@ -1,6 +1,7 @@
 package fr.envium.enviummod.core.client.gui.toast;
 
 import com.google.common.collect.Queues;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.toasts.IToast;
@@ -25,20 +26,20 @@ public class JobsToastGui extends ToastGui {
         this.mc = Minecraft.getInstance();
     }
 
-    public void render() {
+    public void func_238541_a_(MatrixStack matrixStack) {
         if (!this.mc.gameSettings.hideGUI) {
             for(int i = 0; i < this.visible.length; ++i) {
                 ToastInstance<?> toastinstance = this.visible[i];
                 if (toastinstance != null && toastinstance.getToast() instanceof JobsToast) {
                     JobsToast jobsToast = (JobsToast) toastinstance.getToast();
                     if (jobsToast.getReload()) {
-                        if (toastinstance != null && toastinstance.render(this.mc.getMainWindow().getScaledWidth(), i)) {
+                        if (toastinstance != null && toastinstance.render(matrixStack, this.mc.getMainWindow().getScaledWidth(), i)) {
                             this.visible[i] = null;
                         }
                         return;
                     }
                 }
-                if (toastinstance != null && toastinstance.renderWithAnimation(this.mc.getMainWindow().getScaledWidth(), i)) {
+                if (toastinstance != null && toastinstance.renderWithAnimation(matrixStack, this.mc.getMainWindow().getScaledWidth(), i)) {
                     this.visible[i] = null;
                 }
 
@@ -148,7 +149,7 @@ public class JobsToastGui extends ToastGui {
             return this.visibility == IToast.Visibility.HIDE ? 1.0F - f : f;
         }
 
-        public boolean renderWithAnimation(int width, int height) {
+        public boolean renderWithAnimation(MatrixStack matrixStack, int width, int height) {
             long i = Util.milliTime();
             if (this.animationTime == -1L) {
                 this.animationTime = i;
@@ -161,7 +162,7 @@ public class JobsToastGui extends ToastGui {
 
             RenderSystem.pushMatrix();
             RenderSystem.translatef((float)width - 160.0F * this.getVisibility(i), (float)(height * 32), (float)(800 + height));
-            IToast.Visibility itoast$visibility = this.toast.draw(JobsToastGui.this, i - this.visibleTime);
+            IToast.Visibility itoast$visibility = this.toast.func_230444_a_(matrixStack, JobsToastGui.this, i - this.visibleTime);
             RenderSystem.popMatrix();
             if (itoast$visibility != this.visibility) {
                 this.animationTime = i - (long)((int)((1.0F - this.getVisibility(i)) * 600.0F));
@@ -172,7 +173,7 @@ public class JobsToastGui extends ToastGui {
             return this.visibility == IToast.Visibility.HIDE && i - this.animationTime > 600L;
         }
 
-        public boolean render(int width, int height) {
+        public boolean render(MatrixStack matrixStack, int width, int height) {
             long i = Util.milliTime();
             if (this.animationTime == -1L) {
                 this.animationTime = i;
@@ -185,7 +186,7 @@ public class JobsToastGui extends ToastGui {
 
             RenderSystem.pushMatrix();
             RenderSystem.translatef((float)width - 160.0F, (float)(height * 32), (float)(800 + height));
-            IToast.Visibility itoast$visibility = this.toast.draw(JobsToastGui.this, i - this.visibleTime);
+            IToast.Visibility itoast$visibility = this.toast.func_230444_a_(matrixStack, JobsToastGui.this, i - this.visibleTime);
             RenderSystem.popMatrix();
             if (itoast$visibility != this.visibility) {
                 this.animationTime = i - (long)((int)((1.0F - this.getVisibility(i)) * 600.0F));

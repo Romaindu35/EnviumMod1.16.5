@@ -33,14 +33,6 @@ displayName="The One Probe" #mandatory
 
 [[mods]]
 
-modId="ironchest" #mandatory
-
-version="${file.jarVersion}" #mandatory
-
-displayName="Iron Chest" #mandatory
-
-[[mods]]
-
 modId="neat" #mandatory
 
 version="${file.jarVersion}" #mandatory

@@ -1,6 +1,5 @@
 package fr.envium.enviummod.api.utils;
 
-import fr.envium.enviummod.EnviumMod;
 import net.minecraft.block.Block;
 import net.minecraft.util.SharedSeedRandom;
 import net.minecraft.util.math.BlockPos;
@@ -8,10 +7,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.GenerationStage.Decoration;
 import net.minecraft.world.server.ServerWorld;
-import org.apache.logging.log4j.Level;
 
 public class ChunkUtils {
     @SuppressWarnings("resource")
@@ -20,7 +17,7 @@ public class ChunkUtils {
         System.out.println(world);
         System.out.println(x);
         System.out.println(z);
-        ChunkGenerator<? extends GenerationSettings> gen = world.getChunkProvider().generator;
+        ChunkGenerator gen = world.getChunkProvider().generator;
         Chunk chunk = world.getChunk(x, z);
         System.out.println(chunk);
         try
@@ -29,8 +26,8 @@ public class ChunkUtils {
             System.out.println(world.getServer());
             world.getServer().deferTask(() ->
             {
-                gen.generateBiomes(chunk);
-                gen.makeBase(world, chunk);
+                /*gen.generateBiomes(chunk);
+                gen.makeBase(world, chunk);*/
                 System.out.println("1");
                 for(int posX = 0; posX < 16; posX++)
                     for(int posZ = 0; posZ < 16; posZ++)
@@ -40,7 +37,7 @@ public class ChunkUtils {
                         Biome biome = chunk.getBiomes().getNoiseBiome(pos.getX(), pos.getY(), pos.getZ());
 
                         for(Decoration deco : Decoration.values()) {
-                            biome.decorate(deco, gen, world, world.getSeed(), new SharedSeedRandom(world.getSeed()), pos);
+                            //biome.decorate(deco, gen, world, world.getSeed(), new SharedSeedRandom(world.getSeed()), pos);
                             System.out.println("4");
                         }
                     }

@@ -4,14 +4,13 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.effect.LightningBoltEntity;
-import net.minecraft.entity.monster.ZombiePigmanEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.PigEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
@@ -19,14 +18,12 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nullable;
 
@@ -54,10 +51,8 @@ public class Meerkat extends AnimalEntity {
         this.goalSelector.addGoal(8, new LookRandomlyGoal(this));
     }
 
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
+    public static AttributeModifierMap.MutableAttribute func_234188_eI_() {
+        return MobEntity.func_233666_p_().createMutableAttribute(Attributes.MAX_HEALTH, 10.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, (double)0.25D);
     }
 
     /**
@@ -128,22 +123,23 @@ public class Meerkat extends AnimalEntity {
         this.playSound(SoundEvents.ENTITY_PIG_STEP, 0.15F, 1.0F);
     }
 
-    public boolean processInteract(PlayerEntity player, Hand hand) {
-        if (super.processInteract(player, hand)) {
-            return true;
+    @Override
+    public ActionResultType applyPlayerInteraction(PlayerEntity player, Vector3d vec, Hand hand) {
+        if (super.applyPlayerInteraction(player, vec, hand) == ActionResultType.SUCCESS) {
+            return ActionResultType.SUCCESS;
         } else {
             ItemStack itemstack = player.getHeldItem(hand);
             if (itemstack.getItem() == Items.NAME_TAG) {
                 itemstack.interactWithEntity(player, this, hand);
-                return true;
+                return ActionResultType.SUCCESS;
             } else if (this.getSaddled() && !this.isBeingRidden()) {
                 if (!this.world.isRemote) {
                     player.startRiding(this);
                 }
 
-                return true;
+                return ActionResultType.SUCCESS;
             } else {
-                return itemstack.getItem() == Items.SADDLE && itemstack.interactWithEntity(player, this, hand);
+                return itemstack.getItem() == Items.SADDLE && itemstack.interactWithEntity(player, this, hand) == ActionResultType.SUCCESS ? ActionResultType.SUCCESS : ActionResultType.FAIL;
             }
         }
     }
@@ -175,24 +171,7 @@ public class Meerkat extends AnimalEntity {
 
     }
 
-    /**
-     * Called when a lightning bolt hits the entity.
-     */
-    public void onStruckByLightning(LightningBoltEntity lightningBolt) {
-        ZombiePigmanEntity zombiepigmanentity = EntityType.ZOMBIE_PIGMAN.create(this.world);
-        zombiepigmanentity.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(Items.GOLDEN_SWORD));
-        zombiepigmanentity.setLocationAndAngles(this.getPosX(), this.getPosY(), this.getPosZ(), this.rotationYaw, this.rotationPitch);
-        zombiepigmanentity.setNoAI(this.isAIDisabled());
-        if (this.hasCustomName()) {
-            zombiepigmanentity.setCustomName(this.getCustomName());
-            zombiepigmanentity.setCustomNameVisible(this.isCustomNameVisible());
-        }
-
-        this.world.addEntity(zombiepigmanentity);
-        this.remove();
-    }
-
-    public void travel(Vec3d p_213352_1_) {
+    public void travel(Vector3d p_213352_1_) {
         if (this.isAlive()) {
             Entity entity = this.getPassengers().isEmpty() ? null : this.getPassengers().get(0);
             if (this.isBeingRidden() && this.canBeSteered()) {
@@ -209,16 +188,16 @@ public class Meerkat extends AnimalEntity {
                 }
 
                 if (this.canPassengerSteer()) {
-                    float f = (float)this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getValue() * 0.225F;
+                    float f = (float)this.getAttribute(Attributes.MOVEMENT_SPEED).getValue() * 0.225F;
                     if (this.boosting) {
                         f += f * 1.15F * MathHelper.sin((float)this.boostTime / (float)this.totalBoostTime * (float)Math.PI);
                     }
 
                     this.setAIMoveSpeed(f);
-                    super.travel(new Vec3d(0.0D, 0.0D, 1.0D));
+                    super.travel(new Vector3d(0.0D, 0.0D, 1.0D));
                     this.newPosRotationIncrements = 0;
                 } else {
-                    this.setMotion(Vec3d.ZERO);
+                    this.setMotion(Vector3d.ZERO);
                 }
 
                 this.prevLimbSwingAmount = this.limbSwingAmount;
@@ -251,7 +230,9 @@ public class Meerkat extends AnimalEntity {
         }
     }
 
-    public PigEntity createChild(AgeableEntity ageable) {
+    @org.jetbrains.annotations.Nullable
+    @Override
+    public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
         return EntityType.PIG.create(this.world);
     }
 

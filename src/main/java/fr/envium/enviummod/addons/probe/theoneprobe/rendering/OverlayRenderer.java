@@ -23,10 +23,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.RegistryKey;
 import net.minecraft.util.math.*;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.minecraft.world.dimension.DimensionType;
 import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.opengl.GL11;
 
@@ -39,7 +41,7 @@ import static fr.envium.enviummod.addons.probe.theoneprobe.api.TextStyleClass.ER
 
 public class OverlayRenderer {
 
-    private static Map<Pair<DimensionType,BlockPos>, Pair<Long, ProbeInfo>> cachedInfo = new HashMap<>();
+    private static Map<Pair<RegistryKey<World>,BlockPos>, Pair<Long, ProbeInfo>> cachedInfo = new HashMap<>();
     private static Map<UUID, Pair<Long, ProbeInfo>> cachedEntityInfo = new HashMap<>();
     private static long lastCleanupTime = 0;
 
@@ -51,7 +53,7 @@ public class OverlayRenderer {
     // When the server delays too long we also show some preliminary information already
     private static long lastRenderedTime = -1;
 
-    public static void registerProbeInfo(DimensionType dim, BlockPos pos, ProbeInfo probeInfo) {
+    public static void registerProbeInfo(RegistryKey<World> dim, BlockPos pos, ProbeInfo probeInfo) {
         if (probeInfo == null) {
             return;
         }
@@ -67,26 +69,23 @@ public class OverlayRenderer {
         cachedEntityInfo.put(uuid, Pair.of(time, probeInfo));
     }
 
-    public static void renderHUD(ProbeMode mode, float partialTicks) {
-
-
+    public static void renderHUD(ProbeMode mode, MatrixStack matrixStack, float partialTicks) {
         double dist = Config.probeDistance.get();
 
         RayTraceResult mouseOver = Minecraft.getInstance().objectMouseOver;
         if (mouseOver != null) {
             if (mouseOver.getType() == RayTraceResult.Type.ENTITY) {
-                RenderSystem.pushMatrix();
-                MatrixStack matrixStack = new MatrixStack();
+                matrixStack.push();
 
                 double scale = Config.tooltipScale.get();
 
                 double sw = Minecraft.getInstance().getMainWindow().getScaledWidth();
                 double sh = Minecraft.getInstance().getMainWindow().getScaledHeight();
 
-                setupOverlayRendering(matrixStack, sw * scale, sh * scale);
+                setupOverlayRendering(sw * scale, sh * scale);
                 renderHUDEntity(matrixStack, mode, mouseOver, sw * scale, sh * scale);
-                setupOverlayRendering(matrixStack, sw, sh);
-                RenderSystem.popMatrix();
+                setupOverlayRendering(sw, sh);
+                matrixStack.pop();
 
                 checkCleanup();
                 return;
@@ -94,9 +93,9 @@ public class OverlayRenderer {
         }
 
         PlayerEntity entity = Minecraft.getInstance().player;
-        Vec3d start  = entity.getEyePosition(partialTicks);
-        Vec3d vec31 = entity.getLook(partialTicks);
-        Vec3d end = start.add(vec31.x * dist, vec31.y * dist, vec31.z * dist);
+        Vector3d start  = entity.getEyePosition(partialTicks);
+        Vector3d vec31 = entity.getLook(partialTicks);
+        Vector3d end = start.add(vec31.x * dist, vec31.y * dist, vec31.z * dist);
 
         RayTraceContext context = new RayTraceContext(start, end, RayTraceContext.BlockMode.OUTLINE, Config.showLiquids.get() ? RayTraceContext.FluidMode.ANY : RayTraceContext.FluidMode.NONE, entity);
         mouseOver = entity.getEntityWorld().rayTraceBlocks(context);
@@ -105,25 +104,24 @@ public class OverlayRenderer {
         }
 
         if (mouseOver.getType() == RayTraceResult.Type.BLOCK) {
-            RenderSystem.pushMatrix();
-            MatrixStack matrixStack = new MatrixStack();
+            matrixStack.push();
 
             double scale = Config.tooltipScale.get();
 
             double sw = Minecraft.getInstance().getMainWindow().getScaledWidth();
             double sh = Minecraft.getInstance().getMainWindow().getScaledHeight();
 
-            setupOverlayRendering(matrixStack, sw * scale, sh * scale);
+            setupOverlayRendering(sw * scale, sh * scale);
             renderHUDBlock(matrixStack, mode, mouseOver, sw * scale, sh * scale);
-            setupOverlayRendering(matrixStack, sw, sh);
+            setupOverlayRendering(sw, sh);
 
-            RenderSystem.popMatrix();
+            matrixStack.pop();
         }
 
         checkCleanup();
     }
 
-    private static void setupOverlayRendering(MatrixStack matrixStack, double sw, double sh) {
+    private static void setupOverlayRendering(double sw, double sh) {
         RenderSystem.clear(256, true);
         RenderSystem.matrixMode(GL11.GL_PROJECTION);
         RenderSystem.loadIdentity();
@@ -131,7 +129,6 @@ public class OverlayRenderer {
         RenderSystem.matrixMode(GL11.GL_MODELVIEW);
         RenderSystem.loadIdentity();
         RenderSystem.translatef(0.0F, 0.0F, -2000.0F);
-//        matrixStack.translate(0, 0, -2000);
     }
 
     private static void checkCleanup() {
@@ -208,7 +205,7 @@ public class OverlayRenderer {
     }
 
     private static void requestEntityInfo(ProbeMode mode, RayTraceResult mouseOver, Entity entity, PlayerEntity player) {
-        PacketHandler.INSTANCE.sendToServer(new PacketGetEntityInfo(player.getEntityWorld().getDimension().getType(), mode, mouseOver, entity));
+        PacketHandler.INSTANCE.sendToServer(new PacketGetEntityInfo(player.getEntityWorld().getDimensionKey(), mode, mouseOver, entity));
     }
 
     private static void renderHUDBlock(MatrixStack matrixStack, ProbeMode mode, RayTraceResult mouseOver, double sw, double sh) {
@@ -231,7 +228,7 @@ public class OverlayRenderer {
             float damage = Minecraft.getInstance().playerController.curBlockDamageMP;
             if (damage > 0) {
                 if (Config.showBreakProgress.get() == 2) {
-                    damageElement = new ElementText("" + TextFormatting.RED + "Progress " + (int) (damage * 100) + "%");
+                    damageElement = new ElementText(new StringTextComponent("Progress " + (int) (damage * 100) + "%").mergeStyle(TextFormatting.RED));
                 } else {
                     damageElement = new ElementProgress((long) (damage * 100), 100, new ProgressStyle()
                             .prefix("Progress ")
@@ -245,8 +242,8 @@ public class OverlayRenderer {
             }
         }
 
-        DimensionType dimension = player.getEntityWorld().getDimension().getType();
-        Pair<DimensionType, BlockPos> key = Pair.of(dimension, blockPos);
+        RegistryKey<World> dimension = player.getEntityWorld().getDimensionKey();
+        Pair<RegistryKey<World>, BlockPos> key = Pair.of(dimension, blockPos);
         Pair<Long, ProbeInfo> cacheEntry = cachedInfo.get(key);
         if (cacheEntry == null || cacheEntry.getValue() == null) {
 
@@ -337,28 +334,27 @@ public class OverlayRenderer {
             pickBlock = pickBlock.copy();
             pickBlock.setTag(null);
         }
-        PacketHandler.INSTANCE.sendToServer(new PacketGetInfo(world.getDimension().getType(), blockPos, mode, mouseOver, pickBlock));
+        PacketHandler.INSTANCE.sendToServer(new PacketGetInfo(world.getDimensionKey(), blockPos, mode, mouseOver, pickBlock));
     }
 
-    public static void renderOverlay(IOverlayStyle style, IProbeInfo probeInfo) {
-        RenderSystem.pushMatrix();
-        MatrixStack matrixStack = new MatrixStack();
+    public static void renderOverlay(IOverlayStyle style, IProbeInfo probeInfo, MatrixStack matrixStack) {
+        matrixStack.push();
 
         double scale = Config.tooltipScale.get();
 
         double sw = Minecraft.getInstance().getMainWindow().getScaledWidth();
         double sh = Minecraft.getInstance().getMainWindow().getScaledHeight();
 
-        setupOverlayRendering(matrixStack, sw * scale, sh * scale);
+        setupOverlayRendering(sw * scale, sh * scale);
         renderElements(matrixStack, (ProbeInfo) probeInfo, style, sw * scale, sh * scale, null);
-        setupOverlayRendering(matrixStack, sw, sh);
-        RenderSystem.popMatrix();
+        setupOverlayRendering(sw, sh);
+        matrixStack.pop();
     }
 
     private static void cleanupCachedBlocks(long time) {
         // It has been a while. Time to clean up unused cached pairs.
-        Map<Pair<DimensionType,BlockPos>, Pair<Long, ProbeInfo>> newCachedInfo = new HashMap<>();
-        for (Map.Entry<Pair<DimensionType, BlockPos>, Pair<Long, ProbeInfo>> entry : cachedInfo.entrySet()) {
+        Map<Pair<RegistryKey<World>,BlockPos>, Pair<Long, ProbeInfo>> newCachedInfo = new HashMap<>();
+        for (Map.Entry<Pair<RegistryKey<World>, BlockPos>, Pair<Long, ProbeInfo>> entry : cachedInfo.entrySet()) {
             long t = entry.getValue().getLeft();
             if (time < t + Config.timeout.get() + 1000) {
                 newCachedInfo.put(entry.getKey(), entry.getValue());
@@ -425,16 +421,16 @@ public class OverlayRenderer {
 
         if (thick > 0) {
             if (offset > 0) {
-                RenderHelper.drawThickBeveledBox(x, y, x + w-1, y + h-1, thick, style.getBoxColor(), style.getBoxColor(), style.getBoxColor());
+                RenderHelper.drawThickBeveledBox(matrixStack, x, y, x + w-1, y + h-1, thick, style.getBoxColor(), style.getBoxColor(), style.getBoxColor());
             }
-            RenderHelper.drawThickBeveledBox(x+offset, y+offset, x + w-1-offset, y + h-1-offset, thick, style.getBorderColor(), style.getBorderColor(), style.getBoxColor());
+            RenderHelper.drawThickBeveledBox(matrixStack, x+offset, y+offset, x + w-1-offset, y + h-1-offset, thick, style.getBorderColor(), style.getBorderColor(), style.getBoxColor());
         }
 
         if (!Minecraft.getInstance().isGamePaused()) {
             RenderHelper.rot += .5f;
         }
 
-        probeInfo.render(x + margin, y + margin);
+        probeInfo.render(matrixStack, x + margin, y + margin);
         if (extra != null) {
             probeInfo.removeElement(extra);
         }

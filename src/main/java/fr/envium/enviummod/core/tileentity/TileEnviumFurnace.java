@@ -6,6 +6,7 @@ import fr.envium.enviummod.api.init.RegisterTileEntity;
 import fr.envium.enviummod.api.packets.NetworkRegistryHandler;
 import fr.envium.enviummod.core.packets.PacketUpdateTileEntityData;
 import io.netty.buffer.Unpooled;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.FurnaceBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -52,8 +53,8 @@ public class TileEnviumFurnace extends LockableTileEntity implements ITickableTi
     }
 
     @Override
-    public void read(CompoundNBT compound) {
-        super.read(compound);
+    public void read(BlockState state, CompoundNBT compound) {
+        super.read(state, compound);
         this.stacks = NonNullList.<ItemStack>withSize(this.getSizeInventory(), ItemStack.EMPTY);
         ItemStackHelper.loadAllItems(compound, this.stacks);
 

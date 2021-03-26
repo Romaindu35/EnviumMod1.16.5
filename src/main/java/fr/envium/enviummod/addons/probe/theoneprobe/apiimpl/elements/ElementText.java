@@ -1,52 +1,32 @@
 package fr.envium.enviummod.addons.probe.theoneprobe.apiimpl.elements;
 
-import fr.envium.enviummod.addons.probe.theoneprobe.api.IElementNew;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import fr.envium.enviummod.addons.probe.theoneprobe.api.IElement;
 import fr.envium.enviummod.addons.probe.theoneprobe.apiimpl.TheOneProbeImp;
 import fr.envium.enviummod.addons.probe.theoneprobe.apiimpl.client.ElementTextRender;
-import fr.envium.enviummod.addons.probe.theoneprobe.network.NetworkTools;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.text.ITextComponent;
 
-public class ElementText implements IElementNew {
+public class ElementText implements IElement {
 
-    private final String text;
-    private final ITextComponent textComponent;
-
-    public ElementText(String text) {
-        this.text = text;
-        this.textComponent = null;
-    }
+    private final ITextComponent text;
 
     public ElementText(ITextComponent text) {
-        this.text = "";
-        this.textComponent = text;
+        this.text = text;
     }
 
     public ElementText(PacketBuffer buf) {
-        text = NetworkTools.readStringUTF8(buf);
-        if (buf.readBoolean()) {
-            textComponent = buf.readTextComponent();
-        } else {
-            textComponent = null;
-        }
+        text = buf.readTextComponent();
     }
 
     @Override
-    public void render(int x, int y) {
-        if (textComponent != null) {
-            ElementTextRender.render(textComponent, x, y);
-        } else {
-            ElementTextRender.render(text, x, y);
-        }
+    public void render(MatrixStack matrixStack, int x, int y) {
+        ElementTextRender.render(text, matrixStack, x, y);
     }
 
     @Override
     public int getWidth() {
-        if (textComponent != null) {
-            return ElementTextRender.getWidth(textComponent);
-        } else {
-            return ElementTextRender.getWidth(text);
-        }
+        return ElementTextRender.getWidth(text);
     }
 
     @Override
@@ -56,13 +36,7 @@ public class ElementText implements IElementNew {
 
     @Override
     public void toBytes(PacketBuffer buf) {
-        NetworkTools.writeStringUTF8(buf, text);
-        if (textComponent != null) {
-            buf.writeBoolean(true);
-            buf.writeTextComponent(textComponent);
-        } else {
-            buf.writeBoolean(false);
-        }
+        buf.writeTextComponent(text);
     }
 
     @Override

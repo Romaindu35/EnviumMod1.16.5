@@ -1,5 +1,6 @@
 package fr.envium.enviummod.core.client.gui;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import fr.envium.enviummod.References;
 import net.minecraft.client.Minecraft;
@@ -31,7 +32,7 @@ public class GuiLoading extends LoadingGui {
         this.reloading = p_i225928_4_;
     }
 
-    public void render(int p_render_1_, int p_render_2_, float p_render_3_) {
+    public void render(MatrixStack matrixStack, int p_render_1_, int p_render_2_, float p_render_3_) {
         int width = this.mc.getMainWindow().getScaledWidth();
         int height = this.mc.getMainWindow().getScaledHeight();
         long time = Util.milliTime();
@@ -44,40 +45,40 @@ public class GuiLoading extends LoadingGui {
         float f2;
         if (f >= 1.0F) {
             if (this.mc.currentScreen != null) {
-                this.mc.currentScreen.render(0, 0, p_render_3_);
+                this.mc.currentScreen.render(matrixStack, 0, 0, p_render_3_);
             }
 
             int l = MathHelper.ceil((1.0F - MathHelper.clamp(f - 1.0F, 0.0F, 1.0F)) * 255.0F);
-            fill(0, 0, width, height, 16777215 | l << 24);
+            fill(matrixStack, 0, 0, width, height, 16777215 | l << 24);
             f2 = 1.0F - MathHelper.clamp(f - 1.0F, 0.0F, 1.0F);
         } else if (this.reloading) {
             if (this.mc.currentScreen != null && f1 < 1.0F) {
-                this.mc.currentScreen.render(p_render_1_, p_render_2_, p_render_3_);
+                this.mc.currentScreen.render(matrixStack, p_render_1_, p_render_2_, p_render_3_);
             }
 
             int j1 = MathHelper.ceil(MathHelper.clamp((double)f1, 0.15D, 1.0D) * 255.0D);
-            fill(0, 0, width, height, 16777215 | j1 << 24);
+            fill(matrixStack, 0, 0, width, height, 16777215 | j1 << 24);
             f2 = MathHelper.clamp(f1, 0.0F, 1.0F);
         } else {
-            fill(0, 0, width, height, -1);
+            fill(matrixStack, 0, 0, width, height, -1);
             f2 = 1.0F;
         }
         this.mc.getTextureManager().bindTexture(ENVIUM_BACKGROUND_TEXTURE);
         RenderSystem.enableBlend();
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.blit(0, 0, 0.0F, 0.0F, 430, 250, 430, 250);
+        this.blit(matrixStack, 0, 0, 0.0F, 0.0F, 430, 250, 430, 250);
 
         this.mc.getTextureManager().bindTexture(ENVIUM_LOGO);
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.blit(width / 2 - 50, height/ 2 - 90, 0.0F, 0.0F, 100, 100, 100, 100);
+        this.blit(matrixStack, width / 2 - 50, height/ 2 - 90, 0.0F, 0.0F, 100, 100, 100, 100);
 
         float f3 = this.asyncReloader.estimateExecutionSpeed();
         this.progress = MathHelper.clamp(this.progress * 0.95F + f3 * 0.050000012F, 0.0F, 1.0F);
         //net.minecraftforge.fml.client.ClientModLoader.renderProgressText();
         if (f < 1.0F) {
             int i = MathHelper.ceil((float)(430 - 2 - 1) * this.progress);
-            fill(0, 200, 430, 250, Color.MAGENTA.getRGB());
-            fill(0, 200, i, 205, Color.YELLOW.getRGB());
+            fill(matrixStack, 0, 200, 430, 250, Color.MAGENTA.getRGB());
+            fill(matrixStack, 0, 200, i, 205, Color.YELLOW.getRGB());
         }
 
         if (f >= 2.0F) {

@@ -3,7 +3,7 @@ buildscript {
         maven { url = 'https://files.minecraftforge.net/maven' }
         jcenter()
         mavenCentral()
-        maven {url='https://dist.creeper.host/Sponge/maven'}
+        maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
         maven {
             url "https://plugins.gradle.org/m2/"
         }
@@ -130,18 +130,19 @@ dependencies {
     // Specify the version of Minecraft to use, If this is any group other then 'net.minecraft' it is assumed
     // that the dep is a ForgeGradle 'patcher' dependency. And it's patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
-    minecraft 'net.minecraftforge:forge:1.16.5-36.0.43'
+    minecraft 'net.minecraftforge:forge:1.16.4-35.1.37'
 
     compileOnly fg.deobf("mezz.jei:jei-1.16.4:7.6.1.71:api")
     runtimeOnly fg.deobf("mezz.jei:jei-1.16.4:7.6.1.71")
-    compileOnly fg.deobf("curse.maven:SpaceBosstools-377448:3217918")
-    runtimeOnly fg.deobf("curse.maven:SpaceBosstools-377448:3217918")
-    compileOnly fg.deobf("curse.maven:Obfuscate:3169370")
-    runtimeOnly fg.deobf("curse.maven:Obfuscate:3169370")
+    compileOnly fg.deobf("curse.maven:SpaceBosstools-377448:3228130")
+    runtimeOnly fg.deobf("curse.maven:SpaceBosstools-377448:3228130")
+    /*compileOnly fg.deobf("curse.maven:Obfuscate-289380:3148131")
+    runtimeOnly fg.deobf("curse.maven:Obfuscate-289380:3148131")*/
+    compile fg.deobf("curse.maven:obfuscate-289380:3067472")
     runtimeOnly fg.deobf("curse.maven:StorageDrawer-223852:3180569")
-    runtimeOnly fg.deobf("curse.maven:Mekanism-268560:3206392")
-    runtimeOnly fg.deobf("curse.maven:Mekanism_all-268560:3206394")
-    runtimeOnly fg.deobf("curse.maven:WorldEdit-225608:3209370")
+    /*runtimeOnly fg.deobf("curse.maven:Mekanism-268560:3206392")
+    runtimeOnly fg.deobf("curse.maven:Mekanism_all-268560:3206394")*/
+    //runtimeOnly fg.deobf("curse.maven:WorldEdit-225608:3209370")
 
 
     implementation 'com.github.Vatuu:discord-rpc:1.6.2'

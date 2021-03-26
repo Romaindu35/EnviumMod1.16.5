@@ -56,10 +56,8 @@
   "entity.enviummod.marmot_entity" : "Marmotte",
   "entity.enviummod.meerkat_entity" : "Suricate",
 
-  //String Message
   "jobs.win_xp_message" : "Vous avez gagné ",
 
-  //Main menu text
   "menu.enviummod.play" : "Jouer",
   "menu.enviummod.options" : "Options",
   "menu.enviummod.quit" : "Quitter",

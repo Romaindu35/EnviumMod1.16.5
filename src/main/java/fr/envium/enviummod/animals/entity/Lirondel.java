@@ -7,7 +7,6 @@ import fr.envium.enviummod.api.init.RegisterEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.LogBlock;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.controller.FlyingMovementController;
 import net.minecraft.entity.ai.goal.*;
@@ -33,12 +32,15 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -105,35 +107,26 @@ public class Lirondel extends ShoulderRidingEntity implements IFlyingAnimal {
     }
 
     @Nullable
-    public ILivingEntityData onInitialSpawn(IWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
+    public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
         this.setVariant(this.rand.nextInt(5));
         if (spawnDataIn == null) {
-            spawnDataIn = new AgeableEntity.AgeableData();
-            ((AgeableEntity.AgeableData)spawnDataIn).setCanBabySpawn(false);
+            spawnDataIn = new AgeableEntity.AgeableData(false);
         }
 
         return super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 
     protected void registerGoals() {
-        this.sitGoal = new SitGoal(this);
         this.goalSelector.addGoal(0, new PanicGoal(this, 1.25D));
         this.goalSelector.addGoal(0, new SwimGoal(this));
         this.goalSelector.addGoal(1, new LookAtGoal(this, PlayerEntity.class, 8.0F));
-        this.goalSelector.addGoal(2, this.sitGoal);
+        this.goalSelector.addGoal(2, new SitGoal(this));
         this.goalSelector.addGoal(2, new FollowOwnerGoal(this, 1.0D, 5.0F, 1.0F, true));
         this.goalSelector.addGoal(2, new WaterAvoidingRandomFlyingGoal(this, 1.0D));
         this.goalSelector.addGoal(3, new LandOnOwnersShoulderGoal(this));
         this.goalSelector.addGoal(3, new FollowMobGoal(this, 1.0D, 3.0F, 7.0F));
     }
 
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttributes().registerAttribute(SharedMonsterAttributes.FLYING_SPEED);
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(15.0D);
-        this.getAttribute(SharedMonsterAttributes.FLYING_SPEED).setBaseValue(0.4F);
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.2F);
-    }
 
     /**
      * Returns new PathNavigateGround instance
@@ -189,7 +182,7 @@ public class Lirondel extends ShoulderRidingEntity implements IFlyingAnimal {
         }
 
         this.flapping = (float)((double)this.flapping * 0.9D);
-        Vec3d vec3d = this.getMotion();
+        Vector3d vec3d = this.getMotion();
         if (!this.onGround && vec3d.y < 0.0D) {
             this.setMotion(vec3d.mul(1.0D, 0.6D, 1.0D));
         }
@@ -215,51 +208,6 @@ public class Lirondel extends ShoulderRidingEntity implements IFlyingAnimal {
         }
     }
 
-    public boolean processInteract(PlayerEntity player, Hand hand) {
-        ItemStack itemstack = player.getHeldItem(hand);
-        if (itemstack.getItem() instanceof SpawnEggItem) {
-            return super.processInteract(player, hand);
-        } else if (!this.isTamed() && TAME_ITEMS.contains(itemstack.getItem())) {
-            if (!player.abilities.isCreativeMode) {
-                itemstack.shrink(1);
-            }
-
-            if (!this.isSilent()) {
-                this.world.playSound((PlayerEntity)null, this.getPosX(), this.getPosY(), this.getPosZ(), SoundEvents.ENTITY_PARROT_EAT, this.getSoundCategory(), 1.0F, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F);
-            }
-
-            if (!this.world.isRemote) {
-                if (this.rand.nextInt(10) == 0 && !net.minecraftforge.event.ForgeEventFactory.onAnimalTame(this, player)) {
-                    this.setTamedBy(player);
-                    this.world.setEntityState(this, (byte)7);
-                } else {
-                    this.world.setEntityState(this, (byte)6);
-                }
-            }
-
-            return true;
-        } else if (itemstack.getItem() == DEADLY_ITEM) {
-            if (!player.abilities.isCreativeMode) {
-                itemstack.shrink(1);
-            }
-
-            this.addPotionEffect(new EffectInstance(Effects.POISON, 900));
-            if (player.isCreative() || !this.isInvulnerable()) {
-                this.attackEntityFrom(DamageSource.causePlayerDamage(player), Float.MAX_VALUE);
-            }
-
-            return true;
-        } else if (!this.isFlying() && this.isTamed() && this.isOwner(player)) {
-            if (!this.world.isRemote) {
-                this.sitGoal.setSitting(!this.isSitting());
-            }
-
-            return true;
-        } else {
-            return super.processInteract(player, hand);
-        }
-    }
-
     /**
      * Checks if the parameter is an item which this animal can be fed to breed it (wheat, carrots or seeds depending on
      * the animal type)
@@ -269,8 +217,8 @@ public class Lirondel extends ShoulderRidingEntity implements IFlyingAnimal {
     }
 
     public static boolean func_223317_c(EntityType<ParrotEntity> parrotIn, IWorld worldIn, SpawnReason reason, BlockPos p_223317_3_, Random random) {
-        Block block = worldIn.getBlockState(p_223317_3_.down()).getBlock();
-        return (block.isIn(BlockTags.LEAVES) || block == Blocks.GRASS_BLOCK || block instanceof LogBlock || block == Blocks.AIR) && worldIn.getLightSubtracted(p_223317_3_, 0) > 8;
+        BlockState blockstate = worldIn.getBlockState(p_223317_3_.down());
+        return (blockstate.isIn(BlockTags.LEAVES) || blockstate.isIn(Blocks.GRASS_BLOCK) || blockstate.isIn(BlockTags.LOGS) || blockstate.isIn(Blocks.AIR)) && worldIn.getLightSubtracted(p_223317_3_, 0) > 8;
     }
 
     public boolean onLivingFall(float distance, float damageMultiplier) {
@@ -285,16 +233,6 @@ public class Lirondel extends ShoulderRidingEntity implements IFlyingAnimal {
      */
     public boolean canMateWith(AnimalEntity otherAnimal) {
         return false;
-    }
-
-    @Nullable
-    public AgeableEntity createChild(AgeableEntity ageable) {
-
-        Toucan lirondel = new Toucan(RegisterEntity.LIRONDEL_ENTITY.get(), this.world);
-        lirondel.onInitialSpawn(this.world, this.world.getDifficultyForLocation(new BlockPos(lirondel)), SpawnReason.BREEDING, (ILivingEntityData)null, (CompoundNBT)null);
-        lirondel.setGlowing(false);
-
-        return lirondel;
     }
 
     public static void playAmbientSound(World worldIn, Entity parrotIn) {
@@ -378,7 +316,7 @@ public class Lirondel extends ShoulderRidingEntity implements IFlyingAnimal {
     /**
      * Called when the entity is attacked.
      */
-    public boolean attackEntityFrom(DamageSource source, float amount) {
+    /*public boolean attackEntityFrom(DamageSource source, float amount) {
         if (this.isInvulnerableTo(source)) {
             return false;
         } else {
@@ -388,7 +326,7 @@ public class Lirondel extends ShoulderRidingEntity implements IFlyingAnimal {
 
             return super.attackEntityFrom(source, amount);
         }
-    }
+    }*/
 
     public int getVariant() {
         return MathHelper.clamp(this.dataManager.get(VARIANT), 0, 4);
@@ -396,6 +334,12 @@ public class Lirondel extends ShoulderRidingEntity implements IFlyingAnimal {
 
     public void setVariant(int variantIn) {
         this.dataManager.set(VARIANT, variantIn);
+    }
+
+    @org.jetbrains.annotations.Nullable
+    @Override
+    public AgeableEntity func_241840_a(ServerWorld p_241840_1_, AgeableEntity p_241840_2_) {
+        return null;
     }
 
     protected void registerData() {

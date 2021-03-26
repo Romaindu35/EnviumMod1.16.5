@@ -1,5 +1,6 @@
 package fr.envium.enviummod.addons.probe.theoneprobe.apiimpl.client;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import fr.envium.enviummod.addons.probe.theoneprobe.api.TextStyleClass;
 import fr.envium.enviummod.addons.probe.theoneprobe.config.Config;
 import fr.envium.enviummod.addons.probe.theoneprobe.rendering.RenderHelper;
@@ -16,16 +17,12 @@ import static fr.envium.enviummod.addons.probe.theoneprobe.api.IProbeInfo.STARTL
 
 public class ElementTextRender {
 
-    public static void render(String text, int x, int y) {
-        RenderHelper.renderText(Minecraft.getInstance(), x, y, stylifyString(text));
-    }
-
-    public static void render(ITextComponent text, int x, int y) {
-        RenderHelper.renderText(Minecraft.getInstance(), x, y, stylifyString(text));
+    public static void render(ITextComponent text, MatrixStack matrixStack, int x, int y) {
+        RenderHelper.renderText(Minecraft.getInstance(), matrixStack, x, y, stylifyString(text));
     }
 
     private static String stylifyString(ITextComponent text) {
-        return stylifyString(text.getFormattedText());
+        return stylifyString(text.getString());
     }
 
     private static String stylifyString(String text) {
@@ -67,10 +64,6 @@ public class ElementTextRender {
             }
         }
         return text;
-    }
-
-    public static int getWidth(String text) {
-        return Minecraft.getInstance().fontRenderer.getStringWidth(stylifyString(text));
     }
 
     public static int getWidth(ITextComponent text) {

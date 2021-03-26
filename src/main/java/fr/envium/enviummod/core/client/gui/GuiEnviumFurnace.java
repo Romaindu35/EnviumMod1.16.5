@@ -1,5 +1,6 @@
 package fr.envium.enviummod.core.client.gui;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import fr.envium.enviummod.References;
 import fr.envium.enviummod.core.container.ContainerEnviumFurnace;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
@@ -22,9 +23,9 @@ public class GuiEnviumFurnace extends ContainerScreen<ContainerEnviumFurnace> {
     }
 
     @Override
-    public void render(int mouseX, int mouseY, float partialTicks)
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks)
     {
-        super.render(mouseX, mouseY, partialTicks);
+        super.render(matrixStack, mouseX, mouseY, partialTicks);
     }
 
     @Override
@@ -46,12 +47,12 @@ public class GuiEnviumFurnace extends ContainerScreen<ContainerEnviumFurnace> {
     }*/
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+    protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
         int i = (this.width - this.xSize) / 2;
         int j = (this.height - this.ySize) / 2;
-        this.renderBackground();
+        this.renderBackground(matrixStack);
         this.minecraft.getTextureManager().bindTexture(TEXTURE);
-        this.blit(i, j, 0, 0, this.xSize, this.ySize);
+        this.blit(matrixStack, i, j, 0, 0, this.xSize, this.ySize);
 
         if (this.getContainer().getClientData() != null && !this.getContainer().getClientData().isEmpty())
         {
@@ -59,11 +60,11 @@ public class GuiEnviumFurnace extends ContainerScreen<ContainerEnviumFurnace> {
             int timePassed = data.get("timePassed");
             float time = data.get("fullTimeRecipe");
             int textureWidth = (int) (23f / time * timePassed);
-            this.blit(i + 79, j + 35, 176, 14, textureWidth, 16);
+            this.blit(matrixStack, i + 79, j + 35, 176, 14, textureWidth, 16);
             if (data.get("isBurning").equals(1)) {
                 int burningTime = data.get("burningTimeLeft");
                 int textureHeight = (int) (12f / data.get("fullBurningTime") * burningTime);
-                this.blit(i + 57, j + 38 + 12 - textureHeight, 177, 15 - textureHeight, 14, textureHeight);
+                this.blit(matrixStack, i + 57, j + 38 + 12 - textureHeight, 177, 15 - textureHeight, 14, textureHeight);
             }
         }
     }

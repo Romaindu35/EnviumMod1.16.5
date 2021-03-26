@@ -1,10 +1,10 @@
 package fr.envium.enviummod.addons.probe.theoneprobe.proxy;
 
-import fr.envium.enviummod.addons.probe.theoneprobe.RegisterItem;
 import fr.envium.enviummod.addons.probe.theoneprobe.api.ProbeMode;
 import fr.envium.enviummod.addons.probe.theoneprobe.config.Config;
 import fr.envium.enviummod.addons.probe.theoneprobe.gui.GuiConfig;
 import fr.envium.enviummod.addons.probe.theoneprobe.gui.GuiNote;
+import fr.envium.enviummod.addons.probe.theoneprobe.items.ModItems;
 import fr.envium.enviummod.addons.probe.theoneprobe.keys.KeyBindings;
 import fr.envium.enviummod.addons.probe.theoneprobe.keys.KeyInputHandler;
 import fr.envium.enviummod.addons.probe.theoneprobe.rendering.OverlayRenderer;
@@ -101,18 +101,18 @@ public class ClientProxy implements IProxy {
             }
         }
 
-        if (hasItemInEitherHand(RegisterItem.CREATIVE_PROBE.get())) {
-            OverlayRenderer.renderHUD(ProbeMode.DEBUG, event.getPartialTicks());
+        if (hasItemInEitherHand(ModItems.CREATIVE_PROBE.get())) {
+            OverlayRenderer.renderHUD(ProbeMode.DEBUG, event.getMatrixStack(), event.getPartialTicks());
         } else {
             switch (Config.needsProbe.get()) {
                 case PROBE_NOTNEEDED:
                 case PROBE_NEEDEDFOREXTENDED:
-                    OverlayRenderer.renderHUD(getModeForPlayer(), event.getPartialTicks());
+                    OverlayRenderer.renderHUD(getModeForPlayer(), event.getMatrixStack(), event.getPartialTicks());
                     break;
                 case PROBE_NEEDED:
                 case PROBE_NEEDEDHARD:
-                    if (RegisterItem.hasAProbeSomewhere(Minecraft.getInstance().player)) {
-                        OverlayRenderer.renderHUD(getModeForPlayer(), event.getPartialTicks());
+                    if (ModItems.hasAProbeSomewhere(Minecraft.getInstance().player)) {
+                        OverlayRenderer.renderHUD(getModeForPlayer(), event.getMatrixStack(), event.getPartialTicks());
                     }
                     break;
             }
@@ -122,7 +122,7 @@ public class ClientProxy implements IProxy {
     private ProbeMode getModeForPlayer() {
         PlayerEntity player = Minecraft.getInstance().player;
         if (Config.extendedInMain.get()) {
-            if (hasItemInMainHand(RegisterItem.PROBE.get())) {
+            if (hasItemInMainHand(ModItems.PROBE.get())) {
                 return ProbeMode.EXTENDED;
             }
         }

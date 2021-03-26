@@ -1,56 +1,76 @@
 package fr.envium.enviummod.addons.probe.theoneprobe.apiimpl.client;
 
 import com.google.common.collect.Maps;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.datafixers.DataFixUtils;
 import fr.envium.enviummod.addons.probe.theoneprobe.api.IEntityStyle;
+import fr.envium.enviummod.addons.probe.theoneprobe.config.Config;
 import fr.envium.enviummod.addons.probe.theoneprobe.rendering.RenderHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.World;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Map;
 
 public class ElementEntityRender {
 
-    public static void renderPlayer(String entityName, Integer playerID, IEntityStyle style, int x, int y) {
+    public static void renderPlayer(String entityName, Integer playerID, IEntityStyle style, MatrixStack matrixStack, int x, int y) {
         Entity entity = Minecraft.getInstance().world.getEntityByID(playerID);
         if (entity != null) {
-            renderEntity(style, x, y, entity);
+            renderEntity(style, matrixStack, x, y, entity);
         }
     }
 
-    public static void render(String entityName, CompoundNBT entityNBT, IEntityStyle style, int x, int y) {
+    public static void render(String entityName, CompoundNBT entityNBT, IEntityStyle style, MatrixStack matrixStack, int x, int y) {
         if (entityName != null && !entityName.isEmpty()) {
-            Entity entity = null;
-            if (entityNBT != null) {
-                String fixed = fixEntityId(entityName);
-                EntityType<?> value = ForgeRegistries.ENTITIES.getValue(new ResourceLocation(fixed));
-                if (value != null) {
-                    try {
-                        entity = value.create(Minecraft.getInstance().world, entityNBT, null, null, new BlockPos(0, 0, 0), SpawnReason.COMMAND, false, false);
-                        entity.read(entityNBT);
-                    } catch (Exception ignore) {
-                        // This can crash due to a vanilla bug with foxes. Workaround here
+            String fixed = fixEntityId(entityName);
+            ResourceLocation id = new ResourceLocation(fixed);
+
+            if (!Config.isBlacklistForRendering(id)) {
+                Entity entity = null;
+                if (entityNBT != null) {
+                    EntityType<?> value = ForgeRegistries.ENTITIES.getValue(id);
+                    if (value != null) {
+                        try {
+                            World world = Minecraft.getInstance().world;
+
+                            entity = value.create(world);
+                            entity.setLocationAndAngles(0.5D, 0.0D, 0.5D, MathHelper.wrapDegrees(world.rand.nextFloat() * 360.0F), 0.0F);
+
+                            if (entity instanceof MobEntity) {
+                                MobEntity mob = (MobEntity) entity;
+
+                                mob.rotationYawHead = mob.rotationYaw;
+                                mob.renderYawOffset = mob.rotationYaw;
+                                mob.setLeftHanded(world.rand.nextFloat() < 0.05F);
+                            }
+
+                            EntityType.applyItemNBT(world, null, entity, entityNBT);
+                        } catch (Exception ignore) {
+                            // This can crash due to a vanilla bug with foxes. Workaround here
+                        }
+                    }
+                } else {
+                    EntityType<?> value = ForgeRegistries.ENTITIES.getValue(id);
+                    if (value != null) {
+                        try {
+                            entity = value.create(Minecraft.getInstance().world);
+                        } catch (Exception ignore) {
+                            // This can crash due to a vanilla bug with foxes. Workaround here
+                        }
                     }
                 }
-            } else {
-                String fixed = fixEntityId(entityName);
-                EntityType<?> value = ForgeRegistries.ENTITIES.getValue(new ResourceLocation(fixed));
-                if (value != null) {
-                    try {
-                        entity = value.create(Minecraft.getInstance().world);
-                    } catch (Exception ignore) {
-                        // This can crash due to a vanilla bug with foxes. Workaround here
-                    }
+                if (entity != null) {
+                    renderEntity(style, matrixStack, x, y, entity);
                 }
-            }
-            if (entity != null) {
-                renderEntity(style, x, y, entity);
             }
         }
     }
@@ -156,12 +176,12 @@ public class ElementEntityRender {
         return id;
     }
 
-    private static void renderEntity(IEntityStyle style, int x, int y, Entity entity) {
+    private static void renderEntity(IEntityStyle style, MatrixStack matrixStack, int x, int y, Entity entity) {
         float height = entity.getHeight();
         height = (float) ((height - 1) * .7 + 1);
         float s = style.getScale() * ((style.getHeight() * 14.0f / 25) / height);
 
-        RenderHelper.renderEntity(entity, x, y, s);
+        RenderHelper.renderEntity(entity, matrixStack, x, y, s);
     }
 
 }

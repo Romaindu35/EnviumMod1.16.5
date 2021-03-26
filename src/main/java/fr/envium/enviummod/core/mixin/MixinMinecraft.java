@@ -23,7 +23,7 @@ public class MixinMinecraft {
     /**
      * @author
      */
-    @Overwrite
+    /*@Overwrite
     public void setLoadingGui(LoadingGui loadingGui) {
         if (loadingGui == null) {
             Minecraft.getInstance().loadingGui = null;
@@ -32,7 +32,7 @@ public class MixinMinecraft {
             List<IResourcePack> list = Minecraft.getInstance().resourcePackRepository.getEnabledPacks().stream().map(ResourcePackInfo::getResourcePack).collect(Collectors.toList());
             Minecraft.getInstance().loadingGui = new GuiLoading(Minecraft.getInstance(), Minecraft.getInstance().resourceManager.reloadResources(Util.getServerExecutor(), Minecraft.getInstance(), Minecraft.RESOURCE_RELOAD_INIT_TASK, list), (p_229990_2_) -> {
                 Util.acceptOrElse(p_229990_2_, Minecraft.getInstance()::restoreResourcePacks, () -> {
-                    Minecraft.getInstance().languageManager.parseLanguageMetadata(list);
+                    //Minecraft.getInstance().languageManager.parseLanguageMetadata(list);
                     if (SharedConstants.developmentMode) {
                         Minecraft.getInstance().checkMissingData();
                     }
@@ -45,9 +45,9 @@ public class MixinMinecraft {
             }, false);
         }
         System.out.println("Minecraft was been initialise");
-    }
+    }*/
 
-    @Inject(at = @At("HEAD"), method = "func_230149_ax_", cancellable = true)
+    @Inject(at = @At("HEAD"), method = "getWindowTitle", cancellable = true)
     private void func_230149_ax_(CallbackInfoReturnable<String> cir) {
         StringBuilder stringbuilder = new StringBuilder("Envium");
         stringbuilder.append(" - ");

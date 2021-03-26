@@ -1,6 +1,5 @@
 package fr.envium.enviummod.addons.probe.theoneprobe.items;
 
-import fr.envium.enviummod.addons.probe.theoneprobe.RegisterItem;
 import fr.envium.enviummod.addons.probe.theoneprobe.TheOneProbe;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
@@ -22,7 +21,7 @@ public class AddProbeTagRecipe extends AbstractRecipeAdaptor {
     public ItemStack getCraftingResult(CraftingInventory inv) {
         ItemStack result = recipe.getCraftingResult(inv);
         CompoundNBT tc = new CompoundNBT();
-        tc.putInt(RegisterItem.PROBETAG, 1);
+        tc.putInt(ModItems.PROBETAG, 1);
         result.setTag(tc);
         return result;
     }

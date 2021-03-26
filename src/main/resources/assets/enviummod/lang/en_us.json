@@ -1,0 +1,55 @@
+{
+  "itemGroup.envium_creative_tabs": "Envium Mod",
+  "itemGroup.envium_creative_tabs_animal" : "Animals",
+  "key.categories.enviummod" : "Envium Mod",
+
+  "enviummod.keybind.guiadmin" : "Admin gui",
+  "enviummod.keybind.guimetier" : "Metier gui",
+  "enviummod.keybind.toggle" : "Reverse the life bar",
+
+
+  "block.enviummod.envium_block": "Envium Block",
+  "block.enviummod.envium_ore": "Envium Ore",
+  "block.enviummod.cave_block": "Cave Block",
+  "block.enviummod.envium_chest": "Envium Chest",
+  "block.enviummod.envium_furnace": "Envium Furnace",
+  "block.enviummod.pillow": "Pillow",
+
+  "item.enviummod.envium_lingot": "Envium ingot",
+
+  "item.enviummod.envium_sword": "Envium sword",
+  "item.enviummod.envium_axe": "Envium axe",
+  "item.enviummod.envium_pickaxe": "Envium pickaxe",
+  "item.enviummod.envium_shovel": "Envium shovel",
+  "item.enviummod.envium_hoe": "Hoe en Envium",
+
+  "item.enviummod.frites": "Frites",
+  "item.enviummod.frites_citrouille": "Frites de Citrouille",
+
+  "item.enviummod.envium_shard_random": "Envium schard random",
+  "item.enviummod.envium_shard": "Envium schard",
+  "item.enviummod.envium_shard_quantity": "Envium shard de quantité",
+
+  "item.enviummod.envium_helmet": "Envium helmet",
+  "item.enviummod.envium_chestplate": "Envium chestplate",
+  "item.enviummod.envium_leggings": "Envium leggings",
+  "item.enviummod.envium_boots": "Envium boots",
+
+  "item.enviummod.toucan_spawn_eggs" : "Toucan spawn egg",
+  "item.enviummod.lirondel_spawn_eggs" : "Lirondel spawn egg",
+  "item.enviummod.marmot_spawn_eggs" : "Marmot spawn egg",
+  "item.enviummod.meerkat_spawn_eggs" : "Meerkat spawn egg",
+
+  "entity.enviummod.toucan_entity" : "Toucan",
+  "entity.enviummod.lirondel_entity" : "Lirondel",
+  "entity.enviummod.marmot_entity" : "Marmot",
+  "entity.enviummod.meerkat_entity" : "Meerkat",
+
+
+  "jobs.win_xp_message" : "You win ",
+
+  "menu.enviummod.play" : "Play",
+  "menu.enviummod.options" : "Options",
+  "menu.enviummod.quit" : "Leave",
+  "menu.enviummod.dev" : "Dev"
+}

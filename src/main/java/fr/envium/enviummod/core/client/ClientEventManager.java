@@ -1,5 +1,6 @@
 package fr.envium.enviummod.core.client;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import fr.envium.enviummod.api.packets.NetworkRegistryHandler;
 import fr.envium.enviummod.core.client.gui.*;
 import fr.envium.enviummod.core.client.render.RenderCustomPlayer;
@@ -15,6 +16,7 @@ import net.minecraft.client.gui.screen.inventory.InventoryScreen;
 import net.minecraft.client.gui.toasts.ToastGui;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.*;
@@ -48,7 +50,7 @@ public class ClientEventManager {
     @SubscribeEvent
     public void onGuiDrawing(RenderGameOverlayEvent.Pre event) {
         if (event.getType() == RenderGameOverlayEvent.ElementType.HOTBAR) {
-            draw(event.getWindow());
+            draw(event.getMatrixStack(), event.getWindow());
         }
     }
 
@@ -80,7 +82,7 @@ public class ClientEventManager {
         if (event.getGui() == null)
             return;
         if (event.getGui().getClass() == InventoryScreen.class || event.getGui().getClass() == CreativeScreen.class) {
-            event.addWidget(new Button(event.getGui().width /2 - 120, event.getGui().height / 2 -100, 30, 20, "Metier", (x) -> {
+            event.addWidget(new Button(event.getGui().width /2 - 120, event.getGui().height / 2 -100, 30, 20, new StringTextComponent("Metier"), (x) -> {
                 Minecraft.getInstance().displayGuiScreen(new MetierScreen.PrincipalScreen());
             }));
         }
@@ -111,8 +113,8 @@ public class ClientEventManager {
         GLFW.glfwSetWindowTitle(Minecraft.getInstance().getMainWindow().getHandle(), "Envium | " + Minecraft.getInstance().player.getName());
     }*/
 
-    private void draw(MainWindow window) {
-        RenderOverlay.drawText(window);
+    private void draw(MatrixStack matrixStack, MainWindow window) {
+        RenderOverlay.drawText(matrixStack, window);
     }
 
 }

@@ -16,7 +16,6 @@ public class Probe extends Item {
         super(new Properties()
                 .maxStackSize(1)
                 .group(TheOneProbe.tabProbe));
-        //setRegistryName("probe");
     }
 
     @Override

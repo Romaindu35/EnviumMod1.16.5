@@ -1,5 +1,6 @@
 package fr.envium.enviummod.core.client.gui.toast;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import fr.envium.enviummod.api.init.RegisterItem;
 import net.minecraft.advancements.Advancement;
@@ -12,6 +13,7 @@ import net.minecraft.client.gui.toasts.ToastGui;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IReorderingProcessor;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.MathHelper;
@@ -32,19 +34,19 @@ public class JobsToast implements IToast {
         this.xp = xp;
     }
 
-    public IToast.Visibility draw(ToastGui toastGui, long delta) {
+    public IToast.Visibility func_230444_a_(MatrixStack matrixStack, ToastGui toastGui, long delta) {
         toastGui.getMinecraft().getTextureManager().bindTexture(TEXTURE_TOASTS);
         RenderSystem.color3f(1.0F, 1.0F, 1.0F);
         DisplayInfo displayinfo = this.displayInfo(xp);
-        toastGui.blit(0, 0, 0, 0, 160, 32);
+        toastGui.blit(matrixStack, 0, 0, 0, 0, this.func_230445_a_(), this.func_238540_d_());
         if (displayinfo != null) {
-            List<String> list = toastGui.getMinecraft().fontRenderer.listFormattedStringToWidth(displayinfo.getTitle().getFormattedText(), 125);
+            List<IReorderingProcessor> list = toastGui.getMinecraft().fontRenderer.trimStringToWidth(displayinfo.getTitle(), 125);
             int l = 16 - list.size() * 9 / 2;
-            for (String s : list) {
-                toastGui.getMinecraft().fontRenderer.drawString(s, 30.0F, (float) l, 16777215);
+            for(IReorderingProcessor ireorderingprocessor : list) {
+                toastGui.getMinecraft().fontRenderer.func_238422_b_(matrixStack, ireorderingprocessor, 30.0F, (float)l, 16777215);
                 l += 9;
             }
-            toastGui.getMinecraft().getItemRenderer().renderItemAndEffectIntoGUI((LivingEntity) null, displayinfo.getIcon(), 8, 8);
+            toastGui.getMinecraft().getItemRenderer().renderItemAndEffectIntoGuiWithoutEntity(displayinfo.getIcon(), 8, 8);
             return delta >= 5000L ? IToast.Visibility.HIDE : IToast.Visibility.SHOW;
         } else {
             return IToast.Visibility.HIDE;

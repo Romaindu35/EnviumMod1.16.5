@@ -6,12 +6,16 @@ import fr.envium.enviummod.addons.probe.theoneprobe.api.ITheOneProbe;
 import fr.envium.enviummod.addons.probe.theoneprobe.apiimpl.TheOneProbeImp;
 import fr.envium.enviummod.addons.probe.theoneprobe.apiimpl.providers.*;
 import fr.envium.enviummod.addons.probe.theoneprobe.config.Config;
+import fr.envium.enviummod.addons.probe.theoneprobe.gui.GuiConfig;
 import fr.envium.enviummod.addons.probe.theoneprobe.items.AddProbeTagRecipeSerializer;
+import fr.envium.enviummod.addons.probe.theoneprobe.items.ModItems;
 import fr.envium.enviummod.addons.probe.theoneprobe.network.PacketHandler;
 import fr.envium.enviummod.addons.probe.theoneprobe.playerdata.PlayerGotNote;
 import fr.envium.enviummod.addons.probe.theoneprobe.proxy.ClientProxy;
 import fr.envium.enviummod.addons.probe.theoneprobe.proxy.IProxy;
 import fr.envium.enviummod.addons.probe.theoneprobe.proxy.ServerProxy;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
@@ -19,20 +23,25 @@ import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.nbt.INBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -44,36 +53,45 @@ import java.util.function.Supplier;
 @Mod("theoneprobe_envium")
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class TheOneProbe {
-    public static final String MODID = "theoneprobe";
+    public static final String MODID = "theoneprobe_envium";
 
     public static IProxy proxy = DistExecutor.runForDist(() -> () -> new ClientProxy(), () -> () -> new ServerProxy());
     public static final Logger logger = LogManager.getLogger();
 
     public static TheOneProbeImp theOneProbeImp = new TheOneProbeImp();
 
-    public static boolean baubles = false;
-    public static boolean tesla = false;
-    public static boolean redstoneflux = false;
+    public static KeyBinding keyBindingTheOneProbeConfigGui = new KeyBinding("enviummod.theOneProbe.configGui", GLFW.GLFW_KEY_UNKNOWN, "key.categories.enviummod");
 
     public static ItemGroup tabProbe = new ItemGroup("Probe") {
         @Override
         public ItemStack createIcon() {
-            return new ItemStack(RegisterItem.PROBE.get());
+            return new ItemStack(ModItems.PROBE.get());
         }
     };
 
 
     public TheOneProbe() {
+        ModItems.ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
+
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, Config.CLIENT_CONFIG);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.COMMON_CONFIG);
-        RegisterItem.ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
+
+        // Register the setup method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::init);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(Config::onLoad);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(Config::onReload);
+
+        // Register the processIMC method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::processIMC);
+
+        // Register ourselves for server, registry and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
     }
 
     private void init(final FMLCommonSetupEvent event) {
+
         MinecraftForge.EVENT_BUS.register(new ForgeEventHandlers());
+
         registerCapabilities();
         TheOneProbeImp.registerElements();
         TheOneProbe.theOneProbeImp.registerProvider(new DefaultProbeInfoProvider());
@@ -82,9 +100,14 @@ public class TheOneProbe {
         TheOneProbe.theOneProbeImp.registerEntityProvider(new DefaultProbeInfoEntityProvider());
         TheOneProbe.theOneProbeImp.registerEntityProvider(new DebugProbeInfoEntityProvider());
         TheOneProbe.theOneProbeImp.registerEntityProvider(new EntityProbeInfoEntityProvider());
-        PacketHandler.registerMessages(MODID);
+
+        PacketHandler.registerMessages("theoneprobe");
+
         configureProviders();
         configureEntityProviders();
+
+        ClientRegistry.registerKeyBinding(keyBindingTheOneProbeConfigGui);
+
         proxy.setup(event);
     }
 
@@ -151,6 +174,13 @@ public class TheOneProbe {
         Collections.addAll(excluded, excludedProviders);
 
         TheOneProbe.theOneProbeImp.configureEntityProviders(sortedProviders, excluded);
+    }
+
+    @SubscribeEvent
+    public void keyDetect(InputEvent.KeyInputEvent event) {
+        if(TheOneProbe.keyBindingTheOneProbeConfigGui.isKeyDown()) {
+            Minecraft.getInstance().displayGuiScreen(new GuiConfig());
+        }
     }
 
 }

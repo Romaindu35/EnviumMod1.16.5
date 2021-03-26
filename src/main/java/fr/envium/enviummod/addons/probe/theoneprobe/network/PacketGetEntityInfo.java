@@ -1,20 +1,20 @@
 package fr.envium.enviummod.addons.probe.theoneprobe.network;
 
-import fr.envium.enviummod.addons.probe.theoneprobe.RegisterItem;
 import fr.envium.enviummod.addons.probe.theoneprobe.TheOneProbe;
 import fr.envium.enviummod.addons.probe.theoneprobe.api.*;
 import fr.envium.enviummod.addons.probe.theoneprobe.apiimpl.ProbeHitEntityData;
 import fr.envium.enviummod.addons.probe.theoneprobe.apiimpl.ProbeInfo;
 import fr.envium.enviummod.addons.probe.theoneprobe.config.Config;
+import fr.envium.enviummod.addons.probe.theoneprobe.items.ModItems;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.RegistryKey;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
-import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.fml.network.NetworkEvent;
 
@@ -29,22 +29,22 @@ import static fr.envium.enviummod.addons.probe.theoneprobe.config.Config.PROBE_N
 
 public class PacketGetEntityInfo {
 
-    private DimensionType dim;
+    private RegistryKey<World> dim;
     private UUID uuid;
     private ProbeMode mode;
-    private Vec3d hitVec;
+    private Vector3d hitVec;
 
     public PacketGetEntityInfo(PacketBuffer buf) {
-        dim = DimensionType.byName(buf.readResourceLocation());
+        dim = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, buf.readResourceLocation());
         uuid = buf.readUniqueId();
         mode = ProbeMode.values()[buf.readByte()];
         if (buf.readBoolean()) {
-            hitVec = new Vec3d(buf.readDouble(), buf.readDouble(), buf.readDouble());
+            hitVec = new Vector3d(buf.readDouble(), buf.readDouble(), buf.readDouble());
         }
     }
 
     public void toBytes(PacketBuffer buf) {
-        buf.writeResourceLocation(dim.getRegistryName());
+        buf.writeResourceLocation(dim.getLocation());
         buf.writeUniqueId(uuid);
         buf.writeByte(mode.ordinal());
         if (hitVec == null) {
@@ -60,7 +60,7 @@ public class PacketGetEntityInfo {
     public PacketGetEntityInfo() {
     }
 
-    public PacketGetEntityInfo(DimensionType dim, ProbeMode mode, RayTraceResult mouseOver, Entity entity) {
+    public PacketGetEntityInfo(RegistryKey<World> dim, ProbeMode mode, RayTraceResult mouseOver, Entity entity) {
         this.dim = dim;
         this.uuid = entity.getUniqueID();
         this.mode = mode;
@@ -69,7 +69,7 @@ public class PacketGetEntityInfo {
 
     public void handle(Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
-            ServerWorld world = DimensionManager.getWorld(ctx.get().getSender().server, dim, true, false);
+            ServerWorld world = ctx.get().getSender().server.getWorld(dim);
             if (world != null) {
                 Entity entity = world.getEntityByUuid(uuid);
                 if (entity != null) {
@@ -82,16 +82,16 @@ public class PacketGetEntityInfo {
         ctx.get().setPacketHandled(true);
     }
 
-    private static ProbeInfo getProbeInfo(PlayerEntity player, ProbeMode mode, World world, Entity entity, Vec3d hitVec) {
+    private static ProbeInfo getProbeInfo(PlayerEntity player, ProbeMode mode, World world, Entity entity, Vector3d hitVec) {
         if (Config.needsProbe.get() == PROBE_NEEDEDFOREXTENDED) {
             // We need a probe only for extended information
-            if (!RegisterItem.hasAProbeSomewhere(player)) {
+            if (!ModItems.hasAProbeSomewhere(player)) {
                 // No probe anywhere, switch EXTENDED to NORMAL
                 if (mode == ProbeMode.EXTENDED) {
                     mode = ProbeMode.NORMAL;
                 }
             }
-        } else if (Config.needsProbe.get() == PROBE_NEEDEDHARD && !RegisterItem.hasAProbeSomewhere(player)) {
+        } else if (Config.needsProbe.get() == PROBE_NEEDEDHARD && !ModItems.hasAProbeSomewhere(player)) {
             // The server says we need a probe but we don't have one in our hands or on our head
             return null;
         }

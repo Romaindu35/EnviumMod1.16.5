@@ -132,7 +132,7 @@ public class JobsCommands {
 
             source.asPlayer().sendMessage(new StringTextComponent(
                     TextFormatting.DARK_RED + "[Jobs]" + TextFormatting.RESET
-                            + serverPlayerEntity.getName().getFormattedText() + " a gagne " + xp + " xp au metier de " + jobs.toString()));
+                            + serverPlayerEntity.getName().getString() + " a gagne " + xp + " xp au metier de " + jobs.toString()), source.asPlayer().getUniqueID());
         } catch (CommandSyntaxException e) {
             e.printStackTrace();
         }
@@ -149,7 +149,7 @@ public class JobsCommands {
 
             source.asPlayer().sendMessage(new StringTextComponent(
                     TextFormatting.DARK_RED + "[Jobs]" + TextFormatting.RESET
-                            + "L'xp de " + serverPlayerEntity.getName().getFormattedText() + " a ete reniatialise a " + xp + " xp dans les metier de " + jobs.toString()));
+                            + "L'xp de " + serverPlayerEntity.getName().getString() + " a ete reniatialise a " + xp + " xp dans les metier de " + jobs.toString()), source.asPlayer().getUniqueID());
         } catch (CommandSyntaxException e) {
             e.printStackTrace();
         }
@@ -168,7 +168,7 @@ public class JobsCommands {
 
             source.asPlayer().sendMessage(new StringTextComponent(
                     TextFormatting.DARK_RED + "[Jobs]" + TextFormatting.RESET
-                            + serverPlayerEntity.getName().getFormattedText() + " a gagne " + xp + " xp dans tous ses metiers"));
+                            + serverPlayerEntity.getName().getString() + " a gagne " + xp + " xp dans tous ses metiers"), source.asPlayer().getUniqueID());
         } catch (CommandSyntaxException e) {
             e.printStackTrace();
         }
@@ -187,7 +187,7 @@ public class JobsCommands {
 
             source.asPlayer().sendMessage(new StringTextComponent(
                     TextFormatting.DARK_RED + "[Jobs]" + TextFormatting.RESET
-                            + "L'xp de " + serverPlayerEntity.getName().getFormattedText() + " a ete reniatialise a " + xp + " xp dans tous les metiers "));
+                            + "L'xp de " + serverPlayerEntity.getName().getString() + " a ete reniatialise a " + xp + " xp dans tous les metiers "), source.asPlayer().getUniqueID());
         } catch (CommandSyntaxException e) {
             e.printStackTrace();
         }
