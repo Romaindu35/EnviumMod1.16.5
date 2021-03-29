@@ -56,8 +56,6 @@ public class NetworkRegistryHandler
 
         network.registerMessage(id++, ReponseClientPacket.class, ReponseClientPacket::encode, ReponseClientPacket::decode, ReponseClientPacket.ClientHandler::handle, distClient());
         network.registerMessage(id++, PacketUpdateTileEntityData.class, PacketUpdateTileEntityData::encode, PacketUpdateTileEntityData::decode, PacketUpdateTileEntityData.ClientHandler::handle, distClient());
-        network.registerMessage(id++, InventoryPacket.class, InventoryPacket::encode, InventoryPacket::decode, InventoryPacket::handle, distServer());
-        network.registerMessage(id++, GetInventoryTypePacket.class, GetInventoryTypePacket::encode, GetInventoryTypePacket::decode, GetInventoryTypePacket::handle, distServer());
         network.registerMessage(id++, MetierPackets.class, MetierPackets::encode, MetierPackets::decode, MetierPackets::handle, distServer());
     }
 }

@@ -52,7 +52,7 @@ public class ReponseClientPacket implements IStringSerializable {
         {
             if (msg.actionResponseClient != null) {
                 if (msg.actionResponseClient.equals(ActionResponseClient.UPDATE_TEXT_INVENTORY)) {
-                    RenderOverlay.inventoryType = msg.value;
+                    //RenderOverlay.inventoryType = msg.value;
                 }
                 if (msg.actionResponseClient.equals(ActionResponseClient.UPDATE_METIER_MINER)) {
                     MetierScreen.PrincipalScreen.xp_miner = msg.value;

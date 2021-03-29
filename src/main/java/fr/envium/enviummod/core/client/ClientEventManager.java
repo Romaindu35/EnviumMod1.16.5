@@ -1,11 +1,9 @@
 package fr.envium.enviummod.core.client;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import fr.envium.enviummod.api.packets.NetworkRegistryHandler;
 import fr.envium.enviummod.core.client.gui.*;
 import fr.envium.enviummod.core.client.render.RenderCustomPlayer;
 import fr.envium.enviummod.core.client.render.RenderOverlay;
-import fr.envium.enviummod.core.packets.InventoryPacket;
 import fr.envium.enviummod.core.server.enums.InventoryAction;
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
@@ -13,7 +11,6 @@ import net.minecraft.client.gui.screen.MainMenuScreen;
 import net.minecraft.client.gui.screen.MultiplayerScreen;
 import net.minecraft.client.gui.screen.inventory.CreativeScreen;
 import net.minecraft.client.gui.screen.inventory.InventoryScreen;
-import net.minecraft.client.gui.toasts.ToastGui;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.text.StringTextComponent;
@@ -21,9 +18,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.network.PacketDistributor;
 
 @OnlyIn(Dist.CLIENT)
 public class ClientEventManager {

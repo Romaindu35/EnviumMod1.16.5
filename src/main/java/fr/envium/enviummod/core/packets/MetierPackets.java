@@ -2,7 +2,6 @@ package fr.envium.enviummod.core.packets;
 
 import fr.envium.enviummod.api.packets.AbstractPackets;
 import fr.envium.enviummod.api.packets.NetworkRegistryHandler;
-import fr.envium.enviummod.core.server.BDD;
 import fr.envium.enviummod.core.server.enums.ActionResponseClient;
 import fr.envium.enviummod.core.jobs.JobsEnum;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -34,7 +33,7 @@ public class MetierPackets extends AbstractPackets {
 
     public static void handle(MetierPackets packet, Supplier<NetworkEvent.Context> ctx)
     {
-        ServerPlayerEntity serverPlayerEntity = ctx.get().getSender();
+        /*ServerPlayerEntity serverPlayerEntity = ctx.get().getSender();
         BDD bdd = new BDD();
         if (serverPlayerEntity != null) {
             Map<JobsEnum, Integer> inventoryType = bdd.getJobs(serverPlayerEntity);
@@ -48,7 +47,7 @@ public class MetierPackets extends AbstractPackets {
             NetworkRegistryHandler.network.send(PacketDistributor.PLAYER.with(
                     () -> serverPlayerEntity),
                     new ReponseClientPacket(ActionResponseClient.UPDATE_METIER_CHASSEUR, String.valueOf(inventoryType.get(JobsEnum.CHASSEUR))));
-        }
+        }*/
         ctx.get().setPacketHandled(true);
     }
 

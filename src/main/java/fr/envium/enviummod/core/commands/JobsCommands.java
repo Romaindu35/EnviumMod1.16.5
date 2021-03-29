@@ -1,27 +1,17 @@
 package fr.envium.enviummod.core.commands;
 
-import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
-import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.mojang.brigadier.tree.LiteralCommandNode;
-import fr.envium.enviummod.References;
-import fr.envium.enviummod.core.jobs.Jobs;
 import fr.envium.enviummod.core.jobs.JobsEnum;
-import fr.envium.enviummod.core.server.BDD;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.command.arguments.EntityArgument;
-import net.minecraft.command.arguments.ItemInput;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.util.text.ChatType;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -124,7 +114,7 @@ public class JobsCommands {
 
     private static int addJobs(CommandSource source, ServerPlayerEntity serverPlayerEntity, int xp, JobsEnum jobs) {
         //serverPlayerEntity.sendMessage(new StringTextComponent("Vous gagne : " + xp + " xp au metier de " + jobs.toString()));
-        try {
+        /*try {
             BDD bdd = BDD.getInstance();
             Map<JobsEnum, Integer> jobsXpMap = new HashMap();
             jobsXpMap.put(jobs, xp);
@@ -135,13 +125,13 @@ public class JobsCommands {
                             + serverPlayerEntity.getName().getString() + " a gagne " + xp + " xp au metier de " + jobs.toString()), source.asPlayer().getUniqueID());
         } catch (CommandSyntaxException e) {
             e.printStackTrace();
-        }
+        }*/
         return 1;
     }
 
     private static int setJobs(CommandSource source, ServerPlayerEntity serverPlayerEntity, int xp, JobsEnum jobs) {
         //serverPlayerEntity.sendMessage(new StringTextComponent("Vous avez renitialise votre metier a : " + xp + " xp au metier de " + jobs.toString()));
-        try {
+        /*try {
             BDD bdd = BDD.getInstance();
             Map<JobsEnum, Integer> jobsXpMap = new HashMap();
             jobsXpMap.put(jobs, xp);
@@ -152,13 +142,13 @@ public class JobsCommands {
                             + "L'xp de " + serverPlayerEntity.getName().getString() + " a ete reniatialise a " + xp + " xp dans les metier de " + jobs.toString()), source.asPlayer().getUniqueID());
         } catch (CommandSyntaxException e) {
             e.printStackTrace();
-        }
+        }*/
         return 1;
     }
 
     private static int addAllJobs(CommandSource source, ServerPlayerEntity serverPlayerEntity, int xp) {
         //serverPlayerEntity.sendMessage(new StringTextComponent("Vous gagne : " + xp + " xp au metier de " + jobs.toString()));
-        try {
+        /*try {
             BDD bdd = BDD.getInstance();
             Map<JobsEnum, Integer> jobsXpMap = new HashMap();
             jobsXpMap.put(JobsEnum.MINER, xp);
@@ -171,13 +161,13 @@ public class JobsCommands {
                             + serverPlayerEntity.getName().getString() + " a gagne " + xp + " xp dans tous ses metiers"), source.asPlayer().getUniqueID());
         } catch (CommandSyntaxException e) {
             e.printStackTrace();
-        }
+        }*/
         return 1;
     }
 
     private static int setAllJobs(CommandSource source, ServerPlayerEntity serverPlayerEntity, int xp) {
         //serverPlayerEntity.sendMessage(new StringTextComponent("Vous avez renitialise votre metier a : " + xp + " xp au metier de " + jobs.toString()));
-        try {
+        /*try {
             BDD bdd = BDD.getInstance();
             Map<JobsEnum, Integer> jobsXpMap = new HashMap();
             jobsXpMap.put(JobsEnum.MINER, xp);
@@ -190,7 +180,7 @@ public class JobsCommands {
                             + "L'xp de " + serverPlayerEntity.getName().getString() + " a ete reniatialise a " + xp + " xp dans tous les metiers "), source.asPlayer().getUniqueID());
         } catch (CommandSyntaxException e) {
             e.printStackTrace();
-        }
+        }*/
         return 1;
     }
 }

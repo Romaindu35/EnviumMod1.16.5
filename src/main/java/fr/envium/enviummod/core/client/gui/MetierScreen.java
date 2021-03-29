@@ -4,8 +4,6 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import fr.envium.enviummod.References;
 import fr.envium.enviummod.api.packets.NetworkRegistryHandler;
 import fr.envium.enviummod.core.packets.MetierPackets;
-import fr.envium.enviummod.core.server.BDD;
-import fr.envium.enviummod.core.jobs.JobsEnum;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
@@ -15,8 +13,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.PacketDistributor;
 import org.lwjgl.opengl.GL11;
-
-import java.util.Map;
 
 @OnlyIn(Dist.CLIENT)
 public class MetierScreen {
@@ -32,8 +28,6 @@ public class MetierScreen {
         public static String xp_miner;
         public static String xp_lumberjack;
         public static String xp_chasseur;
-
-        BDD bdd = BDD.getInstance();
 
         public PrincipalScreen() {
             super(new StringTextComponent("gui.metier"));

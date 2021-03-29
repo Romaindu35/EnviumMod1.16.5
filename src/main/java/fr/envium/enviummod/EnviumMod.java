@@ -6,10 +6,8 @@ import fr.envium.enviummod.api.packets.NetworkRegistryHandler;
 import fr.envium.enviummod.core.World.ModOreGen;
 import fr.envium.enviummod.core.World.WorldEventCustom;
 import fr.envium.enviummod.core.client.ClientManager;
-import fr.envium.enviummod.core.commands.CommandRegenChunk;
-import fr.envium.enviummod.core.commands.JobsCommands;
 import fr.envium.enviummod.core.items.ModSpawnEgg;
-import fr.envium.enviummod.core.jobs.Jobs;
+import fr.envium.enviummod.core.packets.BukkitPacketListener;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.EntityType;
 import net.minecraftforge.common.MinecraftForge;
@@ -71,7 +69,6 @@ public class EnviumMod
     private void setup(final FMLCommonSetupEvent event)
     {
         NetworkRegistryHandler.registerMessage();
-        initJobs();
     }
 
     private void serverStarting(final FMLServerStartingEvent event)
@@ -88,10 +85,6 @@ public class EnviumMod
     @SubscribeEvent
     public static void loadCompleteEvent(FMLLoadCompleteEvent event) {
         ModOreGen.generateOre();
-    }
-
-    public void initJobs() {
-        Jobs.getInstance();
     }
 
     public EnviumMod getInstance()

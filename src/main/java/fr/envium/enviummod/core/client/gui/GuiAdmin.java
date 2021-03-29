@@ -13,7 +13,6 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.PacketDistributor;
-import fr.envium.enviummod.core.packets.InventoryPacket;
 
 @OnlyIn(Dist.CLIENT)
 public class GuiAdmin extends Screen {
@@ -36,7 +35,7 @@ public class GuiAdmin extends Screen {
         this.addButton(new Button(20,20, 100,20,new StringTextComponent("Inventory change"), (p_onPress_1_) -> {
             String player = Minecraft.getInstance().player.getName().getString();
             System.out.println(player);
-            NetworkRegistryHandler.network.send(PacketDistributor.SERVER.noArg(), new InventoryPacket(player, InventoryAction.SAVE_READ));
+            //NetworkRegistryHandler.network.send(PacketDistributor.SERVER.noArg(), new InventoryPacket(player, InventoryAction.SAVE_READ));
         }));
         super.render(matrixStack, p_render_1_, p_render_2_, p_render_3_);
     }
