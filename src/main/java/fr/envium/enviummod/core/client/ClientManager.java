@@ -59,7 +59,7 @@ public class ClientManager {
         RenderingRegistry.registerEntityRenderingHandler(RegisterEntity.MEERKAT_ENTITY.get(), MeerkatRenderer::new);
         RenderTypeLookup.setRenderLayer(RegisterBlock.cave_block, RenderType.getTranslucent());
         RenderTypeLookup.setRenderLayer(RegisterBlock.pillow, RenderType.getTranslucent());
-        DiscordInitialise.getInstance().init();
+        //DiscordInitialise.getInstance().init();
         setIcon();
     }
 
