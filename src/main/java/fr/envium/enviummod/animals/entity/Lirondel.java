@@ -218,7 +218,7 @@ public class Lirondel extends ShoulderRidingEntity implements IFlyingAnimal {
 
     public static boolean func_223317_c(EntityType<ParrotEntity> parrotIn, IWorld worldIn, SpawnReason reason, BlockPos p_223317_3_, Random random) {
         BlockState blockstate = worldIn.getBlockState(p_223317_3_.down());
-        return (blockstate.isIn(BlockTags.LEAVES) || blockstate.isIn(Blocks.GRASS_BLOCK) || blockstate.isIn(BlockTags.LOGS) || blockstate.isIn(Blocks.AIR)) && worldIn.getLightSubtracted(p_223317_3_, 0) > 8;
+        return (blockstate.isIn(BlockTags.LEAVES) /*|| blockstate.isIn(Blocks.GRASS_BLOCK)*/ || blockstate.isIn(BlockTags.LOGS) /*|| blockstate.isIn(Blocks.AIR)*/) && worldIn.getLightSubtracted(p_223317_3_, 0) > 8;
     }
 
     public boolean onLivingFall(float distance, float damageMultiplier) {
@@ -338,7 +338,7 @@ public class Lirondel extends ShoulderRidingEntity implements IFlyingAnimal {
 
     @org.jetbrains.annotations.Nullable
     @Override
-    public AgeableEntity func_241840_a(ServerWorld p_241840_1_, AgeableEntity p_241840_2_) {
+    public AgeableEntity createChild(ServerWorld world, AgeableEntity mate) {
         return null;
     }
 

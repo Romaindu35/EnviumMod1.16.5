@@ -232,7 +232,7 @@ public class Meerkat extends AnimalEntity {
 
     @org.jetbrains.annotations.Nullable
     @Override
-    public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
+    public AgeableEntity createChild(ServerWorld world, AgeableEntity mate) {
         return EntityType.PIG.create(this.world);
     }
 

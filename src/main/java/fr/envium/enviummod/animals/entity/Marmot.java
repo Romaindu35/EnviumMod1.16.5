@@ -221,9 +221,9 @@ public class Marmot extends AnimalEntity {
 
     @org.jetbrains.annotations.Nullable
     @Override
-    public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity p_241840_2_) {
-        Marmot marmot = new Marmot(RegisterEntity.MARMOT_ENTITY.get(), serverWorld);
-        marmot.onInitialSpawn(serverWorld, serverWorld.getDifficultyForLocation(marmot.getPosition()), SpawnReason.BREEDING, null, null);
+    public AgeableEntity createChild(ServerWorld world, AgeableEntity mate) {
+        Marmot marmot = new Marmot(RegisterEntity.MARMOT_ENTITY.get(), world);
+        marmot.onInitialSpawn(world, world.getDifficultyForLocation(marmot.getPosition()), SpawnReason.BREEDING, null, null);
 
         return marmot;
     }

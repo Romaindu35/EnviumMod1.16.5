@@ -191,7 +191,7 @@ public class HealthBarRenderer {
 		matrixStack.push();
 		while (!ridingStack.isEmpty()) {
 			entity = ridingStack.pop();
-			boolean boss = !entity.isNonBoss();
+			boolean boss = !entity.canChangeDimension();
 
 			String entityID = entity.getType().getRegistryName().toString();
 			if (NeatConfig.blacklist.contains(entityID))

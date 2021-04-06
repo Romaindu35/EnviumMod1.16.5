@@ -273,11 +273,12 @@ public class Toucan extends ShoulderRidingEntity implements IFlyingAnimal {
         return false;
     }
 
+
     @org.jetbrains.annotations.Nullable
     @Override
-    public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
+    public AgeableEntity createChild(ServerWorld world, AgeableEntity mate) {
         Toucan toucan = new Toucan(RegisterEntity.TOUCAN_ENTITY.get(), this.world);
-        toucan.onInitialSpawn(serverWorld, this.world.getDifficultyForLocation(toucan.getPosition()), SpawnReason.BREEDING, (ILivingEntityData)null, (CompoundNBT)null);
+        toucan.onInitialSpawn(world, this.world.getDifficultyForLocation(toucan.getPosition()), SpawnReason.BREEDING, (ILivingEntityData)null, (CompoundNBT)null);
         toucan.setGlowing(false);
 
         return toucan;

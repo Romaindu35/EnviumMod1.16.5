@@ -160,7 +160,7 @@ public class ChestEnvium extends Block implements IWaterLoggable {
         List<CatEntity> list = iWorld.getEntitiesWithinAABB(CatEntity.class, new AxisAlignedBB((double) blockPos.getX(), (double) (blockPos.getY() + 1), (double) blockPos.getZ(), (double) (blockPos.getX() + 1), (double) (blockPos.getY() + 2), (double) (blockPos.getZ() + 1)));
         if (!list.isEmpty()) {
             for (CatEntity catentity : list) {
-                if (catentity.isSitting()) {
+                if (catentity.sitting) {
                     return true;
                 }
             }
