@@ -151,7 +151,7 @@ dependencies {
     //runtimeOnly fg.deobf("curse.maven:WorldEdit-225608:3209370")
 
 
-    implementation 'com.github.Vatuu:discord-rpc:1.6.2'
+    implementation shadow ('com.github.Vatuu:discord-rpc:1.6.2')
     implementation 'org.jetbrains:annotations:19.0.0'
     api 'org.apache.commons:commons-math3:3.6.1'
     testImplementation 'junit:junit:4.12'
