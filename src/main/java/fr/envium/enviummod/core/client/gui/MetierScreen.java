@@ -61,7 +61,7 @@ public class MetierScreen {
 
         protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack) {
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            Minecraft.getInstance().getTextureManager().bindTexture(texture);
+            Minecraft.getInstance().getTextureManager().bind(texture);
             int k = (this.width - this.xSize) / 2;
             int l = (this.height - this.ySize) / 2;
             this.blit(matrixStack, k, l, 0, 0, this.xSize, this.ySize);
@@ -70,7 +70,7 @@ public class MetierScreen {
         @Override
         public boolean keyPressed(int key, int b, int c) {
             if (key == 256) {
-                this.minecraft.player.closeScreen();
+                this.minecraft.player.closeContainer();
                 return true;
             }
             return super.keyPressed(key, b, c);
@@ -82,16 +82,16 @@ public class MetierScreen {
         }
 
         protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack) {
-            this.font.drawString(matrixStack, "Metier", this.width /2 - 20, this.height /2 - 70, -16777216);
-            this.font.drawString(matrixStack, xp_miner, this.width /2 - 90, this.height /2 - 25, -16777216);
-            this.font.drawString(matrixStack, xp_lumberjack, this.width /2 + 40, this.height /2 - 25, -16777216);
-            this.font.drawString(matrixStack, xp_chasseur, this.width /2 -30, this.height /2 + 55, -16777216);
+            this.font.draw(matrixStack, "Metier", this.width /2 - 20, this.height /2 - 70, -16777216);
+            this.font.draw(matrixStack, xp_miner, this.width /2 - 90, this.height /2 - 25, -16777216);
+            this.font.draw(matrixStack, xp_lumberjack, this.width /2 + 40, this.height /2 - 25, -16777216);
+            this.font.draw(matrixStack, xp_chasseur, this.width /2 -30, this.height /2 + 55, -16777216);
         }
 
         @Override
         public void init(Minecraft minecraft, int width, int height) {
             super.init(minecraft, width, height);
-            minecraft.keyboardListener.enableRepeatEvents(true);
+            minecraft.keyboardHandler.setSendRepeatsToGui(true);
             this.addButton(new Button(this.width /2 - 100, this.height /2  - 50, 50, 20, new StringTextComponent("Miner"), e -> {
 
             }));
@@ -129,7 +129,7 @@ public class MetierScreen {
             int i = (this.width - this.xSize) / 2;
             int j = (this.height - this.ySize) / 2;
             this.renderBackground(matrixStack);
-            this.minecraft.getTextureManager().bindTexture(TEXTURE);
+            this.minecraft.getTextureManager().bind(TEXTURE);
             this.blit(matrixStack, i, j, 0, 0, this.xSize, this.ySize);
             super.render(matrixStack, p_render_1_, p_render_2_, p_render_3_);
         }

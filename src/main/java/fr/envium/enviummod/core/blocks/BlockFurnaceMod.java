@@ -38,62 +38,62 @@ public class BlockFurnaceMod extends Block {
 	public static final BooleanProperty LIT = BooleanProperty.create("lit");
 
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		super.fillStateContainer(builder);
+	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+		super.createBlockStateDefinition(builder);
 		builder.add(FACING, LIT);
 
 	}
 
 	@Override
 	public BlockState mirror(BlockState state, Mirror mirrorIn) {
-		return state.rotate(mirrorIn.toRotation(state.get(FACING)));
+		return state.rotate(mirrorIn.getRotation(state.getValue(FACING)));
 	}
 
 	@Override
 	public BlockState rotate(BlockState state, Rotation rot) {
-		return state.with(FACING, rot.rotate(state.get(FACING)));
+		return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
 	}
 
 	@Override
 	public int getLightValue(BlockState state, IBlockReader world, BlockPos pos) {
-		return state.get(LIT) ? super.getLightValue(state, world, pos) : 0;
+		return state.getValue(LIT) ? super.getLightValue(state, world, pos) : 0;
 	}
 
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		return this.getDefaultState().with(FACING, context.getPlacementHorizontalFacing().getOpposite());
+		return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
 	}
 
 	public BlockFurnaceMod() {
-		super(Block.Properties.create(Material.ROCK));
-		this.setDefaultState(this.getStateContainer().getBaseState().with(FACING, Direction.NORTH).with(LIT, false));
+		super(Block.Properties.of(Material.STONE));
+		this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH).setValue(LIT, false));
 	}
 
 	@Override
-	public void onBlockPlacedBy(@NotNull World worldIn, @NotNull BlockPos pos, @NotNull BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
-		if (stack.hasDisplayName()) {
-			TileEntity tileentity = worldIn.getTileEntity(pos);
+	public void setPlacedBy(@NotNull World worldIn, @NotNull BlockPos pos, @NotNull BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
+		if (stack.hasCustomHoverName()) {
+			TileEntity tileentity = worldIn.getBlockEntity(pos);
 
 			if (tileentity instanceof TileEnviumFurnace) {
 				((TileEnviumFurnace) tileentity).setCustomName(stack
-						.getDisplayName());
+						.getHoverName());
 			}
 		}
-		super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
+		super.setPlacedBy(worldIn, pos, state, placer, stack);
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
+	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
 	{
 		if(hand.equals(Hand.MAIN_HAND))
 		{
-			if (world.isRemote)
+			if (world.isClientSide)
 			{
 				return ActionResultType.PASS;
 			}
 			else
 			{
-				TileEntity tileentity = world.getTileEntity(pos);
+				TileEntity tileentity = world.getBlockEntity(pos);
 				if(tileentity instanceof TileEnviumFurnace)
 				{
 					NetworkHooks.openGui((ServerPlayerEntity) player, (TileEnviumFurnace) tileentity, pos);
@@ -119,64 +119,64 @@ public class BlockFurnaceMod extends Block {
 	}
 
 	@Override
-	public void onPlayerDestroy(IWorld worldIn, @NotNull BlockPos pos, @NotNull BlockState state) {
-		TileEntity tileentity = worldIn.getTileEntity(pos);
+	public void destroy(IWorld worldIn, @NotNull BlockPos pos, @NotNull BlockState state) {
+		TileEntity tileentity = worldIn.getBlockEntity(pos);
 
 		if (tileentity instanceof TileEnviumFurnace) {
-			InventoryHelper.dropInventoryItems((World) worldIn, pos,
+			InventoryHelper.dropContents((World) worldIn, pos,
 					(TileEnviumFurnace) tileentity);
 			System.out.println("destroy");
 		}
 
-		super.onPlayerDestroy(worldIn, pos, state);
+		super.destroy(worldIn, pos, state);
 	}
 
 	@Override
-	public boolean hasComparatorInputOverride(BlockState state) {
+	public boolean hasAnalogOutputSignal(BlockState state) {
 		return true;
 	}
 
 	@Override
-	public int getComparatorInputOverride(BlockState blockState, World worldIn, BlockPos pos) {
-		return Container.calcRedstone(worldIn.getTileEntity(pos));
+	public int getAnalogOutputSignal(BlockState blockState, World worldIn, BlockPos pos) {
+		return Container.getRedstoneSignalFromBlockEntity(worldIn.getBlockEntity(pos));
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand) {
-		if (stateIn.get(LIT)) {
+		if (stateIn.getValue(LIT)) {
 			double d0 = (double) pos.getX() + 0.5D;
 			double d1 = (double) pos.getY();
 			double d2 = (double) pos.getZ() + 0.5D;
 			if (rand.nextDouble() < 0.1D) {
-				worldIn.playSound(d0, d1, d2, SoundEvents.BLOCK_FURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 1.0F, 1.0F,
+				worldIn.playLocalSound(d0, d1, d2, SoundEvents.FURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 1.0F, 1.0F,
 						false);
 			}
 
-			Direction direction = stateIn.get(FACING);
+			Direction direction = stateIn.getValue(FACING);
 			Direction.Axis direction$axis = direction.getAxis();
 			double d4 = rand.nextDouble() * 0.6D - 0.3D;
-			double d5 = direction$axis == Direction.Axis.X ? (double) direction.getXOffset() * 0.52D : d4;
+			double d5 = direction$axis == Direction.Axis.X ? (double) direction.getStepX() * 0.52D : d4;
 			double d6 = rand.nextDouble() * 6.0D / 16.0D;
-			double d7 = direction$axis == Direction.Axis.Z ? (double) direction.getZOffset() * 0.52D : d4;
+			double d7 = direction$axis == Direction.Axis.Z ? (double) direction.getStepZ() * 0.52D : d4;
 			worldIn.addParticle(ParticleTypes.SMOKE, d0 + d5, d1 + d6, d2 + d7, 0.0D, 0.0D, 0.0D);
 			worldIn.addParticle(ParticleTypes.FLAME, d0 + d5, d1 + d6, d2 + d7, 0.0D, 0.0D, 0.0D);
 		}
 	}
 
-	public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+	public void onRemove(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (state.getBlock() != newState.getBlock()) {
-			TileEntity tileentity = worldIn.getTileEntity(pos);
+			TileEntity tileentity = worldIn.getBlockEntity(pos);
 			if (tileentity instanceof TileEnviumFurnace) {
-				InventoryHelper.dropInventoryItems(worldIn, pos, (TileEnviumFurnace)tileentity);
-				worldIn.updateComparatorOutputLevel(pos, this);
+				InventoryHelper.dropContents(worldIn, pos, (TileEnviumFurnace)tileentity);
+				worldIn.updateNeighbourForOutputSignal(pos, this);
 			}
 
-			super.onReplaced(state, worldIn, pos, newState, isMoving);
+			super.onRemove(state, worldIn, pos, newState, isMoving);
 		}
 	}
 
-	public BlockRenderType getRenderType(BlockState state) {
+	public BlockRenderType getRenderShape(BlockState state) {
 		return BlockRenderType.MODEL;
 	}
 }

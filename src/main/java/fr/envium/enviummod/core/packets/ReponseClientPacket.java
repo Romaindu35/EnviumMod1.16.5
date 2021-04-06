@@ -27,19 +27,19 @@ public class ReponseClientPacket implements IStringSerializable {
 
     public static void encode(ReponseClientPacket msg, PacketBuffer buf)
     {
-        buf.writeString(msg.actionResponseClient.toString(), 64);
-        buf.writeString(msg.value, 32);
+        buf.writeUtf(msg.actionResponseClient.toString(), 64);
+        buf.writeUtf(msg.value, 32);
     }
 
     public static ReponseClientPacket decode(PacketBuffer buf)
     {
-        ActionResponseClient actionResponseClientString = ActionResponseClient.valueOf(buf.readString());
-        String value = buf.readString();
+        ActionResponseClient actionResponseClientString = ActionResponseClient.valueOf(buf.readUtf());
+        String value = buf.readUtf();
         return new ReponseClientPacket(actionResponseClientString, value);
     }
 
     @Override
-    public String getString() {
+    public String getSerializedName() {
         return null;
     }
 
@@ -64,10 +64,10 @@ public class ReponseClientPacket implements IStringSerializable {
                     MetierScreen.PrincipalScreen.xp_chasseur = msg.value;
                 }
                 if (msg.actionResponseClient.equals(ActionResponseClient.SHOW_TOAST)) {
-                    if (Minecraft.getInstance().getToastGui() instanceof JobsToastGui) {
+                    if (Minecraft.getInstance().getToasts() instanceof JobsToastGui) {
                         System.out.println(msg.value);
                         System.out.println(Integer.parseInt(msg.value));
-                        JobsToastGui toastGui = (JobsToastGui) Minecraft.getInstance().getToastGui();
+                        JobsToastGui toastGui = (JobsToastGui) Minecraft.getInstance().getToasts();
                         System.out.println(toastGui);
                         toastGui.updateJobsToast(new JobsToast(Integer.parseInt(msg.value)));
                     }

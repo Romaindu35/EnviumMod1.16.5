@@ -30,7 +30,7 @@ public class GuiAdmin extends Screen {
         int i = (this.width - xSize) / 2;
         int j = (this.height - ySize) / 2;
         this.renderBackground(matrixStack);
-        this.minecraft.getTextureManager().bindTexture(TEXTURE);
+        this.minecraft.getTextureManager().bind(TEXTURE);
         this.blit(matrixStack, 20, 20, 0, 0, xSize, ySize);
         this.addButton(new Button(20,20, 100,20,new StringTextComponent("Inventory change"), (p_onPress_1_) -> {
             String player = Minecraft.getInstance().player.getName().getString();

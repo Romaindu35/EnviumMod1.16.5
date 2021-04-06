@@ -24,10 +24,10 @@ public class ToggleKeybind {
     @SubscribeEvent
     public void onKeyInput(InputEvent.KeyInputEvent event) {
         Minecraft mc = Minecraft.getInstance();
-        if (EnviumMod.keyBindingAdmin.isPressed()) {
-            Minecraft.getInstance().displayGuiScreen(new GuiAdmin(new StringTextComponent("gui_admin")));
-        } else if (EnviumMod.keyBindingMetier.isPressed()) {
-            Minecraft.getInstance().displayGuiScreen(new MetierScreen.PrincipalScreen());
+        if (EnviumMod.keyBindingAdmin.consumeClick()) {
+            Minecraft.getInstance().setScreen(new GuiAdmin(new StringTextComponent("gui_admin")));
+        } else if (EnviumMod.keyBindingMetier.consumeClick()) {
+            Minecraft.getInstance().setScreen(new MetierScreen.PrincipalScreen());
         }
     }
 

@@ -31,8 +31,8 @@ public class ToggleKeybind {
 	public void onKeyInput(InputEvent.KeyInputEvent event) {
 		Minecraft mc = Minecraft.getInstance();
 		boolean wasDown = down;
-		down = key.isKeyDown();
-		if(mc.isGameFocused() && down && !wasDown)
+		down = key.isDown();
+		if(mc.isWindowActive() && down && !wasDown)
 			NeatConfig.draw = !NeatConfig.draw;
 	}
 	

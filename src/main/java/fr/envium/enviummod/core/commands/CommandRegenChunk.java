@@ -25,7 +25,7 @@ public class CommandRegenChunk {
             return regenChunk(source.getSource()) ? 1 : 0;
         }));*/
         dispatcher.register(Commands.literal("regenChunk")
-                .requires(commandSource -> commandSource.hasPermissionLevel(4))
+                .requires(commandSource -> commandSource.hasPermission(4))
                 .executes(context -> regenChunk(context.getSource()))
         );
     }
@@ -36,7 +36,7 @@ public class CommandRegenChunk {
 
         try
         {
-            player = sender.asPlayer();
+            player = sender.getPlayerOrException();
         }
         catch (CommandSyntaxException e)
         {
@@ -44,9 +44,9 @@ public class CommandRegenChunk {
             return 0;
         }
 
-        ServerWorld world = player.getServerWorld();
-        int x = player.chunkCoordX;
-        int z = player.chunkCoordZ;
+        ServerWorld world = player.getLevel();
+        int x = player.xChunk;
+        int z = player.zChunk;
         System.out.println("Regen Chunk - Commande execute");
         ChunkUtils.regenerateChunk(world, x, z);
 

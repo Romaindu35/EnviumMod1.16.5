@@ -31,7 +31,7 @@ public class JobsCommands {
                 }));*/
         dispatcher.register(
                 LiteralArgumentBuilder.<CommandSource>literal("jobs")
-                        .requires(src -> src.hasPermissionLevel(2))
+                        .requires(src -> src.hasPermission(2))
                         .then(Commands.literal("add")
                                 .then(Commands.argument("player", EntityArgument.player())
                                         .then(Commands.literal("MINER")

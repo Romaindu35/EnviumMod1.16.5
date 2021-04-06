@@ -28,7 +28,7 @@ public class ContainerEnviumFurnace extends ContainerData {
 
     public ContainerEnviumFurnace(int windowId, PlayerInventory playerInv, PacketBuffer data) {
         super(RegisterContainer.ENVIUM_FURNACE.get(), windowId);
-        this.tile = (TileEnviumFurnace) playerInv.player.world.getTileEntity(data.readBlockPos());
+        this.tile = (TileEnviumFurnace) playerInv.player.level.getBlockEntity(data.readBlockPos());
         this.inv = playerInv;
         int i;
 
@@ -50,52 +50,52 @@ public class ContainerEnviumFurnace extends ContainerData {
 
 
     @Override
-    public boolean canInteractWith(PlayerEntity player) {
-        return tile.isUsableByPlayer(player);
+    public boolean stillValid(PlayerEntity player) {
+        return tile.stillValid(player);
     }
 
     @Override
-    public void addListener(IContainerListener listener) {
-        super.addListener(listener);
+    public void addSlotListener(IContainerListener listener) {
+        super.addSlotListener(listener);
     }
 
 
     @Override
-    public void updateProgressBar(int id, int data) {this.tile.setField(id, data);}
+    public void setData(int id, int data) {this.tile.setField(id, data);}
 
     @Override
-    public ItemStack transferStackInSlot(PlayerEntity playerIn, int index) {
+    public ItemStack quickMoveStack(PlayerEntity playerIn, int index) {
         ItemStack stackToReturn = ItemStack.EMPTY;
-        Slot slot = this.inventorySlots.get(index);
+        Slot slot = this.slots.get(index);
 
-        if (slot != null && slot.getHasStack()) {
-            ItemStack stack = slot.getStack();
+        if (slot != null && slot.hasItem()) {
+            ItemStack stack = slot.getItem();
             stackToReturn = stack.copy();
 
             if (index < 5) {
-                if (!this.mergeItemStack(stack, 5, 40, true)) {
+                if (!this.moveItemStackTo(stack, 5, 40, true)) {
                     return ItemStack.EMPTY;
                 }
             } else if (index > 4) {
                 if(stackToReturn.getItem() == RegisterItem.envium_shard) {
-                    if (!this.mergeItemStack(stack, 2, 3, true)) {
+                    if (!this.moveItemStackTo(stack, 2, 3, true)) {
                         return ItemStack.EMPTY;
                     }
                 } else if(stackToReturn.getItem() == Items.COAL) {
-                    if (!this.mergeItemStack(stack, 0, 1, true)) {
+                    if (!this.moveItemStackTo(stack, 0, 1, true)) {
                         return ItemStack.EMPTY;
                     }
                 } else {
-                    if (!this.mergeItemStack(stack, 0, 4, false)) {
+                    if (!this.moveItemStackTo(stack, 0, 4, false)) {
                         return ItemStack.EMPTY;
                     }
                 }
             }
 
             if (stack.isEmpty()) {
-                slot.putStack(ItemStack.EMPTY);
+                slot.set(ItemStack.EMPTY);
             } else {
-                slot.onSlotChanged();
+                slot.setChanged();
             }
 
         }
@@ -109,7 +109,7 @@ public class ContainerEnviumFurnace extends ContainerData {
         }
 
         @Override
-        public boolean isItemValid(ItemStack stack) {
+        public boolean mayPlace(ItemStack stack) {
             return false;
         }
     }
@@ -124,7 +124,7 @@ public class ContainerEnviumFurnace extends ContainerData {
         }
 
         @Override
-        public boolean isItemValid(ItemStack stack) {
+        public boolean mayPlace(ItemStack stack) {
             boolean containsItem = false;
             for (int i = 0; i < item.length; i++) {
                 if (stack.getItem() == item[i])
@@ -145,7 +145,7 @@ public class ContainerEnviumFurnace extends ContainerData {
         }
 
         @Override
-        public boolean isItemValid(ItemStack stack) {
+        public boolean mayPlace(ItemStack stack) {
             if(stack.getItem() instanceof EnviumShard) {
                 return true;
             }

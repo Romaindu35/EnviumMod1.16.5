@@ -10,12 +10,12 @@ public class ModelCustomPlayer extends PlayerModel<AbstractClientPlayerEntity> {
     }
 
     @Override
-    public void setRotationAngles(AbstractClientPlayerEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        super.setRotationAngles(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+    public void setupAnim(AbstractClientPlayerEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        super.setupAnim(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 
-        this.bipedLeftArm.rotateAngleZ = -0.5f;
-        this.bipedRightArm.rotateAngleZ = 1.9f;
-        this.bipedLeftLeg.rotateAngleZ = -0.9f;
-        this.bipedRightLeg.rotateAngleZ = 0.1f;
+        this.leftArm.zRot = -0.5f;
+        this.rightArm.zRot = 1.9f;
+        this.leftLeg.zRot = -0.9f;
+        this.rightLeg.zRot = 0.1f;
     }
 }

@@ -5,7 +5,7 @@ import net.minecraft.item.Item;
 
 public class EnviumLingot extends Item {
     public EnviumLingot() {
-        super(new Item.Properties().group(EnviumTab.TAB));
+        super(new Item.Properties().tab(EnviumTab.TAB));
         //setRegistryName("envium_lingot");
     }
 }

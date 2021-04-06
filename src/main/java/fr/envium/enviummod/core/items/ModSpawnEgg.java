@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import net.minecraft.item.Item.Properties;
+
 public class ModSpawnEgg extends SpawnEggItem {
 
     protected static final List<ModSpawnEgg> MOD_SPAWN_EGGS = new ArrayList<>();
@@ -37,13 +39,13 @@ public class ModSpawnEgg extends SpawnEggItem {
 
     public static void initSpawnEggs() {
         final Map<EntityType<?>, SpawnEggItem> EGGS = ObfuscationReflectionHelper.getPrivateValue(SpawnEggItem.class,
-                null, "field_195987_b");
+                null, "BY_ID");
         DefaultDispenseItemBehavior dispenseBehaviour = new DefaultDispenseItemBehavior() {
             @Override
-            protected ItemStack dispenseStack(IBlockSource source, ItemStack stack) {
-                Direction direction = source.getBlockState().get(DispenserBlock.FACING);
+            protected ItemStack execute(IBlockSource source, ItemStack stack) {
+                Direction direction = source.getBlockState().getValue(DispenserBlock.FACING);
                 EntityType<?> type = ((SpawnEggItem) stack.getItem()).getType(stack.getTag());
-                type.spawn(source.getWorld(), stack, null, source.getBlockPos().offset(direction),
+                type.spawn(source.getLevel(), stack, null, source.getPos().relative(direction),
                         SpawnReason.DISPENSER, direction != Direction.UP, false);
                 stack.shrink(1);
                 return stack;
@@ -52,7 +54,7 @@ public class ModSpawnEgg extends SpawnEggItem {
 
         for (final SpawnEggItem spawnEgg : MOD_SPAWN_EGGS) {
             EGGS.put(spawnEgg.getType(null), spawnEgg);
-            DispenserBlock.registerDispenseBehavior(spawnEgg, dispenseBehaviour);
+            DispenserBlock.registerBehavior(spawnEgg, dispenseBehaviour);
         }
         MOD_SPAWN_EGGS.clear();
     }

@@ -78,7 +78,7 @@ public class ClientEventManager {
             return;
         if (event.getGui().getClass() == InventoryScreen.class || event.getGui().getClass() == CreativeScreen.class) {
             event.addWidget(new Button(event.getGui().width /2 - 120, event.getGui().height / 2 -100, 30, 20, new StringTextComponent("Metier"), (x) -> {
-                Minecraft.getInstance().displayGuiScreen(new MetierScreen.PrincipalScreen());
+                Minecraft.getInstance().setScreen(new MetierScreen.PrincipalScreen());
             }));
         }
 
@@ -92,7 +92,7 @@ public class ClientEventManager {
             /*if (!inventorySync)
                 return;*/
             //NetworkRegistryHandler.network.send(PacketDistributor.SERVER.noArg(), new InventoryPacket("", InventoryAction.READ));
-            System.out.println(Minecraft.getInstance().getSession().getPlayerID());
+            System.out.println(Minecraft.getInstance().getUser().getUuid());
             System.out.println(player.getName().getString());
             System.out.println(InventoryAction.READ);
             /*NetworkRegistryHandler.network.send(PacketDistributor.SERVER.noArg(),

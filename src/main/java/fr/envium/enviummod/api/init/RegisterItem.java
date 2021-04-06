@@ -44,23 +44,23 @@ public class RegisterItem {
         envium_shard_quantity = new EnviumShard().setRegistryName("envium_shard_quantity");
 
         toucan_spawn_eggs = new ModSpawnEgg(RegisterEntity.TOUCAN_ENTITY, 0xFF329F, 0x16777119, new Item.Properties()
-                .group(EnviumTab.TAB)
-                .maxStackSize(16))
+                .tab(EnviumTab.TAB)
+                .stacksTo(16))
                 .setRegistryName("toucan_spawn_eggs");
 
         lirondel_spawn_eggs = new ModSpawnEgg(RegisterEntity.LIRONDEL_ENTITY, 0xFF329F, 0x16777119, new Item.Properties()
-                .group(EnviumTab.TAB)
-                .maxStackSize(16))
+                .tab(EnviumTab.TAB)
+                .stacksTo(16))
                 .setRegistryName("lirondel_spawn_eggs");
 
         marmot_spawn_eggs = new ModSpawnEgg(RegisterEntity.MARMOT_ENTITY, 0xFF329F, 0x16777119, new Item.Properties()
-                .group(EnviumTab.TAB)
-                .maxStackSize(16))
+                .tab(EnviumTab.TAB)
+                .stacksTo(16))
                 .setRegistryName("marmot_spawn_eggs");
 
         meerkat_spawn_eggs = new ModSpawnEgg(RegisterEntity.MEERKAT_ENTITY, 0xFF329F, 0x16777119, new Item.Properties()
-                .group(EnviumTab.TAB)
-                .maxStackSize(16))
+                .tab(EnviumTab.TAB)
+                .stacksTo(16))
                 .setRegistryName("meerkat_spawn_eggs");
 
         hang_glider = new HangGlider().setRegistryName("hang_glider");

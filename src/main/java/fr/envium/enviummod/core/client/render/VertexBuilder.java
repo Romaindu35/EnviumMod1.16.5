@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.IVertexBuilder;
 public class VertexBuilder implements IVertexBuilder {
 
     @Override
-    public IVertexBuilder pos(double x, double y, double z) {
+    public IVertexBuilder vertex(double x, double y, double z) {
         return null;
     }
 
@@ -15,17 +15,17 @@ public class VertexBuilder implements IVertexBuilder {
     }
 
     @Override
-    public IVertexBuilder tex(float u, float v) {
+    public IVertexBuilder uv(float u, float v) {
         return null;
     }
 
     @Override
-    public IVertexBuilder overlay(int u, int v) {
+    public IVertexBuilder overlayCoords(int u, int v) {
         return null;
     }
 
     @Override
-    public IVertexBuilder lightmap(int u, int v) {
+    public IVertexBuilder uv2(int u, int v) {
         return null;
     }
 

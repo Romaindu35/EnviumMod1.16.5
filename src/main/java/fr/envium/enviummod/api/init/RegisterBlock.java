@@ -61,12 +61,12 @@ public class RegisterBlock {
     @SubscribeEvent
     public static void registerBlocksItem(RegistryEvent.Register<Item> event) {
         event.getRegistry().registerAll(
-                new BlockItem(envium_block, new Item.Properties().group(EnviumTab.TAB)).setRegistryName(envium_block.getRegistryName()),
-                new BlockItem(envium_ore, new Item.Properties().group(EnviumTab.TAB)).setRegistryName(envium_ore.getRegistryName()),
-                new BlockItem(cave_block, new Item.Properties().group(EnviumTab.TAB)).setRegistryName(cave_block.getRegistryName()),
-                new BlockItem(envium_furnace, new Item.Properties().group(EnviumTab.TAB)).setRegistryName(envium_furnace.getRegistryName()),
-                new BlockItem(envium_chest, new Item.Properties().group(EnviumTab.TAB)).setRegistryName(envium_chest.getRegistryName()),/*.setISTER(RegisterBlock::enviumChestRenderer)).setRegistryName(envium_chest.getRegistryName()),*/
-                new BlockItem(pillow, new Item.Properties().group(EnviumTab.TAB)).setRegistryName(pillow.getRegistryName())
+                new BlockItem(envium_block, new Item.Properties().tab(EnviumTab.TAB)).setRegistryName(envium_block.getRegistryName()),
+                new BlockItem(envium_ore, new Item.Properties().tab(EnviumTab.TAB)).setRegistryName(envium_ore.getRegistryName()),
+                new BlockItem(cave_block, new Item.Properties().tab(EnviumTab.TAB)).setRegistryName(cave_block.getRegistryName()),
+                new BlockItem(envium_furnace, new Item.Properties().tab(EnviumTab.TAB)).setRegistryName(envium_furnace.getRegistryName()),
+                new BlockItem(envium_chest, new Item.Properties().tab(EnviumTab.TAB)).setRegistryName(envium_chest.getRegistryName()),/*.setISTER(RegisterBlock::enviumChestRenderer)).setRegistryName(envium_chest.getRegistryName()),*/
+                new BlockItem(pillow, new Item.Properties().tab(EnviumTab.TAB)).setRegistryName(pillow.getRegistryName())
                 /*new BlockItem(warped_stem, new Item.Properties().group(EnviumTab.TAB)).setRegistryName(warped_stem.getRegistryName()),
                 new BlockItem(warped_plank, new Item.Properties().group(EnviumTab.TAB)).setRegistryName(warped_plank.getRegistryName()),
                 new BlockItem(warped_door, new Item.Properties().group(EnviumTab.TAB)).setRegistryName(warped_door.getRegistryName()),

@@ -62,7 +62,7 @@ public class TreeHandler {
         }
 
         tree.setM_Position(blockPos);
-        m_Trees.put(playerEntity.getUniqueID(), tree);
+        m_Trees.put(playerEntity.getUUID(), tree);
 
         return tree.GetLogCount();
     }
@@ -151,19 +151,19 @@ public class TreeHandler {
 
         int soundReduced = 0;
 
-        if (m_Trees.containsKey(playerEntity.getUniqueID())) {
+        if (m_Trees.containsKey(playerEntity.getUUID())) {
 
-            Tree tmpTree = m_Trees.get(playerEntity.getUniqueID());
+            Tree tmpTree = m_Trees.get(playerEntity.getUUID());
 
             for (BlockPos blockPos : tmpTree.GetM_Wood()) {
 
                 if (soundReduced <= 1) {
                     world.destroyBlock(blockPos, true);
                 } else {
-                    world.getBlockState(blockPos).getBlock().onBlockHarvested(world, blockPos, world.getBlockState(blockPos), playerEntity);
+                    world.getBlockState(blockPos).getBlock().playerWillDestroy(world, blockPos, world.getBlockState(blockPos), playerEntity);
                 }
 
-                world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
+                world.setBlockAndUpdate(blockPos, Blocks.AIR.defaultBlockState());
 
                 soundReduced++;
             }
@@ -183,10 +183,10 @@ public class TreeHandler {
                     if (soundReduced <= 1) {
                         world.destroyBlock(blockPos, true);
                     } else {
-                        world.getBlockState(blockPos).getBlock().onBlockHarvested(world, blockPos, world.getBlockState(blockPos), playerEntity);
+                        world.getBlockState(blockPos).getBlock().playerWillDestroy(world, blockPos, world.getBlockState(blockPos), playerEntity);
                     }
 
-                    world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
+                    world.setBlockAndUpdate(blockPos, Blocks.AIR.defaultBlockState());
 
                     soundReduced++;
                 }
@@ -213,7 +213,7 @@ public class TreeHandler {
         }
 
         FakePlayer fakePlayer = FakePlayerFactory.getMinecraft((ServerWorld) world);
-        fakePlayer.setHeldItem(Hand.MAIN_HAND, leafDrop.iterator().next());
+        fakePlayer.setItemInHand(Hand.MAIN_HAND, leafDrop.iterator().next());
 
         for (ItemStack itemStack : leafDrop) {
             //itemStack.onItemUse(fakePlayer, world, plantPos1, Hand.MAIN_HAND, 0, 0, 0);

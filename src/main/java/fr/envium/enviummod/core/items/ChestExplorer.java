@@ -13,15 +13,15 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 public class ChestExplorer extends Item {
 
 	public ChestExplorer() {
-		super(new Item.Properties().group(EnviumTab.TAB).maxStackSize(1));
+		super(new Item.Properties().tab(EnviumTab.TAB).stacksTo(1));
 		setRegistryName("chest_explorer");
 	}
 	
 	@SubscribeEvent
 	public boolean onBlockActivated(ItemStack stack, PlayerEntity player, World world, int x, int y, int z, int side,
 									float hitX, float hitY, float hitZ) {
-		if (!world.isRemote) {
-			TileEntity tile = world.getTileEntity(new BlockPos(x, y, z));
+		if (!world.isClientSide) {
+			TileEntity tile = world.getBlockEntity(new BlockPos(x, y, z));
 			if (tile == null)
 				return false;
 			if (tile instanceof IInventory && tile.getClass().toString().contains("Chest")) {

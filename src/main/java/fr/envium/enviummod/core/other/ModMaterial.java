@@ -15,7 +15,7 @@ import java.util.function.Supplier;
 public class ModMaterial {
     public enum EnviumMaterial implements IItemTier {
         ENVIUM_MATERIAL(0, 32, 12.0F, 0.0F, 22, () -> {
-            return Ingredient.fromItems(RegisterItem.envium_lingot);
+            return Ingredient.of(RegisterItem.envium_lingot);
         });
 
         private final int harvestLevel;
@@ -34,34 +34,34 @@ public class ModMaterial {
             this.repairMaterial = new LazyValue<>(repairMaterialIn);
         }
 
-        public int getMaxUses() {
+        public int getUses() {
             return this.maxUses;
         }
 
-        public float getEfficiency() {
+        public float getSpeed() {
             return this.efficiency;
         }
 
-        public float getAttackDamage() {
+        public float getAttackDamageBonus() {
             return this.attackDamage;
         }
 
-        public int getHarvestLevel() {
+        public int getLevel() {
             return this.harvestLevel;
         }
 
-        public int getEnchantability() {
+        public int getEnchantmentValue() {
             return this.enchantability;
         }
 
-        public Ingredient getRepairMaterial() {
-            return this.repairMaterial.getValue();
+        public Ingredient getRepairIngredient() {
+            return this.repairMaterial.get();
         }
     }
 
     public enum EnviumArmorMaterial implements IArmorMaterial {
-        ENVIUM("diamond", 33, new int[]{3, 6, 8, 3}, 10, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 2.0F, () -> {
-            return Ingredient.fromItems(RegisterItem.envium_lingot);
+        ENVIUM("diamond", 33, new int[]{3, 6, 8, 3}, 10, SoundEvents.ARMOR_EQUIP_DIAMOND, 2.0F, () -> {
+            return Ingredient.of(RegisterItem.envium_lingot);
         });
 
         private static final int[] MAX_DAMAGE_ARRAY = new int[]{13, 15, 16, 11};
@@ -83,24 +83,24 @@ public class ModMaterial {
             this.repairMaterial = new LazyValue<>(repairMaterialSupplier);
         }
 
-        public int getDurability(EquipmentSlotType slotIn) {
+        public int getDurabilityForSlot(EquipmentSlotType slotIn) {
             return MAX_DAMAGE_ARRAY[slotIn.getIndex()] * this.maxDamageFactor;
         }
 
-        public int getDamageReductionAmount(EquipmentSlotType slotIn) {
+        public int getDefenseForSlot(EquipmentSlotType slotIn) {
             return this.damageReductionAmountArray[slotIn.getIndex()];
         }
 
-        public int getEnchantability() {
+        public int getEnchantmentValue() {
             return this.enchantability;
         }
 
-        public SoundEvent getSoundEvent() {
+        public SoundEvent getEquipSound() {
             return this.soundEvent;
         }
 
-        public Ingredient getRepairMaterial() {
-            return this.repairMaterial.getValue();
+        public Ingredient getRepairIngredient() {
+            return this.repairMaterial.get();
         }
 
         @OnlyIn(Dist.CLIENT)

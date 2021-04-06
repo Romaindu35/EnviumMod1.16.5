@@ -12,7 +12,7 @@ public class ItemHammer extends PickaxeItem {
     private static Block theBlock;
  
     public ItemHammer() {
-        super(ModMaterial.EnviumMaterial.ENVIUM_MATERIAL, 5, 8.0F, new Item.Properties().group(EnviumTab.TAB));
+        super(ModMaterial.EnviumMaterial.ENVIUM_MATERIAL, 5, 8.0F, new Item.Properties().tab(EnviumTab.TAB));
     }
  
     /*public RayTraceResult rayTrace(double blockReachDistance, float partialTicks, World w, EntityLivingBase e)

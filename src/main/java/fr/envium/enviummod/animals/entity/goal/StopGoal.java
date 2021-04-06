@@ -12,7 +12,7 @@ public class StopGoal extends Goal {
     }
 
     @Override
-    public boolean shouldExecute() {
+    public boolean canUse() {
         return true;
     }
 

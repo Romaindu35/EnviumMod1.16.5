@@ -8,6 +8,8 @@ import net.minecraftforge.common.ToolType;
 
 import java.util.Random;
 
+import net.minecraft.block.AbstractBlock.Properties;
+
 public class BlockOreMod extends Block
 {
 	private static boolean multipleQuantity = false;
@@ -16,9 +18,9 @@ public class BlockOreMod extends Block
 
 	public BlockOreMod(int minDrop, int maxDrop)
 	{
-		super(Properties.create(Material.ROCK)
+		super(Properties.of(Material.STONE)
 				.harvestTool(ToolType.PICKAXE)
-				.hardnessAndResistance(2, 8)
+				.strength(2, 8)
 				.harvestLevel(3));
 		//setRegistryName("envium_ore");
 		multipleQuantity = true;
@@ -28,7 +30,7 @@ public class BlockOreMod extends Block
 
 	public Item getItemDropped(BlockState state, Random rand, int fortune)
 	{
-			return Item.getItemFromBlock(this);
+			return Item.byBlock(this);
 	}
 	
 	public int quantityDropped(Random rand)

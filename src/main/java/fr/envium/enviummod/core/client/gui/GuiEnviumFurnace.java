@@ -47,16 +47,16 @@ public class GuiEnviumFurnace extends ContainerScreen<ContainerEnviumFurnace> {
     }*/
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
-        int i = (this.width - this.xSize) / 2;
-        int j = (this.height - this.ySize) / 2;
+    protected void renderBg(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
+        int i = (this.width - this.imageWidth) / 2;
+        int j = (this.height - this.imageHeight) / 2;
         this.renderBackground(matrixStack);
-        this.minecraft.getTextureManager().bindTexture(TEXTURE);
-        this.blit(matrixStack, i, j, 0, 0, this.xSize, this.ySize);
+        this.minecraft.getTextureManager().bind(TEXTURE);
+        this.blit(matrixStack, i, j, 0, 0, this.imageWidth, this.imageHeight);
 
-        if (this.getContainer().getClientData() != null && !this.getContainer().getClientData().isEmpty())
+        if (this.getMenu().getClientData() != null && !this.getMenu().getClientData().isEmpty())
         {
-            Map<String, Integer> data = this.getContainer().getClientData();
+            Map<String, Integer> data = this.getMenu().getClientData();
             int timePassed = data.get("timePassed");
             float time = data.get("fullTimeRecipe");
             int textureWidth = (int) (23f / time * timePassed);

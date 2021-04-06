@@ -36,10 +36,10 @@ public class GuiLoading extends LoadingGui {
     }
 
     public void render(MatrixStack matrixStack, int p_render_1_, int p_render_2_, float p_render_3_) {
-        int width = this.mc.getMainWindow().getScaledWidth();
-        int height = this.mc.getMainWindow().getScaledHeight();
-        long time = Util.milliTime();
-        if (this.reloading && (this.asyncReloader.asyncPartDone() || this.mc.currentScreen != null) && this.fadeInStart == -1L) {
+        int width = this.mc.getWindow().getGuiScaledWidth();
+        int height = this.mc.getWindow().getGuiScaledHeight();
+        long time = Util.getMillis();
+        if (this.reloading && (this.asyncReloader.isApplying() || this.mc.screen != null) && this.fadeInStart == -1L) {
             this.fadeInStart = time;
         }
 
@@ -47,16 +47,16 @@ public class GuiLoading extends LoadingGui {
         float f1 = this.fadeInStart > -1L ? (float)(time - this.fadeInStart) / 500.0F : -1.0F;
         float f2;
         if (f >= 1.0F) {
-            if (this.mc.currentScreen != null) {
-                this.mc.currentScreen.render(matrixStack, 0, 0, p_render_3_);
+            if (this.mc.screen != null) {
+                this.mc.screen.render(matrixStack, 0, 0, p_render_3_);
             }
 
             int l = MathHelper.ceil((1.0F - MathHelper.clamp(f - 1.0F, 0.0F, 1.0F)) * 255.0F);
             fill(matrixStack, 0, 0, width, height, 16777215 | l << 24);
             f2 = 1.0F - MathHelper.clamp(f - 1.0F, 0.0F, 1.0F);
         } else if (this.reloading) {
-            if (this.mc.currentScreen != null && f1 < 1.0F) {
-                this.mc.currentScreen.render(matrixStack, p_render_1_, p_render_2_, p_render_3_);
+            if (this.mc.screen != null && f1 < 1.0F) {
+                this.mc.screen.render(matrixStack, p_render_1_, p_render_2_, p_render_3_);
             }
 
             int j1 = MathHelper.ceil(MathHelper.clamp((double)f1, 0.15D, 1.0D) * 255.0D);
@@ -66,16 +66,16 @@ public class GuiLoading extends LoadingGui {
             fill(matrixStack, 0, 0, width, height, -1);
             f2 = 1.0F;
         }
-        this.mc.getTextureManager().bindTexture(ENVIUM_BACKGROUND_TEXTURE);
+        this.mc.getTextureManager().bind(ENVIUM_BACKGROUND_TEXTURE);
         RenderSystem.enableBlend();
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.blit(matrixStack, 0, 0, 0.0F, 0.0F, 430, 250, 430, 250);
 
-        this.mc.getTextureManager().bindTexture(ENVIUM_LOGO);
+        this.mc.getTextureManager().bind(ENVIUM_LOGO);
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.blit(matrixStack, width / 2 - 50, height/ 2 - 90, 0.0F, 0.0F, 100, 100, 100, 100);
 
-        float f3 = this.asyncReloader.estimateExecutionSpeed();
+        float f3 = this.asyncReloader.getActualProgress();
         this.progress = MathHelper.clamp(this.progress * 0.95F + f3 * 0.050000012F, 0.0F, 1.0F);
         //net.minecraftforge.fml.client.ClientModLoader.renderProgressText();
         if (f < 1.0F) {
@@ -85,20 +85,20 @@ public class GuiLoading extends LoadingGui {
         }
 
         if (f >= 2.0F) {
-            this.mc.setLoadingGui((LoadingGui)null);
+            this.mc.setOverlay((LoadingGui)null);
         }
 
-        if (this.fadeOutStart == -1L && this.asyncReloader.fullyDone() && (!this.reloading || f1 >= 2.0F)) {
-            this.fadeOutStart = Util.milliTime(); // Moved up to guard against inf loops caused by callback
+        if (this.fadeOutStart == -1L && this.asyncReloader.isDone() && (!this.reloading || f1 >= 2.0F)) {
+            this.fadeOutStart = Util.getMillis(); // Moved up to guard against inf loops caused by callback
             try {
-                this.asyncReloader.join();
+                this.asyncReloader.checkExceptions();
                 this.completedCallback.accept(Optional.empty());
             } catch (Throwable throwable) {
                 this.completedCallback.accept(Optional.of(throwable));
             }
 
-            if (this.mc.currentScreen != null) {
-                this.mc.currentScreen.init(this.mc, this.mc.getMainWindow().getScaledWidth(), this.mc.getMainWindow().getScaledHeight());
+            if (this.mc.screen != null) {
+                this.mc.screen.init(this.mc, this.mc.getWindow().getGuiScaledWidth(), this.mc.getWindow().getGuiScaledHeight());
             }
         }
 

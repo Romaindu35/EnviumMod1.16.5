@@ -13,11 +13,11 @@ import net.minecraft.world.World;
 public class EnviumShardRandom extends Item {
 
     public EnviumShardRandom() {
-        super(new Item.Properties().group(EnviumTab.TAB).maxStackSize(1));
+        super(new Item.Properties().tab(EnviumTab.TAB).stacksTo(1));
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
+    public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand handIn) {
 
         //return super.onItemRightClick(worldIn, playerIn, handIn);
         //return new ItemStack(RegisterItem.envium_lingot);
@@ -44,6 +44,6 @@ public class EnviumShardRandom extends Item {
             //return ActionResult.resultSuccess(new ItemStack(RegisterItem.envium_lingot, 2));
             //return ActionResult.resultConsume(new ItemStack(RegisterItem.envium_lingot, 2));
         }*/
-        return ActionResult.resultConsume(itemStack);
+        return ActionResult.consume(itemStack);
     }
 }

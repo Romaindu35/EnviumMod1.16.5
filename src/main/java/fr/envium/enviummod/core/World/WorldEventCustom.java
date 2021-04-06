@@ -8,7 +8,7 @@ public class WorldEventCustom {
 
     public static void onWorldLoaded(WorldEvent.Load event)
     {
-        if (!event.getWorld().isRemote() && event.getWorld() instanceof ServerWorld)
+        if (!event.getWorld().isClientSide() && event.getWorld() instanceof ServerWorld)
         {
             //SavedData saver = SavedData.forWorld((ServerWorld) event.getWorld());
         }
@@ -16,10 +16,10 @@ public class WorldEventCustom {
 
     public static void onWorldSaved(WorldEvent.Save event)
     {
-        if (!event.getWorld().isRemote() && event.getWorld() instanceof ServerWorld)
+        if (!event.getWorld().isClientSide() && event.getWorld() instanceof ServerWorld)
         {
             SavedData saver = SavedData.forWorld((ServerWorld) event.getWorld());
-            saver.markDirty();
+            saver.setDirty();
             EnviumMod.LOGGER.debug("Put my data in!");
         }
     }

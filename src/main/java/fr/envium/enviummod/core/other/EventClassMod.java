@@ -14,11 +14,11 @@ public class EventClassMod {
 
     @SubscribeEvent
     public void LivingFallEvent(LivingFallEvent event) {
-        BlockPos pos = new BlockPos(event.getEntityLiving().getPosition());
+        BlockPos pos = new BlockPos(event.getEntityLiving().blockPosition());
 
         if(event.getEntityLiving() instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) event.getEntityLiving();
-            Block block = player.world.getBlockState(new BlockPos(pos.getX(), pos.getY() - 1, pos.getZ())).getBlock();
+            Block block = player.level.getBlockState(new BlockPos(pos.getX(), pos.getY() - 1, pos.getZ())).getBlock();
 
             if(block instanceof BlockPillow) {
                 event.setCanceled(true);

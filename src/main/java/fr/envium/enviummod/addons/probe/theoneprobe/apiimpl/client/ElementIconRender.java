@@ -18,15 +18,15 @@ public class ElementIconRender {
         }
 
         if (u == -1) {
-            TextureAtlasSprite sprite = Minecraft.getInstance().getAtlasSpriteGetter(AtlasTexture.LOCATION_BLOCKS_TEXTURE).apply(icon);
+            TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(AtlasTexture.LOCATION_BLOCKS).apply(icon);
             if (sprite == null) {
                 return;
             }
-            Minecraft.getInstance().getTextureManager().bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
-            RenderHelper.drawTexturedModalRect(matrixStack.getLast().getMatrix(), x, y, sprite, w, h);
+            Minecraft.getInstance().getTextureManager().bind(AtlasTexture.LOCATION_BLOCKS);
+            RenderHelper.drawTexturedModalRect(matrixStack.last().pose(), x, y, sprite, w, h);
         } else {
-            Minecraft.getInstance().getTextureManager().bindTexture(icon);
-            RenderHelper.drawTexturedModalRect(matrixStack.getLast().getMatrix(), x, y, u, v, w, h, txtw, txth);
+            Minecraft.getInstance().getTextureManager().bind(icon);
+            RenderHelper.drawTexturedModalRect(matrixStack.last().pose(), x, y, u, v, w, h, txtw, txth);
         }
     }
 }

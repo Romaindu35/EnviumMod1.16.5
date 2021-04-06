@@ -18,7 +18,7 @@ public class RenderCustomPlayer extends LivingRenderer<AbstractClientPlayerEntit
     }
 
     @Override
-    public ResourceLocation getEntityTexture(AbstractClientPlayerEntity entity) {
+    public ResourceLocation getTextureLocation(AbstractClientPlayerEntity entity) {
         return null;
     }
 }

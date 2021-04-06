@@ -33,15 +33,15 @@ public class GuiEnviumChest extends ContainerScreen<ContainerEnviumChest> {
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY)
+    protected void renderBg(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY)
     {
-        xSize = 240;
-        ySize = 238;
-        int i = (this.width - this.xSize) / 2;
-        int j = (this.height - this.ySize) / 2;
+        imageWidth = 240;
+        imageHeight = 238;
+        int i = (this.width - this.imageWidth) / 2;
+        int j = (this.height - this.imageHeight) / 2;
         this.renderBackground(matrixStack);
-        this.minecraft.getTextureManager().bindTexture(TEXTURE);
-        this.blit(matrixStack, i, j, 0, 0, this.xSize, this.ySize);
+        this.minecraft.getTextureManager().bind(TEXTURE);
+        this.blit(matrixStack, i, j, 0, 0, this.imageWidth, this.imageHeight);
     }
 
 }

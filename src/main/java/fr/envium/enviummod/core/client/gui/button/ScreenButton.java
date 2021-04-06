@@ -71,16 +71,16 @@ public class ScreenButton extends AbstractButton {
     protected ResourceLocation WIDGETS_TEXTURES = new ResourceLocation(References.MODID, "textures/gui/transparent.png");
 
     public ScreenButton(int widthIn, int heightIn, int width, int height, String text, ScreenButton.IPressable onPress) {
-        super(widthIn, heightIn, width, height, ITextComponent.getTextComponentOrEmpty(text));
+        super(widthIn, heightIn, width, height, ITextComponent.nullToEmpty(text));
         this.onPress = onPress;
     }
 
     @Override
-    public void renderWidget(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void renderButton(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         alpha = 0.0F;
         Minecraft minecraft = Minecraft.getInstance();
-        FontRenderer fontrenderer = minecraft.fontRenderer;
-        minecraft.getTextureManager().bindTexture(WIDGETS_TEXTURES);
+        FontRenderer fontrenderer = minecraft.font;
+        minecraft.getTextureManager().bind(WIDGETS_TEXTURES);
         //RenderSystem.color4f(0.4F, 1.0F, 1.0F, this.alpha);
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, this.alpha);
         int i = this.getYImage(this.isHovered());

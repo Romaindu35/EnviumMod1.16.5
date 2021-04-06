@@ -40,37 +40,37 @@ public class EnviumChestEntityRenderer extends TileEntityRenderer<TileEnviumChes
         this.chestBottom.addBox(1.0F, 0.0F, 1.0F, 14.0F, 10.0F, 14.0F, 0.0F);
         this.chestLid = new ModelRenderer(64, 64, 0, 0);
         this.chestLid.addBox(1.0F, 0.0F, 0.0F, 14.0F, 5.0F, 14.0F, 0.0F);
-        this.chestLid.rotationPointY = 9.0F;
-        this.chestLid.rotationPointZ = 1.0F;
+        this.chestLid.y = 9.0F;
+        this.chestLid.z = 1.0F;
         this.chestLock = new ModelRenderer(64, 64, 0, 0);
         this.chestLock.addBox(7.0F, -1.0F, 15.0F, 2.0F, 4.0F, 1.0F, 0.0F);
-        this.chestLock.rotationPointY = 8.0F;
+        this.chestLock.y = 8.0F;
     }
 
     @Override
     public void render(TileEnviumChest tileEntityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
         TileEnviumChest tileEntity = tileEntityIn;
 
-        World world = tileEntity.getWorld();
+        World world = tileEntity.getLevel();
         boolean flag = world != null;
 
-        BlockState blockstate = flag ? tileEntity.getBlockState() : RegisterBlock.envium_chest.getBlock().getDefaultState().with(EnviumChest.FACING, Direction.SOUTH);
+        BlockState blockstate = flag ? tileEntity.getBlockState() : RegisterBlock.envium_chest.getBlock().defaultBlockState().setValue(EnviumChest.FACING, Direction.SOUTH);
         Block block = blockstate.getBlock();
 
         if (block instanceof EnviumChest) {
             EnviumChest chestBlock = (EnviumChest) block;
 
-            matrixStackIn.push();
-            float f = blockstate.get(EnviumChest.FACING).getHorizontalAngle();
+            matrixStackIn.pushPose();
+            float f = blockstate.getValue(EnviumChest.FACING).toYRot();
             matrixStackIn.translate(0.5D, 0.5D, 0.5D);
-            matrixStackIn.rotate(Vector3f.YP.rotationDegrees(-f));
+            matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(-f));
             matrixStackIn.translate(-0.5D, -0.5D, -0.5D);
 
             TileEntityMerger.ICallbackWrapper<? extends TileEnviumChest> iCallbackWrapper;
             if (flag) {
-                iCallbackWrapper = chestBlock.getWrapper(blockstate, world, tileEntity.getPos(), true);
+                iCallbackWrapper = chestBlock.getWrapper(blockstate, world, tileEntity.getBlockPos(), true);
             } else {
-                iCallbackWrapper = TileEntityMerger.ICallback::func_225537_b_;
+                iCallbackWrapper = TileEntityMerger.ICallback::acceptNone;
             }
 
             /*float f1 = iCallbackWrapper.apply(EnviumChest.getLid(tileEntity)).get(partialTicks);
@@ -82,13 +82,13 @@ public class EnviumChestEntityRenderer extends TileEntityRenderer<TileEnviumChes
             IVertexBuilder ivertexbuilder = material.getBuffer(bufferIn, RenderType::getEntityCutout);
 
             this.handleModelRender(matrixStackIn, ivertexbuilder, this.chestLid, this.chestLock, this.chestBottom, f1, i, combinedOverlayIn);*/
-            matrixStackIn.pop();
+            matrixStackIn.popPose();
         }
     }
 
     private void handleModelRender(MatrixStack matrixStackIn, IVertexBuilder iVertexBuilder, ModelRenderer firstModel, ModelRenderer secondModel, ModelRenderer thirdModel, float f1, int p_228871_7_, int p_228871_8_) {
-        firstModel.rotateAngleX = -(f1 * ((float) Math.PI / 2F));
-        secondModel.rotateAngleX = firstModel.rotateAngleX;
+        firstModel.xRot = -(f1 * ((float) Math.PI / 2F));
+        secondModel.xRot = firstModel.xRot;
         firstModel.render(matrixStackIn, iVertexBuilder, p_228871_7_, p_228871_8_);
         secondModel.render(matrixStackIn, iVertexBuilder, p_228871_7_, p_228871_8_);
         thirdModel.render(matrixStackIn, iVertexBuilder, p_228871_7_, p_228871_8_);

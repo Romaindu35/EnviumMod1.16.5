@@ -6,6 +6,6 @@ import net.minecraft.item.Item;
 public class EnviumShard extends Item {
 
     public EnviumShard() {
-        super(new Item.Properties().group(EnviumTab.TAB));
+        super(new Item.Properties().tab(EnviumTab.TAB));
     }
 }

@@ -53,12 +53,12 @@ public class TileEnviumFurnace extends LockableTileEntity implements ITickableTi
     }
 
     @Override
-    public void read(BlockState state, CompoundNBT compound) {
-        super.read(state, compound);
-        this.stacks = NonNullList.<ItemStack>withSize(this.getSizeInventory(), ItemStack.EMPTY);
+    public void load(BlockState state, CompoundNBT compound) {
+        super.load(state, compound);
+        this.stacks = NonNullList.<ItemStack>withSize(this.getContainerSize(), ItemStack.EMPTY);
         ItemStackHelper.loadAllItems(compound, this.stacks);
 
-        if (compound.hasUniqueId("CustomName")) {
+        if (compound.hasUUID("CustomName")) {
             this.customName = compound.getString("CustomName");
         }
         this.burningTimeLeft = compound.getInt("burningTimeLeft");
@@ -66,8 +66,8 @@ public class TileEnviumFurnace extends LockableTileEntity implements ITickableTi
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT compound) {
-        super.write(compound);
+    public CompoundNBT save(CompoundNBT compound) {
+        super.save(compound);
         ItemStackHelper.saveAllItems(compound, this.stacks);
 
         if (this.hasCustomName()) {
@@ -86,12 +86,12 @@ public class TileEnviumFurnace extends LockableTileEntity implements ITickableTi
     }
 
     @Override
-    public boolean canInsertItem(int index, ItemStack itemStackIn, @Nullable Direction direction) {
+    public boolean canPlaceItemThroughFace(int index, ItemStack itemStackIn, @Nullable Direction direction) {
         return true;
     }
 
     @Override
-    public boolean canExtractItem(int index, ItemStack stack, Direction direction) {
+    public boolean canTakeItemThroughFace(int index, ItemStack stack, Direction direction) {
         return true;
     }
 
@@ -137,12 +137,12 @@ public class TileEnviumFurnace extends LockableTileEntity implements ITickableTi
         NetworkRegistryHandler.network.send(PacketDistributor.ALL.noArg(), new PacketUpdateTileEntityData(id, this.data));*/
         this.id = id;
         //NetworkRegistryHandler.network.send(PacketDistributor.ALL.noArg(), new MySimplePacket(12));
-        return new ContainerEnviumFurnace(id, player, new PacketBuffer(Unpooled.buffer()).writeBlockPos(getPos()).writeVarInt(getFullBurnTime()));
+        return new ContainerEnviumFurnace(id, player, new PacketBuffer(Unpooled.buffer()).writeBlockPos(getBlockPos()).writeVarInt(getFullBurnTime()));
     }
 
 
     @Override
-    public int getSizeInventory() {
+    public int getContainerSize() {
         return this.stacks.size();
     }
 
@@ -158,54 +158,54 @@ public class TileEnviumFurnace extends LockableTileEntity implements ITickableTi
     }
 
     @Override
-    public ItemStack getStackInSlot(int index) {
+    public ItemStack getItem(int index) {
         return this.stacks.get(index);
     }
 
     @Override
-    public ItemStack decrStackSize(int index, int count) {
-        return ItemStackHelper.getAndSplit(this.stacks, index, count);
+    public ItemStack removeItem(int index, int count) {
+        return ItemStackHelper.removeItem(this.stacks, index, count);
     }
 
     @Override
-    public ItemStack removeStackFromSlot(int index) {
-        return ItemStackHelper.getAndRemove(stacks, index);
+    public ItemStack removeItemNoUpdate(int index) {
+        return ItemStackHelper.takeItem(stacks, index);
     }
 
     @Override
-    public void setInventorySlotContents(int index, ItemStack stack) {
+    public void setItem(int index, ItemStack stack) {
         this.stacks.set(index, stack);
 
-        if (stack.getCount() > this.getInventoryStackLimit()) {
-            stack.setCount(this.getInventoryStackLimit());
+        if (stack.getCount() > this.getMaxStackSize()) {
+            stack.setCount(this.getMaxStackSize());
         }
     }
 
     @Override
-    public boolean isUsableByPlayer(PlayerEntity player) {
-        return this.world.getTileEntity(this.pos) != this ? false : player
-                .getDistanceSq((double) this.pos.getX() + 0.5D,
-                        (double) this.pos.getY() + 0.5D,
-                        (double) this.pos.getZ() + 0.5D) <= 64.0D;
+    public boolean stillValid(PlayerEntity player) {
+        return this.level.getBlockEntity(this.worldPosition) != this ? false : player
+                .distanceToSqr((double) this.worldPosition.getX() + 0.5D,
+                        (double) this.worldPosition.getY() + 0.5D,
+                        (double) this.worldPosition.getZ() + 0.5D) <= 64.0D;
     }
 
     @Override
-    public void clear() {
+    public void clearContent() {
         for(int i = 0; i < this.stacks.size(); i++) {
             this.stacks.set(i, ItemStack.EMPTY);
         }
     }
 
     public boolean hasFuelEmpty() {
-        return this.getStackInSlot(0).isEmpty();
+        return this.getItem(0).isEmpty();
     }
 
     public ItemStack getRecipeResult() {
-        IInventory iInventory = new Inventory(this.getStackInSlot(1));
-        Optional<FurnaceRecipe> recipeOptionnal = this.world.getRecipeManager().getRecipe(IRecipeType.SMELTING, iInventory, this.world);
+        IInventory iInventory = new Inventory(this.getItem(1));
+        Optional<FurnaceRecipe> recipeOptionnal = this.level.getRecipeManager().getRecipeFor(IRecipeType.SMELTING, iInventory, this.level);
         //System.out.println(recipeOptionnal.isPresent());
         //System.out.println(recipeOptionnal.toString());
-        ItemStack itemStack = recipeOptionnal.map(recipe -> recipe.getCraftingResult(iInventory)).orElse(ItemStack.EMPTY);
+        ItemStack itemStack = recipeOptionnal.map(recipe -> recipe.assemble(iInventory)).orElse(ItemStack.EMPTY);
         //System.out.println(itemStack);
         //System.out.println(recipeOptionnal.map(recipe -> recipe.getCraftingResult(iInventory)).orElse(ItemStack.EMPTY));
         //return RecipesFurnace.getRecipeResult(new ItemStack[] { this.getStackInSlot(1) });
@@ -215,12 +215,12 @@ public class TileEnviumFurnace extends LockableTileEntity implements ITickableTi
     public boolean canSmelt() {
         ItemStack result = this.getRecipeResult();
         if (result != ItemStack.EMPTY && result != null) {
-            ItemStack slot3 = this.getStackInSlot(3);
+            ItemStack slot3 = this.getItem(3);
             if (slot3.isEmpty())
                 return true;
-            if (slot3.getItem() == result.getItem() && slot3.getDamage() == result.getDamage()) {
+            if (slot3.getItem() == result.getItem() && slot3.getDamageValue() == result.getDamageValue()) {
                 int newStackSize = slot3.getCount() + result.getCount();
-                if (newStackSize <= this.getInventoryStackLimit() && newStackSize <= slot3.getMaxStackSize()) {
+                if (newStackSize <= this.getMaxStackSize() && newStackSize <= slot3.getMaxStackSize()) {
                     return true;
                 }
             }
@@ -230,13 +230,13 @@ public class TileEnviumFurnace extends LockableTileEntity implements ITickableTi
 
     public void smelt() {
         ItemStack result = this.getRecipeResult();
-        this.decrStackSize(1, 1);
-        ItemStack stack3 = this.getStackInSlot(3);
-        ItemStack shard = this.getStackInSlot(2);
+        this.removeItem(1, 1);
+        ItemStack stack3 = this.getItem(3);
+        ItemStack shard = this.getItem(2);
         if (stack3.isEmpty()) {
-            this.setInventorySlotContents(3, result.copy());
+            this.setItem(3, result.copy());
             if(shard.getItem() == RegisterItem.envium_shard_quantity) {
-                ItemStack stack3_reply = this.getStackInSlot(3);
+                ItemStack stack3_reply = this.getItem(3);
                 if (!stack3_reply.isEmpty()) {
                     stack3_reply.setCount(stack3_reply.getCount() + result.getCount());
                 }
@@ -250,7 +250,7 @@ public class TileEnviumFurnace extends LockableTileEntity implements ITickableTi
     }
 
     public int getFullRecipeTime() {
-        ItemStack upgrade = this.getStackInSlot(2);
+        ItemStack upgrade = this.getItem(2);
         if(upgrade.getCount() == 0) {
             return 180;
         }
@@ -273,17 +273,17 @@ public class TileEnviumFurnace extends LockableTileEntity implements ITickableTi
 
     @Override
     public void tick() {
-        if (!this.world.isRemote) {
+        if (!this.level.isClientSide) {
             if (this.isBurning()) {
                 this.burningTimeLeft--;
             }
             if (!this.isBurning() && this.canSmelt() && !this.hasFuelEmpty()) {
                 this.burningTimeLeft = this.getFullBurnTime();
-                this.decrStackSize(0, 1);
+                this.removeItem(0, 1);
             }
 
             if (this.isBurning() && this.canSmelt()) {
-                this.world.setBlockState(this.pos, this.getBlockState().with(FurnaceBlock.LIT, true));
+                this.level.setBlockAndUpdate(this.worldPosition, this.getBlockState().setValue(FurnaceBlock.LIT, true));
                 this.timePassed++;
                 if (timePassed >= this.getFullRecipeTime()) {
                     timePassed = 0;
@@ -293,7 +293,7 @@ public class TileEnviumFurnace extends LockableTileEntity implements ITickableTi
                 timePassed = 0;
             }
             if (!isBurning()) {
-                this.world.setBlockState(this.pos, this.getBlockState().with(FurnaceBlock.LIT, false));
+                this.level.setBlockAndUpdate(this.worldPosition, this.getBlockState().setValue(FurnaceBlock.LIT, false));
             }
             data.put("burningTimeLeft", burningTimeLeft);
             data.put("fullBurningTime", getFullBurnTime());
@@ -301,7 +301,7 @@ public class TileEnviumFurnace extends LockableTileEntity implements ITickableTi
             data.put("fullTimeRecipe", getFullRecipeTime());
             data.put("isBurning", isBurning() ? 1 : 0);
             NetworkRegistryHandler.network.send(PacketDistributor.ALL.noArg(), new PacketUpdateTileEntityData(id, data));
-            this.markDirty();
+            this.setChanged();
         }
     }
 

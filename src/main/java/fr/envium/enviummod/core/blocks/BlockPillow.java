@@ -7,8 +7,8 @@ import net.minecraft.block.material.Material;
 
 public class BlockPillow extends BreakableBlock {
     public BlockPillow() {
-        super(Block.Properties.create(Material.ROCK)
-            .sound(SoundTypeMod.PILLOW).notSolid());
+        super(Block.Properties.of(Material.STONE)
+            .sound(SoundTypeMod.PILLOW).noOcclusion());
         //setRegistryName("pillow");
     }
 }

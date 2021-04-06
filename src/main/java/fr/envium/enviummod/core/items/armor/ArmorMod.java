@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 public class ArmorMod extends ArmorItem {
 
 	public ArmorMod(EquipmentSlotType slot) {
-		super(ModMaterial.EnviumArmorMaterial.ENVIUM, slot, new Item.Properties().group(EnviumTab.TAB));
+		super(ModMaterial.EnviumArmorMaterial.ENVIUM, slot, new Item.Properties().tab(EnviumTab.TAB));
 	}
 
 	@Override
@@ -33,7 +33,7 @@ public class ArmorMod extends ArmorItem {
 	@Override
 	public void onArmorTick(ItemStack stack, World world, PlayerEntity player) {
 		if (stack.getItem() == RegisterItem.envium_helmet) {
-			player.addPotionEffect(new EffectInstance(Effects.NIGHT_VISION, 11));
+			player.addEffect(new EffectInstance(Effects.NIGHT_VISION, 11));
 		}
 	}
 }

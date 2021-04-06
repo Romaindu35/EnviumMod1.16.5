@@ -48,7 +48,7 @@ import java.util.function.Predicate;
 
 public class Toucan extends ShoulderRidingEntity implements IFlyingAnimal {
 
-    private static final DataParameter<Integer> VARIANT = EntityDataManager.createKey(Toucan.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> VARIANT = EntityDataManager.defineId(Toucan.class, DataSerializers.INT);
     private static final Predicate<MobEntity> CAN_MIMIC = new Predicate<MobEntity>() {
         public boolean test(@Nullable MobEntity p_test_1_) {
             return p_test_1_ != null && Toucan.IMITATION_SOUND_EVENTS.containsKey(p_test_1_.getType());
@@ -57,35 +57,35 @@ public class Toucan extends ShoulderRidingEntity implements IFlyingAnimal {
     private static final Item DEADLY_ITEM = Items.COOKIE;
     private static final Set<Item> TAME_ITEMS = Sets.newHashSet(Items.WHEAT_SEEDS, Items.MELON_SEEDS, Items.PUMPKIN_SEEDS, Items.BEETROOT_SEEDS);
     private static final Map<EntityType<?>, SoundEvent> IMITATION_SOUND_EVENTS = Util.make(Maps.newHashMap(), (p_200609_0_) -> {
-        p_200609_0_.put(EntityType.BLAZE, SoundEvents.ENTITY_PARROT_IMITATE_BLAZE);
-        p_200609_0_.put(EntityType.CAVE_SPIDER, SoundEvents.ENTITY_PARROT_IMITATE_SPIDER);
-        p_200609_0_.put(EntityType.CREEPER, SoundEvents.ENTITY_PARROT_IMITATE_CREEPER);
-        p_200609_0_.put(EntityType.DROWNED, SoundEvents.ENTITY_PARROT_IMITATE_DROWNED);
-        p_200609_0_.put(EntityType.ELDER_GUARDIAN, SoundEvents.ENTITY_PARROT_IMITATE_ELDER_GUARDIAN);
-        p_200609_0_.put(EntityType.ENDER_DRAGON, SoundEvents.ENTITY_PARROT_IMITATE_ENDER_DRAGON);
-        p_200609_0_.put(EntityType.ENDERMITE, SoundEvents.ENTITY_PARROT_IMITATE_ENDERMITE);
-        p_200609_0_.put(EntityType.EVOKER, SoundEvents.ENTITY_PARROT_IMITATE_EVOKER);
-        p_200609_0_.put(EntityType.GHAST, SoundEvents.ENTITY_PARROT_IMITATE_GHAST);
-        p_200609_0_.put(EntityType.GUARDIAN, SoundEvents.ENTITY_PARROT_IMITATE_GUARDIAN);
-        p_200609_0_.put(EntityType.HUSK, SoundEvents.ENTITY_PARROT_IMITATE_HUSK);
-        p_200609_0_.put(EntityType.ILLUSIONER, SoundEvents.ENTITY_PARROT_IMITATE_ILLUSIONER);
-        p_200609_0_.put(EntityType.MAGMA_CUBE, SoundEvents.ENTITY_PARROT_IMITATE_MAGMA_CUBE);
-        p_200609_0_.put(EntityType.PHANTOM, SoundEvents.ENTITY_PARROT_IMITATE_PHANTOM);
-        p_200609_0_.put(EntityType.PILLAGER, SoundEvents.ENTITY_PARROT_IMITATE_PILLAGER);
-        p_200609_0_.put(EntityType.RAVAGER, SoundEvents.ENTITY_PARROT_IMITATE_RAVAGER);
-        p_200609_0_.put(EntityType.SHULKER, SoundEvents.ENTITY_PARROT_IMITATE_SHULKER);
-        p_200609_0_.put(EntityType.SILVERFISH, SoundEvents.ENTITY_PARROT_IMITATE_SILVERFISH);
-        p_200609_0_.put(EntityType.SKELETON, SoundEvents.ENTITY_PARROT_IMITATE_SKELETON);
-        p_200609_0_.put(EntityType.SLIME, SoundEvents.ENTITY_PARROT_IMITATE_SLIME);
-        p_200609_0_.put(EntityType.SPIDER, SoundEvents.ENTITY_PARROT_IMITATE_SPIDER);
-        p_200609_0_.put(EntityType.STRAY, SoundEvents.ENTITY_PARROT_IMITATE_STRAY);
-        p_200609_0_.put(EntityType.VEX, SoundEvents.ENTITY_PARROT_IMITATE_VEX);
-        p_200609_0_.put(EntityType.VINDICATOR, SoundEvents.ENTITY_PARROT_IMITATE_VINDICATOR);
-        p_200609_0_.put(EntityType.WITCH, SoundEvents.ENTITY_PARROT_IMITATE_WITCH);
-        p_200609_0_.put(EntityType.WITHER, SoundEvents.ENTITY_PARROT_IMITATE_WITHER);
-        p_200609_0_.put(EntityType.WITHER_SKELETON, SoundEvents.ENTITY_PARROT_IMITATE_WITHER_SKELETON);
-        p_200609_0_.put(EntityType.ZOMBIE, SoundEvents.ENTITY_PARROT_IMITATE_ZOMBIE);
-        p_200609_0_.put(EntityType.ZOMBIE_VILLAGER, SoundEvents.ENTITY_PARROT_IMITATE_ZOMBIE_VILLAGER);
+        p_200609_0_.put(EntityType.BLAZE, SoundEvents.PARROT_IMITATE_BLAZE);
+        p_200609_0_.put(EntityType.CAVE_SPIDER, SoundEvents.PARROT_IMITATE_SPIDER);
+        p_200609_0_.put(EntityType.CREEPER, SoundEvents.PARROT_IMITATE_CREEPER);
+        p_200609_0_.put(EntityType.DROWNED, SoundEvents.PARROT_IMITATE_DROWNED);
+        p_200609_0_.put(EntityType.ELDER_GUARDIAN, SoundEvents.PARROT_IMITATE_ELDER_GUARDIAN);
+        p_200609_0_.put(EntityType.ENDER_DRAGON, SoundEvents.PARROT_IMITATE_ENDER_DRAGON);
+        p_200609_0_.put(EntityType.ENDERMITE, SoundEvents.PARROT_IMITATE_ENDERMITE);
+        p_200609_0_.put(EntityType.EVOKER, SoundEvents.PARROT_IMITATE_EVOKER);
+        p_200609_0_.put(EntityType.GHAST, SoundEvents.PARROT_IMITATE_GHAST);
+        p_200609_0_.put(EntityType.GUARDIAN, SoundEvents.PARROT_IMITATE_GUARDIAN);
+        p_200609_0_.put(EntityType.HUSK, SoundEvents.PARROT_IMITATE_HUSK);
+        p_200609_0_.put(EntityType.ILLUSIONER, SoundEvents.PARROT_IMITATE_ILLUSIONER);
+        p_200609_0_.put(EntityType.MAGMA_CUBE, SoundEvents.PARROT_IMITATE_MAGMA_CUBE);
+        p_200609_0_.put(EntityType.PHANTOM, SoundEvents.PARROT_IMITATE_PHANTOM);
+        p_200609_0_.put(EntityType.PILLAGER, SoundEvents.PARROT_IMITATE_PILLAGER);
+        p_200609_0_.put(EntityType.RAVAGER, SoundEvents.PARROT_IMITATE_RAVAGER);
+        p_200609_0_.put(EntityType.SHULKER, SoundEvents.PARROT_IMITATE_SHULKER);
+        p_200609_0_.put(EntityType.SILVERFISH, SoundEvents.PARROT_IMITATE_SILVERFISH);
+        p_200609_0_.put(EntityType.SKELETON, SoundEvents.PARROT_IMITATE_SKELETON);
+        p_200609_0_.put(EntityType.SLIME, SoundEvents.PARROT_IMITATE_SLIME);
+        p_200609_0_.put(EntityType.SPIDER, SoundEvents.PARROT_IMITATE_SPIDER);
+        p_200609_0_.put(EntityType.STRAY, SoundEvents.PARROT_IMITATE_STRAY);
+        p_200609_0_.put(EntityType.VEX, SoundEvents.PARROT_IMITATE_VEX);
+        p_200609_0_.put(EntityType.VINDICATOR, SoundEvents.PARROT_IMITATE_VINDICATOR);
+        p_200609_0_.put(EntityType.WITCH, SoundEvents.PARROT_IMITATE_WITCH);
+        p_200609_0_.put(EntityType.WITHER, SoundEvents.PARROT_IMITATE_WITHER);
+        p_200609_0_.put(EntityType.WITHER_SKELETON, SoundEvents.PARROT_IMITATE_WITHER_SKELETON);
+        p_200609_0_.put(EntityType.ZOMBIE, SoundEvents.PARROT_IMITATE_ZOMBIE);
+        p_200609_0_.put(EntityType.ZOMBIE_VILLAGER, SoundEvents.PARROT_IMITATE_ZOMBIE_VILLAGER);
     });
     public float flap;
     public float flapSpeed;
@@ -98,20 +98,20 @@ public class Toucan extends ShoulderRidingEntity implements IFlyingAnimal {
 
     public Toucan(EntityType<? extends ShoulderRidingEntity> type, World worldIn) {
         super(type, worldIn);
-        this.moveController = new FlyingMovementController(this, 10, false);
-        this.setPathPriority(PathNodeType.DANGER_FIRE, -1.0F);
-        this.setPathPriority(PathNodeType.DAMAGE_FIRE, -1.0F);
-        this.setPathPriority(PathNodeType.COCOA, -1.0F);
+        this.moveControl = new FlyingMovementController(this, 10, false);
+        this.setPathfindingMalus(PathNodeType.DANGER_FIRE, -1.0F);
+        this.setPathfindingMalus(PathNodeType.DAMAGE_FIRE, -1.0F);
+        this.setPathfindingMalus(PathNodeType.COCOA, -1.0F);
     }
 
     @Nullable
-    public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
-        this.setVariant(this.rand.nextInt(5));
+    public ILivingEntityData finalizeSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
+        this.setVariant(this.random.nextInt(5));
         if (spawnDataIn == null) {
             spawnDataIn = new AgeableEntity.AgeableData(false);
         }
 
-        return super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 
     protected void registerGoals() {
@@ -127,18 +127,18 @@ public class Toucan extends ShoulderRidingEntity implements IFlyingAnimal {
     }
 
 
-    public static AttributeModifierMap.MutableAttribute func_234188_eI_() {
-        return MobEntity.func_233666_p_().createMutableAttribute(Attributes.MAX_HEALTH, 10.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, (double)0.25D).createMutableAttribute(Attributes.FLYING_SPEED, 0.4F);
+    public static AttributeModifierMap.MutableAttribute createAttributes() {
+        return MobEntity.createMobAttributes().add(Attributes.MAX_HEALTH, 10.0D).add(Attributes.MOVEMENT_SPEED, (double)0.25D).add(Attributes.FLYING_SPEED, 0.4F);
     }
 
     /**
      * Returns new PathNavigateGround instance
      */
-    protected PathNavigator createNavigator(World worldIn) {
+    protected PathNavigator createNavigation(World worldIn) {
         FlyingPathNavigator flyingpathnavigator = new FlyingPathNavigator(this, worldIn);
         flyingpathnavigator.setCanOpenDoors(false);
-        flyingpathnavigator.setCanSwim(true);
-        flyingpathnavigator.setCanEnterDoors(true);
+        flyingpathnavigator.setCanFloat(true);
+        flyingpathnavigator.setCanPassDoors(true);
         return flyingpathnavigator;
     }
 
@@ -150,14 +150,14 @@ public class Toucan extends ShoulderRidingEntity implements IFlyingAnimal {
      * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
      * use this to react to sunlight and start to burn.
      */
-    public void livingTick() {
-        playMimicSound(this.world, this);
-        if (this.jukeboxPosition == null || !this.jukeboxPosition.withinDistance(this.getPositionVec(), 3.46D) || this.world.getBlockState(this.jukeboxPosition).getBlock() != Blocks.JUKEBOX) {
+    public void aiStep() {
+        playMimicSound(this.level, this);
+        if (this.jukeboxPosition == null || !this.jukeboxPosition.closerThan(this.position(), 3.46D) || this.level.getBlockState(this.jukeboxPosition).getBlock() != Blocks.JUKEBOX) {
             this.partyParrot = false;
             this.jukeboxPosition = null;
         }
 
-        super.livingTick();
+        super.aiStep();
         this.calculateFlapping();
     }
 
@@ -165,7 +165,7 @@ public class Toucan extends ShoulderRidingEntity implements IFlyingAnimal {
      * Called when a record starts or stops playing. Used to make parrots start or stop partying.
      */
     @OnlyIn(Dist.CLIENT)
-    public void setPartying(BlockPos pos, boolean isPartying) {
+    public void setRecordPlayingNearby(BlockPos pos, boolean isPartying) {
         this.jukeboxPosition = pos;
         this.partyParrot = isPartying;
     }
@@ -185,22 +185,22 @@ public class Toucan extends ShoulderRidingEntity implements IFlyingAnimal {
         }
 
         this.flapping = (float)((double)this.flapping * 0.9D);
-        Vector3d vec3d = this.getMotion();
+        Vector3d vec3d = this.getDeltaMovement();
         if (!this.onGround && vec3d.y < 0.0D) {
-            this.setMotion(vec3d.mul(1.0D, 0.6D, 1.0D));
+            this.setDeltaMovement(vec3d.multiply(1.0D, 0.6D, 1.0D));
         }
 
         this.flap += this.flapping * 2.0F;
     }
 
     private static boolean playMimicSound(World worldIn, Entity parrotIn) {
-        if (parrotIn.isAlive() && !parrotIn.isSilent() && worldIn.rand.nextInt(50) == 0) {
-            List<MobEntity> list = worldIn.getEntitiesWithinAABB(MobEntity.class, parrotIn.getBoundingBox().grow(20.0D), CAN_MIMIC);
+        if (parrotIn.isAlive() && !parrotIn.isSilent() && worldIn.random.nextInt(50) == 0) {
+            List<MobEntity> list = worldIn.getEntitiesOfClass(MobEntity.class, parrotIn.getBoundingBox().inflate(20.0D), CAN_MIMIC);
             if (!list.isEmpty()) {
-                MobEntity mobentity = list.get(worldIn.rand.nextInt(list.size()));
+                MobEntity mobentity = list.get(worldIn.random.nextInt(list.size()));
                 if (!mobentity.isSilent()) {
                     SoundEvent soundevent = getMimicSound(mobentity.getType());
-                    worldIn.playSound((PlayerEntity)null, parrotIn.getPosX(), parrotIn.getPosY(), parrotIn.getPosZ(), soundevent, parrotIn.getSoundCategory(), 0.7F, getPitch(worldIn.rand));
+                    worldIn.playSound((PlayerEntity)null, parrotIn.getX(), parrotIn.getY(), parrotIn.getZ(), soundevent, parrotIn.getSoundSource(), 0.7F, getPitch(worldIn.random));
                     return true;
                 }
             }
@@ -212,42 +212,42 @@ public class Toucan extends ShoulderRidingEntity implements IFlyingAnimal {
     }
 
     @Override
-    public ActionResultType applyPlayerInteraction(PlayerEntity player, Vector3d vec, Hand hand) {
-        ItemStack itemstack = player.getHeldItem(hand);
+    public ActionResultType interactAt(PlayerEntity player, Vector3d vec, Hand hand) {
+        ItemStack itemstack = player.getItemInHand(hand);
         if (itemstack.getItem() instanceof SpawnEggItem) {
-            return super.applyPlayerInteraction(player, vec, hand);
-        } else if (!this.isTamed() && TAME_ITEMS.contains(itemstack.getItem())) {
-            if (!player.abilities.isCreativeMode) {
+            return super.interactAt(player, vec, hand);
+        } else if (!this.isTame() && TAME_ITEMS.contains(itemstack.getItem())) {
+            if (!player.abilities.instabuild) {
                 itemstack.shrink(1);
             }
 
             if (!this.isSilent()) {
-                this.world.playSound((PlayerEntity)null, this.getPosX(), this.getPosY(), this.getPosZ(), SoundEvents.ENTITY_PARROT_EAT, this.getSoundCategory(), 1.0F, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F);
+                this.level.playSound((PlayerEntity)null, this.getX(), this.getY(), this.getZ(), SoundEvents.PARROT_EAT, this.getSoundSource(), 1.0F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
             }
 
-            if (!this.world.isRemote) {
-                if (this.rand.nextInt(10) == 0 && !net.minecraftforge.event.ForgeEventFactory.onAnimalTame(this, player)) {
-                    this.setTamedBy(player);
-                    this.world.setEntityState(this, (byte)7);
+            if (!this.level.isClientSide) {
+                if (this.random.nextInt(10) == 0 && !net.minecraftforge.event.ForgeEventFactory.onAnimalTame(this, player)) {
+                    this.tame(player);
+                    this.level.broadcastEntityEvent(this, (byte)7);
                 } else {
-                    this.world.setEntityState(this, (byte)6);
+                    this.level.broadcastEntityEvent(this, (byte)6);
                 }
             }
 
             return ActionResultType.SUCCESS;
         } else if (itemstack.getItem() == DEADLY_ITEM) {
-            if (!player.abilities.isCreativeMode) {
+            if (!player.abilities.instabuild) {
                 itemstack.shrink(1);
             }
 
-            this.addPotionEffect(new EffectInstance(Effects.POISON, 900));
+            this.addEffect(new EffectInstance(Effects.POISON, 900));
             if (player.isCreative() || !this.isInvulnerable()) {
-                this.attackEntityFrom(DamageSource.causePlayerDamage(player), Float.MAX_VALUE);
+                this.hurt(DamageSource.playerAttack(player), Float.MAX_VALUE);
             }
 
             return ActionResultType.SUCCESS;
         } else {
-            return super.applyPlayerInteraction(player, vec, hand);
+            return super.interactAt(player, vec, hand);
         }
     }
 
@@ -255,43 +255,43 @@ public class Toucan extends ShoulderRidingEntity implements IFlyingAnimal {
      * Checks if the parameter is an item which this animal can be fed to breed it (wheat, carrots or seeds depending on
      * the animal type)
      */
-    public boolean isBreedingItem(ItemStack stack) {
+    public boolean isFood(ItemStack stack) {
         return false;
     }
 
-    public boolean onLivingFall(float distance, float damageMultiplier) {
+    public boolean causeFallDamage(float distance, float damageMultiplier) {
         return false;
     }
 
-    protected void updateFallState(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
+    protected void checkFallDamage(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
     }
 
     /**
      * Returns true if the mob is currently able to mate with the specified mob.
      */
-    public boolean canMateWith(AnimalEntity otherAnimal) {
+    public boolean canMate(AnimalEntity otherAnimal) {
         return false;
     }
 
 
     @org.jetbrains.annotations.Nullable
     @Override
-    public AgeableEntity createChild(ServerWorld world, AgeableEntity mate) {
-        Toucan toucan = new Toucan(RegisterEntity.TOUCAN_ENTITY.get(), this.world);
-        toucan.onInitialSpawn(world, this.world.getDifficultyForLocation(toucan.getPosition()), SpawnReason.BREEDING, (ILivingEntityData)null, (CompoundNBT)null);
+    public AgeableEntity getBreedOffspring(ServerWorld world, AgeableEntity mate) {
+        Toucan toucan = new Toucan(RegisterEntity.TOUCAN_ENTITY.get(), this.level);
+        toucan.finalizeSpawn(world, this.level.getCurrentDifficultyAt(toucan.blockPosition()), SpawnReason.BREEDING, (ILivingEntityData)null, (CompoundNBT)null);
         toucan.setGlowing(false);
 
         return toucan;
     }
 
 
-    public boolean attackEntityAsMob(Entity entityIn) {
-        return entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), 3.0F);
+    public boolean doHurtTarget(Entity entityIn) {
+        return entityIn.hurt(DamageSource.mobAttack(this), 3.0F);
     }
 
     @Nullable
     public SoundEvent getAmbientSound() {
-        return getAmbientSound(this.rand);
+        return getAmbientSound(this.random);
     }
 
     private static SoundEvent getAmbientSound(Random random) {
@@ -299,28 +299,28 @@ public class Toucan extends ShoulderRidingEntity implements IFlyingAnimal {
             List<EntityType<?>> list = Lists.newArrayList(IMITATION_SOUND_EVENTS.keySet());
             return getMimicSound(list.get(random.nextInt(list.size())));
         } else {
-            return SoundEvents.ENTITY_PARROT_AMBIENT;
+            return SoundEvents.PARROT_AMBIENT;
         }
     }
 
     private static SoundEvent getMimicSound(EntityType<?> type) {
-        return IMITATION_SOUND_EVENTS.getOrDefault(type, SoundEvents.ENTITY_PARROT_AMBIENT);
+        return IMITATION_SOUND_EVENTS.getOrDefault(type, SoundEvents.PARROT_AMBIENT);
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return SoundEvents.ENTITY_PARROT_HURT;
+        return SoundEvents.PARROT_HURT;
     }
 
     protected SoundEvent getDeathSound() {
-        return SoundEvents.ENTITY_PARROT_DEATH;
+        return SoundEvents.PARROT_DEATH;
     }
 
     protected void playStepSound(BlockPos pos, BlockState blockIn) {
-        this.playSound(SoundEvents.ENTITY_PARROT_STEP, 0.15F, 1.0F);
+        this.playSound(SoundEvents.PARROT_STEP, 0.15F, 1.0F);
     }
 
     protected float playFlySound(float volume) {
-        this.playSound(SoundEvents.ENTITY_PARROT_FLY, 0.15F, 1.0F);
+        this.playSound(SoundEvents.PARROT_FLY, 0.15F, 1.0F);
         return volume + this.flapSpeed / 2.0F;
     }
 
@@ -331,54 +331,54 @@ public class Toucan extends ShoulderRidingEntity implements IFlyingAnimal {
     /**
      * Gets the pitch of living sounds in living entities.
      */
-    protected float getSoundPitch() {
-        return getPitch(this.rand);
+    protected float getVoicePitch() {
+        return getPitch(this.random);
     }
 
     private static float getPitch(Random random) {
         return (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F;
     }
 
-    public SoundCategory getSoundCategory() {
+    public SoundCategory getSoundSource() {
         return SoundCategory.NEUTRAL;
     }
 
     /**
      * Returns true if this entity should push and be pushed by other entities when colliding.
      */
-    public boolean canBePushed() {
+    public boolean isPushable() {
         return true;
     }
 
-    protected void collideWithEntity(Entity entityIn) {
+    protected void doPush(Entity entityIn) {
         if (!(entityIn instanceof PlayerEntity)) {
-            super.collideWithEntity(entityIn);
+            super.doPush(entityIn);
         }
     }
 
     public int getVariant() {
-        return MathHelper.clamp(this.dataManager.get(VARIANT), 0, 4);
+        return MathHelper.clamp(this.entityData.get(VARIANT), 0, 4);
     }
 
     public void setVariant(int variantIn) {
-        this.dataManager.set(VARIANT, variantIn);
+        this.entityData.set(VARIANT, variantIn);
     }
 
-    protected void registerData() {
-        super.registerData();
-        this.dataManager.register(VARIANT, 0);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(VARIANT, 0);
     }
 
-    public void writeAdditional(CompoundNBT compound) {
-        super.writeAdditional(compound);
+    public void addAdditionalSaveData(CompoundNBT compound) {
+        super.addAdditionalSaveData(compound);
         compound.putInt("Variant", this.getVariant());
     }
 
     /**
      * (abstract) Protected helper method to read subclass entity data from NBT.
      */
-    public void readAdditional(CompoundNBT compound) {
-        super.readAdditional(compound);
+    public void readAdditionalSaveData(CompoundNBT compound) {
+        super.readAdditionalSaveData(compound);
         this.setVariant(compound.getInt("Variant"));
     }
 

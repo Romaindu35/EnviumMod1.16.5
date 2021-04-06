@@ -13,29 +13,31 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
+import net.minecraft.item.Item.Properties;
+
 public class HangGlider extends Item {
 
     public HangGlider() {
-        super(new Properties().group(EnviumTab.TAB));
+        super(new Properties().tab(EnviumTab.TAB));
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
+    public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand handIn) {
 
         updatePosition(playerIn);
 
-        return ActionResult.resultFail(playerIn.getHeldItem(handIn));
+        return ActionResult.fail(playerIn.getItemInHand(handIn));
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        super.addInformation(stack, worldIn, tooltip, flagIn);
+    public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+        super.appendHoverText(stack, worldIn, tooltip, flagIn);
     }
 
     public static void updatePosition(PlayerEntity player){
 
-        System.out.println(player.collidedVertically);
-                if (!player.collidedVertically) { //if falling (flying)
+        System.out.println(player.verticalCollision);
+                if (!player.verticalCollision) { //if falling (flying)
                     System.out.println("x");
                     // Init variables
                     final double horizontalSpeed;
@@ -44,22 +46,22 @@ public class HangGlider extends Item {
                     horizontalSpeed = 1;
                     verticalSpeed = 0.0256;
 
-                    double x = Math.cos(Math.toRadians(player.rotationYaw + 90)) * horizontalSpeed;
-                    double z = Math.sin(Math.toRadians(player.rotationYaw + 90)) * horizontalSpeed;
-                    player.prevPosX += x;
-                    player.prevPosZ += z; //ToDo: Wrong, need multiplication to slow down
+                    double x = Math.cos(Math.toRadians(player.yRot + 90)) * horizontalSpeed;
+                    double z = Math.sin(Math.toRadians(player.yRot + 90)) * horizontalSpeed;
+                    player.xo += x;
+                    player.zo += z; //ToDo: Wrong, need multiplication to slow down
 
 
-                    player.prevPosX *= 1.2;
-                    player.prevPosZ *= 1.2;
+                    player.xo *= 1.2;
+                    player.zo *= 1.2;
 
                     player.fallDistance = 0.0F;
 
-                    player.setMotion(x, player.getMotion().y / 2.600000023841858D, z);
+                    player.setDeltaMovement(x, player.getDeltaMovement().y / 2.600000023841858D, z);
                 }
-                if (player.world.isRemote) {
-                    player.limbSwing = 0;
-                    player.limbSwingAmount = 0;
+                if (player.level.isClientSide) {
+                    player.animationPosition = 0;
+                    player.animationSpeed = 0;
                 }
 
     }

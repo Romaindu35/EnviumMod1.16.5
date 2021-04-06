@@ -2,6 +2,8 @@ package fr.envium.enviummod.addons.probe.theoneprobe.apiimpl;
 
 import fr.envium.enviummod.addons.probe.theoneprobe.api.IProbeConfig;
 
+import fr.envium.enviummod.addons.probe.theoneprobe.api.IProbeConfig.ConfigMode;
+
 public class LazyProbeConfig implements IProbeConfig {
 
     private IProbeConfig original;

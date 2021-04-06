@@ -8,6 +8,6 @@ import net.minecraft.item.SwordItem;
 public class ToolsModSword extends SwordItem {
 
 	public ToolsModSword() {
-		super(ModMaterial.EnviumMaterial.ENVIUM_MATERIAL, 5, 8.0F, new Item.Properties().group(EnviumTab.TAB));
+		super(ModMaterial.EnviumMaterial.ENVIUM_MATERIAL, 5, 8.0F, new Item.Properties().tab(EnviumTab.TAB));
 	}
 }

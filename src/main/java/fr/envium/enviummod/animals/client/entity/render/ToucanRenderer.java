@@ -16,7 +16,7 @@ public class ToucanRenderer extends MobRenderer<Toucan, ToucanModel<Toucan>> {
     }
 
     @Override
-    public ResourceLocation getEntityTexture(Toucan entity) {
+    public ResourceLocation getTextureLocation(Toucan entity) {
         return TEXTURE;
     }
 }

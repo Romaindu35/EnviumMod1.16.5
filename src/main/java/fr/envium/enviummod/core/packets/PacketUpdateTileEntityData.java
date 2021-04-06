@@ -33,7 +33,7 @@ public class PacketUpdateTileEntityData {
 
         for (String name : msg.map.keySet())
         {
-            buf.writeString(name, 32);
+            buf.writeUtf(name, 32);
             buf.writeInt(msg.map.get(name));
         }
     }
@@ -48,7 +48,7 @@ public class PacketUpdateTileEntityData {
 
         for (int i = size; i > 0; i--)
         {
-            String name = buf.readString();
+            String name = buf.readUtf();
 
             int data = buf.readInt();
             map.put(name, data);
@@ -65,9 +65,9 @@ public class PacketUpdateTileEntityData {
 
             PlayerEntity player = DistExecutor.safeCallWhenOn(Dist.CLIENT, () -> DistExecutorMod::getPlayerEntity);
             if (player != null) {
-                if (player.openContainer.windowId == msg.windowId) {
-                    if (player.openContainer instanceof ContainerData) {
-                        ContainerData container = ((ContainerData) player.openContainer);
+                if (player.containerMenu.containerId == msg.windowId) {
+                    if (player.containerMenu instanceof ContainerData) {
+                        ContainerData container = ((ContainerData) player.containerMenu);
                         container.setClientData(msg.map);
                     }
                 }

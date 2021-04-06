@@ -16,7 +16,7 @@ public class LirondelRenderer extends MobRenderer<Lirondel, LirondelModel<Lirond
     }
 
     @Override
-    public ResourceLocation getEntityTexture(Lirondel entity) {
+    public ResourceLocation getTextureLocation(Lirondel entity) {
         return TEXTURE;
     }
 

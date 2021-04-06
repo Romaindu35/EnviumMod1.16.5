@@ -57,8 +57,8 @@ public class ClientManager {
         RenderingRegistry.registerEntityRenderingHandler(RegisterEntity.LIRONDEL_ENTITY.get(), LirondelRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(RegisterEntity.MARMOT_ENTITY.get(), MarmotRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(RegisterEntity.MEERKAT_ENTITY.get(), MeerkatRenderer::new);
-        RenderTypeLookup.setRenderLayer(RegisterBlock.cave_block, RenderType.getTranslucent());
-        RenderTypeLookup.setRenderLayer(RegisterBlock.pillow, RenderType.getTranslucent());
+        RenderTypeLookup.setRenderLayer(RegisterBlock.cave_block, RenderType.translucent());
+        RenderTypeLookup.setRenderLayer(RegisterBlock.pillow, RenderType.translucent());
         //DiscordInitialise.getInstance().init();
         setIcon();
     }
@@ -72,8 +72,8 @@ public class ClientManager {
     {
         DeferredWorkQueue.runLater(() -> {
             //ScreenManager.registerFactory(RegisterContainer.ENVIUM_CHEST.get(), GuiEnviumChest::new);
-            ScreenManager.registerFactory(RegisterContainer.ENVIUM_CHEST.get(), GuiEnviumChest::new);
-            ScreenManager.registerFactory(RegisterContainer.ENVIUM_FURNACE.get(), GuiEnviumFurnace::new);
+            ScreenManager.register(RegisterContainer.ENVIUM_CHEST.get(), GuiEnviumChest::new);
+            ScreenManager.register(RegisterContainer.ENVIUM_FURNACE.get(), GuiEnviumFurnace::new);
 
             //ScreenManager.registerFactory(RegisterContainer.IRON_CHEST.get(), IronChestScreen::new);
 
@@ -96,14 +96,14 @@ public class ClientManager {
     @OnlyIn(Dist.CLIENT)
     public static void keyMetierTyped() {
         Minecraft mc = Minecraft.getInstance();
-        mc.displayGuiScreen(new MetierScreen.PrincipalScreen());
+        mc.setScreen(new MetierScreen.PrincipalScreen());
     }
 
     @OnlyIn(Dist.CLIENT)
     public static void keyTestTyped() {
         Minecraft mc = Minecraft.getInstance();
         System.out.println("clé de la clé");
-        mc.displayGuiScreen(new GuiAdmin(new StringTextComponent("gui_admin")));
+        mc.setScreen(new GuiAdmin(new StringTextComponent("gui_admin")));
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -111,14 +111,14 @@ public class ClientManager {
         Minecraft mc = Minecraft.getInstance();
         InputStream inputStream16 = ClassLoader.getSystemResourceAsStream("assets/enviummod/textures/icons/icon_16x16.png");
         InputStream inputStream32 = ClassLoader.getSystemResourceAsStream("assets/enviummod/textures/icons/icon32.png");
-        mc.getMainWindow().setWindowIcon(inputStream16, inputStream32);
+        mc.getWindow().setIcon(inputStream16, inputStream32);
     }
 
     @OnlyIn(Dist.CLIENT)
     public static void setToastGui() {
-        Field sessionField = ObfuscationReflectionHelper.findField(Minecraft.class,  "field_193034_aS");
+        Field sessionField = ObfuscationReflectionHelper.findField(Minecraft.class,  "toast");
         ObfuscationReflectionHelper.setPrivateValue(Field.class, sessionField, sessionField.getModifiers() & ~Modifier.FINAL, "modifiers");
-        ObfuscationReflectionHelper.setPrivateValue(Minecraft.class, Minecraft.getInstance(), new JobsToastGui(), "field_193034_aS");
+        ObfuscationReflectionHelper.setPrivateValue(Minecraft.class, Minecraft.getInstance(), new JobsToastGui(), "toast");
     }
 
     /*@SubscribeEvent

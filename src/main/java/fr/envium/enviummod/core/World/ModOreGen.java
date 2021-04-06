@@ -24,9 +24,9 @@ public class ModOreGen {
     private static final ArrayList<ConfiguredFeature<?, ?>> endOres = new ArrayList<ConfiguredFeature<?, ?>>();
 
     public static void generateOre() {
-        overworldOres.add(register("envium_ore", Feature.ORE.withConfiguration(new OreFeatureConfig(
-                OreFeatureConfig.FillerBlockType.BASE_STONE_OVERWORLD, RegisterBlock.envium_ore.getDefaultState(), 4)) //Vein Size
-                .range(64).square())); //Spawn height start
+        overworldOres.add(register("envium_ore", Feature.ORE.configured(new OreFeatureConfig(
+                OreFeatureConfig.FillerBlockType.NATURAL_STONE, RegisterBlock.envium_ore.defaultBlockState(), 4)) //Vein Size
+                .range(64).squared())); //Spawn height start
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
@@ -34,16 +34,16 @@ public class ModOreGen {
         BiomeGenerationSettingsBuilder generation = event.getGeneration();
         if(event.getCategory().equals(Biome.Category.NETHER)){
             for(ConfiguredFeature<?, ?> ore : netherOres){
-                if (ore != null) generation.withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, ore);
+                if (ore != null) generation.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, ore);
             }
         }
         if(event.getCategory().equals(Biome.Category.THEEND)){
             for(ConfiguredFeature<?, ?> ore : endOres){
-                if (ore != null) generation.withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, ore);
+                if (ore != null) generation.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, ore);
             }
         }
         for(ConfiguredFeature<?, ?> ore : overworldOres){
-            if (ore != null) generation.withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, ore);
+            if (ore != null) generation.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, ore);
         }
     }
 

@@ -8,6 +8,6 @@ import net.minecraft.item.Item;
 public class ToolsModAxe extends AxeItem {
 
 	public ToolsModAxe() {
-		super(ModMaterial.EnviumMaterial.ENVIUM_MATERIAL, 5, 8.0F, new Item.Properties().group(EnviumTab.TAB));
+		super(ModMaterial.EnviumMaterial.ENVIUM_MATERIAL, 5, 8.0F, new Item.Properties().tab(EnviumTab.TAB));
 	}
 }

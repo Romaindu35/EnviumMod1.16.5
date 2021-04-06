@@ -31,7 +31,7 @@ public class RecipesBlockFurnaceMod {
 	        if(s1.isEmpty() && !s2.isEmpty()) return false;
 	        if(!s1.isEmpty() && s2.isEmpty()) return false;
 	        if(s1.getItem() != s2.getItem()) return false;
-	        if(s1.getDamage() != s2.getDamage()) return false;
+	        if(s1.getDamageValue() != s2.getDamageValue()) return false;
 	    }
 	    return true;
 	}

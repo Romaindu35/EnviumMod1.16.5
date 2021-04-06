@@ -47,11 +47,11 @@ public class MixinMinecraft {
         System.out.println("Minecraft was been initialise");
     }*/
 
-    @Inject(at = @At("HEAD"), method = "Lnet/minecraft/client/Minecraft;getWindowTitle()Ljava/lang/String;", cancellable = true)
+    @Inject(at = @At("HEAD"), method = "createTitle", cancellable = true)
     private void getWindowTitle(CallbackInfoReturnable<String> cir) {
         StringBuilder stringbuilder = new StringBuilder("Envium");
         stringbuilder.append(" - ");
-        stringbuilder.append(Minecraft.getInstance().getSession().getUsername());
+        stringbuilder.append(Minecraft.getInstance().getUser().getName());
         System.out.println("*********** Mixins Minecraft (Title was been updated) ***********");
         cir.setReturnValue(stringbuilder.toString());
     }

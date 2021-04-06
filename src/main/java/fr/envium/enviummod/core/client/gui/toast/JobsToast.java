@@ -34,19 +34,19 @@ public class JobsToast implements IToast {
         this.xp = xp;
     }
 
-    public IToast.Visibility func_230444_a_(MatrixStack matrixStack, ToastGui toastGui, long delta) {
-        toastGui.getMinecraft().getTextureManager().bindTexture(TEXTURE_TOASTS);
+    public IToast.Visibility render(MatrixStack matrixStack, ToastGui toastGui, long delta) {
+        toastGui.getMinecraft().getTextureManager().bind(TEXTURE);
         RenderSystem.color3f(1.0F, 1.0F, 1.0F);
         DisplayInfo displayinfo = this.displayInfo(xp);
-        toastGui.blit(matrixStack, 0, 0, 0, 0, this.func_230445_a_(), this.func_238540_d_());
+        toastGui.blit(matrixStack, 0, 0, 0, 0, this.width(), this.height());
         if (displayinfo != null) {
-            List<IReorderingProcessor> list = toastGui.getMinecraft().fontRenderer.trimStringToWidth(displayinfo.getTitle(), 125);
+            List<IReorderingProcessor> list = toastGui.getMinecraft().font.split(displayinfo.getTitle(), 125);
             int l = 16 - list.size() * 9 / 2;
             for(IReorderingProcessor ireorderingprocessor : list) {
-                toastGui.getMinecraft().fontRenderer.func_238422_b_(matrixStack, ireorderingprocessor, 30.0F, (float)l, 16777215);
+                toastGui.getMinecraft().font.draw(matrixStack, ireorderingprocessor, 30.0F, (float)l, 16777215);
                 l += 9;
             }
-            toastGui.getMinecraft().getItemRenderer().renderItemAndEffectIntoGuiWithoutEntity(displayinfo.getIcon(), 8, 8);
+            toastGui.getMinecraft().getItemRenderer().renderAndDecorateFakeItem(displayinfo.getIcon(), 8, 8);
             return delta >= 5000L ? IToast.Visibility.HIDE : IToast.Visibility.SHOW;
         } else {
             return IToast.Visibility.HIDE;
@@ -57,7 +57,7 @@ public class JobsToast implements IToast {
         return new DisplayInfo(
                 new ItemStack(RegisterItem.envium_lingot),
                 //new StringTextComponent("Vous avez gagne " + xp + " xp"),
-                new StringTextComponent(I18n.format("jobs.win_xp_message") + xp + " xp"),
+                new StringTextComponent(I18n.get("jobs.win_xp_message") + xp + " xp"),
                 new StringTextComponent("Description"),
                 null,
                 FrameType.GOAL,

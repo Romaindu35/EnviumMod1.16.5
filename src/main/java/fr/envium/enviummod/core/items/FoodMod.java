@@ -7,6 +7,6 @@ import net.minecraft.item.Item;
 public class FoodMod extends Item {
 
 	public FoodMod(int hunger, float saturation) {
-		super(new Item.Properties().group(EnviumTab.TAB).food(new Food.Builder().hunger(hunger).saturation(saturation).build()));
+		super(new Item.Properties().tab(EnviumTab.TAB).food(new Food.Builder().nutrition(hunger).saturationMod(saturation).build()));
 	}
 }

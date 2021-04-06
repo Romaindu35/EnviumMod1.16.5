@@ -16,7 +16,7 @@ public class MarmotRenderer extends MobRenderer<Marmot, MarmotModel<Marmot>> {
     }
 
     @Override
-    public ResourceLocation getEntityTexture(Marmot entity) {
+    public ResourceLocation getTextureLocation(Marmot entity) {
         return TEXTURE;
     }
 }

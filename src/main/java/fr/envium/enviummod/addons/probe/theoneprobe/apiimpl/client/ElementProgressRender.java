@@ -45,8 +45,8 @@ public class ElementProgressRender {
 
     private static void renderLifeBar(long current, MatrixStack matrixStack, int x, int y, int w, int h) {
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        Minecraft.getInstance().getTextureManager().bindTexture(ICONS);
-        Matrix4f matrix = matrixStack.getLast().getMatrix();
+        Minecraft.getInstance().getTextureManager().bind(ICONS);
+        Matrix4f matrix = matrixStack.last().pose();
         if (current * 4 >= w) {
             // Shortened view
             RenderHelper.drawTexturedModalRect(matrix, x, y, 52, 0, 9, 9);
@@ -64,8 +64,8 @@ public class ElementProgressRender {
 
     private static void renderArmorBar(long current, MatrixStack matrixStack, int x, int y, int w, int h) {
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        Minecraft.getInstance().getTextureManager().bindTexture(ICONS);
-        Matrix4f matrix = matrixStack.getLast().getMatrix();
+        Minecraft.getInstance().getTextureManager().bind(ICONS);
+        Matrix4f matrix = matrixStack.last().pose();
         if (current * 4 >= w) {
             // Shortened view
             RenderHelper.drawTexturedModalRect(matrix, x, y, 43, 9, 9, 9);

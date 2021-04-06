@@ -8,6 +8,6 @@ import net.minecraft.item.ShovelItem;
 public class ToolsModShovel extends ShovelItem
 {
 	public ToolsModShovel() {
-		super(ModMaterial.EnviumMaterial.ENVIUM_MATERIAL, 5, 8.0F, new Item.Properties().group(EnviumTab.TAB));
+		super(ModMaterial.EnviumMaterial.ENVIUM_MATERIAL, 5, 8.0F, new Item.Properties().tab(EnviumTab.TAB));
 	}
 }

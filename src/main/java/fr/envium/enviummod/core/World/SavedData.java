@@ -33,7 +33,7 @@ public class SavedData extends WorldSavedData implements Supplier {
     }
 
     @Override
-    public void read(CompoundNBT nbt)
+    public void load(CompoundNBT nbt)
     {
         int size = nbt.getInt("size");
         Set<BlockPos> set = new HashSet<>(size);
@@ -49,7 +49,7 @@ public class SavedData extends WorldSavedData implements Supplier {
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT nbt)
+    public CompoundNBT save(CompoundNBT nbt)
     {
         int index =0;
         nbt.putInt("size", blockPosSet.size());
@@ -66,9 +66,9 @@ public class SavedData extends WorldSavedData implements Supplier {
 
     public static SavedData forWorld(ServerWorld world)
     {
-        DimensionSavedDataManager storage = world.getSavedData();
+        DimensionSavedDataManager storage = world.getDataStorage();
         Supplier<SavedData> sup = new SavedData();
-        SavedData saver = storage.getOrCreate(sup, References.MODID);
+        SavedData saver = storage.computeIfAbsent(sup, References.MODID);
 
         if (saver == null)
         {

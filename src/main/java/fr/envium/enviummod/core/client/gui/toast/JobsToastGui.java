@@ -26,20 +26,20 @@ public class JobsToastGui extends ToastGui {
         this.mc = Minecraft.getInstance();
     }
 
-    public void func_238541_a_(MatrixStack matrixStack) {
-        if (!this.mc.gameSettings.hideGUI) {
+    public void render(MatrixStack matrixStack) {
+        if (!this.mc.options.hideGui) {
             for(int i = 0; i < this.visible.length; ++i) {
                 ToastInstance<?> toastinstance = this.visible[i];
                 if (toastinstance != null && toastinstance.getToast() instanceof JobsToast) {
                     JobsToast jobsToast = (JobsToast) toastinstance.getToast();
                     if (jobsToast.getReload()) {
-                        if (toastinstance != null && toastinstance.render(matrixStack, this.mc.getMainWindow().getScaledWidth(), i)) {
+                        if (toastinstance != null && toastinstance.render(matrixStack, this.mc.getWindow().getGuiScaledWidth(), i)) {
                             this.visible[i] = null;
                         }
                         return;
                     }
                 }
-                if (toastinstance != null && toastinstance.renderWithAnimation(matrixStack, this.mc.getMainWindow().getScaledWidth(), i)) {
+                if (toastinstance != null && toastinstance.renderWithAnimation(matrixStack, this.mc.getWindow().getGuiScaledWidth(), i)) {
                     this.visible[i] = null;
                 }
 
@@ -54,13 +54,13 @@ public class JobsToastGui extends ToastGui {
     @Nullable
     public <T extends IToast> T getToast(Class<? extends T> p_192990_1_, Object p_192990_2_) {
         for(ToastInstance<?> toastinstance : this.visible) {
-            if (toastinstance != null && p_192990_1_.isAssignableFrom(toastinstance.getToast().getClass()) && toastinstance.getToast().getType().equals(p_192990_2_)) {
+            if (toastinstance != null && p_192990_1_.isAssignableFrom(toastinstance.getToast().getClass()) && toastinstance.getToast().getToken().equals(p_192990_2_)) {
                 return (T)toastinstance.getToast();
             }
         }
 
         for(IToast itoast : this.toastsQueue) {
-            if (p_192990_1_.isAssignableFrom(itoast.getClass()) && itoast.getType().equals(p_192990_2_)) {
+            if (p_192990_1_.isAssignableFrom(itoast.getClass()) && itoast.getToken().equals(p_192990_2_)) {
                 return (T)itoast;
             }
         }
@@ -92,7 +92,7 @@ public class JobsToastGui extends ToastGui {
         this.toastsQueue.clear();
     }
 
-    public void add(IToast toastIn) {
+    public void addToast(IToast toastIn) {
         this.toastsQueue.add(toastIn);
     }
 
@@ -115,7 +115,7 @@ public class JobsToastGui extends ToastGui {
             }
         } else {
             toast.setReload(false);
-            add(toast);
+            addToast(toast);
         }
     }
 
@@ -150,10 +150,10 @@ public class JobsToastGui extends ToastGui {
         }
 
         public boolean renderWithAnimation(MatrixStack matrixStack, int width, int height) {
-            long i = Util.milliTime();
+            long i = Util.getMillis();
             if (this.animationTime == -1L) {
                 this.animationTime = i;
-                this.visibility.playSound(JobsToastGui.this.mc.getSoundHandler());
+                this.visibility.playSound(JobsToastGui.this.mc.getSoundManager());
             }
 
             if (this.visibility == IToast.Visibility.SHOW && i - this.animationTime <= 600L) {
@@ -162,22 +162,22 @@ public class JobsToastGui extends ToastGui {
 
             RenderSystem.pushMatrix();
             RenderSystem.translatef((float)width - 160.0F * this.getVisibility(i), (float)(height * 32), (float)(800 + height));
-            IToast.Visibility itoast$visibility = this.toast.func_230444_a_(matrixStack, JobsToastGui.this, i - this.visibleTime);
+            IToast.Visibility itoast$visibility = this.toast.render(matrixStack, JobsToastGui.this, i - this.visibleTime);
             RenderSystem.popMatrix();
             if (itoast$visibility != this.visibility) {
                 this.animationTime = i - (long)((int)((1.0F - this.getVisibility(i)) * 600.0F));
                 this.visibility = itoast$visibility;
-                this.visibility.playSound(JobsToastGui.this.mc.getSoundHandler());
+                this.visibility.playSound(JobsToastGui.this.mc.getSoundManager());
             }
 
             return this.visibility == IToast.Visibility.HIDE && i - this.animationTime > 600L;
         }
 
         public boolean render(MatrixStack matrixStack, int width, int height) {
-            long i = Util.milliTime();
+            long i = Util.getMillis();
             if (this.animationTime == -1L) {
                 this.animationTime = i;
-                this.visibility.playSound(JobsToastGui.this.mc.getSoundHandler());
+                this.visibility.playSound(JobsToastGui.this.mc.getSoundManager());
             }
 
             if (this.visibility == IToast.Visibility.SHOW && i - this.animationTime <= 600L) {
@@ -186,12 +186,12 @@ public class JobsToastGui extends ToastGui {
 
             RenderSystem.pushMatrix();
             RenderSystem.translatef((float)width - 160.0F, (float)(height * 32), (float)(800 + height));
-            IToast.Visibility itoast$visibility = this.toast.func_230444_a_(matrixStack, JobsToastGui.this, i - this.visibleTime);
+            IToast.Visibility itoast$visibility = this.toast.render(matrixStack, JobsToastGui.this, i - this.visibleTime);
             RenderSystem.popMatrix();
             if (itoast$visibility != this.visibility) {
                 this.animationTime = i - (long)((int)((1.0F - this.getVisibility(i)) * 600.0F));
                 this.visibility = itoast$visibility;
-                this.visibility.playSound(JobsToastGui.this.mc.getSoundHandler());
+                this.visibility.playSound(JobsToastGui.this.mc.getSoundManager());
             }
 
             return this.visibility == IToast.Visibility.HIDE && i - this.animationTime > 600L;

@@ -13,8 +13,8 @@ public class KeyBindings {
     public static KeyBinding keyBindingTheOneProbeConfigGui;
 
     public static void init() {
-        toggleLiquids = new KeyBinding("key.toggleLiquids", KeyConflictContext.IN_GAME, InputMappings.INPUT_INVALID, "key.categories.theoneprobe");
-        toggleVisible = new KeyBinding("key.toggleVisible", KeyConflictContext.IN_GAME, InputMappings.INPUT_INVALID, "key.categories.theoneprobe");
+        toggleLiquids = new KeyBinding("key.toggleLiquids", KeyConflictContext.IN_GAME, InputMappings.UNKNOWN, "key.categories.theoneprobe");
+        toggleVisible = new KeyBinding("key.toggleVisible", KeyConflictContext.IN_GAME, InputMappings.UNKNOWN, "key.categories.theoneprobe");
         keyBindingTheOneProbeConfigGui = new KeyBinding("enviummod.theOneProbe.configGui", GLFW.GLFW_KEY_UNKNOWN, "key.categories.enviummod");
 
         ClientRegistry.registerKeyBinding(toggleLiquids);

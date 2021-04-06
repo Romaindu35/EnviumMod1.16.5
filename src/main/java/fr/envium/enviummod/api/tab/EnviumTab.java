@@ -20,14 +20,14 @@ public class EnviumTab {
 
     public static final  ItemGroup TAB = new ItemGroup("envium_creative_tabs") {
         @Override
-        public ItemStack createIcon() {
+        public ItemStack makeIcon() {
             return new ItemStack(RegisterItem.envium_lingot);
         }
     };
 
     public static final  ItemGroup TAB_ANIMAL = new ItemGroup("envium_creative_tabs_animal") {
         @Override
-        public ItemStack createIcon() {
+        public ItemStack makeIcon() {
             return new ItemStack(RegisterItem.marmot_spawn_eggs);
         }
     };

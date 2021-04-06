@@ -18,7 +18,7 @@ public class ContainerEnviumChest extends Container {
     public ContainerEnviumChest(int windowId, PlayerInventory playerInv, PacketBuffer data) {
         super(RegisterContainer.ENVIUM_CHEST.get(), windowId);
 
-        this.tile = (TileEnviumChest) playerInv.player.world.getTileEntity(data.readBlockPos());;
+        this.tile = (TileEnviumChest) playerInv.player.level.getBlockEntity(data.readBlockPos());;
         this.inv = playerInv;
 
         int i;
@@ -43,33 +43,33 @@ public class ContainerEnviumChest extends Container {
 
 
     @Override
-    public boolean canInteractWith(PlayerEntity player) {
-        return tile.isUsableByPlayer(player);
+    public boolean stillValid(PlayerEntity player) {
+        return tile.stillValid(player);
     }
 
 
 
     @Override
-    public ItemStack transferStackInSlot(PlayerEntity playerIn, int index) {
+    public ItemStack quickMoveStack(PlayerEntity playerIn, int index) {
         ItemStack stackToReturn = ItemStack.EMPTY;
-        Slot slot = this.inventorySlots.get(index);
+        Slot slot = this.slots.get(index);
 
-        if (slot != null && slot.getHasStack()) {
-            ItemStack stack = slot.getStack();
+        if (slot != null && slot.hasItem()) {
+            ItemStack stack = slot.getItem();
             stackToReturn = stack.copy();
 
             if (index < 96) {
-                if (!this.mergeItemStack(stack, 96, 132, true)) {
+                if (!this.moveItemStackTo(stack, 96, 132, true)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (!this.mergeItemStack(stack, 0, 96, false)) {
+            } else if (!this.moveItemStackTo(stack, 0, 96, false)) {
                 return ItemStack.EMPTY;
             }
 
             if (stack.isEmpty()) {
-                slot.putStack(ItemStack.EMPTY);
+                slot.set(ItemStack.EMPTY);
             } else {
-                slot.onSlotChanged();
+                slot.setChanged();
             }
 
         }

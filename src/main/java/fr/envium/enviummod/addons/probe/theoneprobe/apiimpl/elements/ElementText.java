@@ -16,7 +16,7 @@ public class ElementText implements IElement {
     }
 
     public ElementText(PacketBuffer buf) {
-        text = buf.readTextComponent();
+        text = buf.readComponent();
     }
 
     @Override
@@ -36,7 +36,7 @@ public class ElementText implements IElement {
 
     @Override
     public void toBytes(PacketBuffer buf) {
-        buf.writeTextComponent(text);
+        buf.writeComponent(text);
     }
 
     @Override

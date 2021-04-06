@@ -17,14 +17,14 @@ public class ChunkUtils {
         System.out.println(world);
         System.out.println(x);
         System.out.println(z);
-        ChunkGenerator gen = world.getChunkProvider().generator;
+        ChunkGenerator gen = world.getChunkSource().generator;
         Chunk chunk = world.getChunk(x, z);
         System.out.println(chunk);
         try
         {
             System.out.println("0");
             System.out.println(world.getServer());
-            world.getServer().deferTask(() ->
+            world.getServer().submitAsync(() ->
             {
                 /*gen.generateBiomes(chunk);
                 gen.makeBase(world, chunk);*/
@@ -70,7 +70,7 @@ public class ChunkUtils {
                     if(block1 == block)
                         count++;
 
-                    if(world.canBlockSeeSky(pos))
+                    if(world.canSeeSkyFromBelowWater(pos))
                         break;
                 }
             }

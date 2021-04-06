@@ -18,7 +18,7 @@ public class MeerkatRenderer extends MobRenderer<Meerkat, MeerkatModel<Meerkat>>
         }
 
         @Override
-        public ResourceLocation getEntityTexture(Meerkat entity) {
+        public ResourceLocation getTextureLocation(Meerkat entity) {
             return TEXTURE;
         }
     }
