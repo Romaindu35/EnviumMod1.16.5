@@ -1,6 +1,7 @@
 package fr.envium.enviummod.core.mixin;
 
 import fr.envium.enviummod.core.client.gui.GuiLoading;
+import net.minecraft.client.GameConfiguration;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.LoadingGui;
 import net.minecraft.client.gui.screen.MainMenuScreen;
@@ -12,8 +13,10 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.io.InputStream;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -54,6 +57,14 @@ public class MixinMinecraft {
         stringbuilder.append(Minecraft.getInstance().getUser().getName());
         System.out.println("*********** Mixins Minecraft (Title was been updated) ***********");
         cir.setReturnValue(stringbuilder.toString());
+    }
+
+    @Inject(at = @At("RETURN"), method = "Lnet/minecraft/client/Minecraft;<init>(Lnet/minecraft/client/GameConfiguration;)V", cancellable = true)
+    private void init(GameConfiguration p_i45547_1_, CallbackInfo ci) {
+        Minecraft mc = Minecraft.getInstance();
+        InputStream inputStream16 = ClassLoader.getSystemResourceAsStream("assets/enviummod/textures/icons/icon_16x16.png");
+        InputStream inputStream32 = ClassLoader.getSystemResourceAsStream("assets/enviummod/textures/icons/icon32.png");
+        mc.getWindow().setIcon(inputStream16, inputStream32);
     }
 
 }

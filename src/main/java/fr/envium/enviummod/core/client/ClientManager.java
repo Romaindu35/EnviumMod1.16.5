@@ -60,7 +60,6 @@ public class ClientManager {
         RenderTypeLookup.setRenderLayer(RegisterBlock.cave_block, RenderType.translucent());
         RenderTypeLookup.setRenderLayer(RegisterBlock.pillow, RenderType.translucent());
         //DiscordInitialise.getInstance().init();
-        setIcon();
     }
 
     public void loadComplete(FMLLoadCompleteEvent e)
@@ -104,14 +103,6 @@ public class ClientManager {
         Minecraft mc = Minecraft.getInstance();
         System.out.println("clé de la clé");
         mc.setScreen(new GuiAdmin(new StringTextComponent("gui_admin")));
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public static void setIcon() {
-        Minecraft mc = Minecraft.getInstance();
-        InputStream inputStream16 = ClassLoader.getSystemResourceAsStream("assets/enviummod/textures/icons/icon_16x16.png");
-        InputStream inputStream32 = ClassLoader.getSystemResourceAsStream("assets/enviummod/textures/icons/icon32.png");
-        mc.getWindow().setIcon(inputStream16, inputStream32);
     }
 
     @OnlyIn(Dist.CLIENT)
