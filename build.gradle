@@ -12,6 +12,7 @@ buildscript {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.1+', changing: true
         classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
         classpath "com.wynprice.cursemaven:CurseMaven:2.1.5"
+        classpath 'com.github.jengelman.gradle.plugins:shadow:5.2.0'
     }
 }
 apply plugin: 'net.minecraftforge.gradle'
@@ -20,6 +21,7 @@ apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 apply plugin: 'java-library'
 apply plugin: "com.wynprice.cursemaven"
+apply plugin: 'com.github.johnrengelman.shadow'
 
 archivesBaseName = 'enviummod'
 
