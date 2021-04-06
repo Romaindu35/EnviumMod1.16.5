@@ -21,7 +21,10 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
+@OnlyIn(Dist.CLIENT)
 public class EnviumChestEntityRenderer extends TileEntityRenderer<TileEnviumChest> {
 
     private final ModelRenderer chestLid;
@@ -70,7 +73,7 @@ public class EnviumChestEntityRenderer extends TileEntityRenderer<TileEnviumChes
                 iCallbackWrapper = TileEntityMerger.ICallback::func_225537_b_;
             }
 
-            float f1 = iCallbackWrapper.apply(EnviumChest.getLid(tileEntity)).get(partialTicks);
+            /*float f1 = iCallbackWrapper.apply(EnviumChest.getLid(tileEntity)).get(partialTicks);
             f1 = 1.0F - f1;
             f1 = 1.0F - f1 * f1 * f1;
             int i = iCallbackWrapper.apply(new DualBrightnessCallback<>()).applyAsInt(combinedLightIn);
@@ -78,7 +81,7 @@ public class EnviumChestEntityRenderer extends TileEntityRenderer<TileEnviumChes
             RenderMaterial material = new RenderMaterial(Atlases.CHEST_ATLAS, ENVIUM_CHEST_LOCATION);
             IVertexBuilder ivertexbuilder = material.getBuffer(bufferIn, RenderType::getEntityCutout);
 
-            this.handleModelRender(matrixStackIn, ivertexbuilder, this.chestLid, this.chestLock, this.chestBottom, f1, i, combinedOverlayIn);
+            this.handleModelRender(matrixStackIn, ivertexbuilder, this.chestLid, this.chestLock, this.chestBottom, f1, i, combinedOverlayIn);*/
             matrixStackIn.pop();
         }
     }

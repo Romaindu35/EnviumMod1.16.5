@@ -1,11 +1,14 @@
 package fr.envium.enviummod.addons.probe.theoneprobe.gui;
 
 import fr.envium.enviummod.addons.probe.theoneprobe.api.TextStyleClass;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@OnlyIn(Dist.CLIENT)
 class Preset {
     private final String name;
     private final int boxBorderColor;

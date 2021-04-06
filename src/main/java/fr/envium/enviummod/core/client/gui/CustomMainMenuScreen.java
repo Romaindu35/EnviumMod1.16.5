@@ -102,7 +102,7 @@ public class CustomMainMenuScreen extends Screen {
             this.minecraft.displayGuiScreen(new LanguageScreen(this, this.minecraft.gameSettings, this.minecraft.getLanguageManager()));
         }, I18n.format("narrator.button.language")));*/
         this.addButton(new ScreenButton(this.width / 2 -25, this.height / 2 + 50, 50, 10, I18n.format("menu.enviummod.play"), (p_213089_1_) -> {
-            this.minecraft.displayGuiScreen(new ConnectingScreen(this, this.minecraft, new ServerData("Envium", "mc.envium.fr:25565", false)));
+            this.minecraft.displayGuiScreen(new ConnectingScreen(this, this.minecraft, new ServerData("Envium", "vps.envium.fr:25565", false)));
         }));
         this.addButton(new ScreenButton(this.width / 2 - 100 -25, this.height / 2 + 25 , 50, 10, I18n.format("menu.enviummod.options"), (p_213096_1_) -> {
             this.minecraft.displayGuiScreen(new OptionsScreen(this, this.minecraft.gameSettings));

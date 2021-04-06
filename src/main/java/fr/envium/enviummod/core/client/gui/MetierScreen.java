@@ -1,12 +1,18 @@
 package fr.envium.enviummod.core.client.gui;
 
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import fr.envium.enviummod.References;
 import fr.envium.enviummod.api.packets.NetworkRegistryHandler;
 import fr.envium.enviummod.core.packets.MetierPackets;
+import fr.envium.enviummod.core.packets.PacketXpInfoListener;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.play.client.CCustomPayloadPacket;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
@@ -35,7 +41,14 @@ public class MetierScreen {
             this.ySize = 170;
             leftTopX = (this.width - this.xSize) / 2;
             leftTopY = (this.height - this.ySize) / 2;
-            NetworkRegistryHandler.network.send(PacketDistributor.SERVER.noArg(), new MetierPackets());
+
+            /*ByteArrayDataOutput out = ByteStreams.newDataOutput();
+            out.writeUTF("Hello World!");
+            PacketBuffer packetBuffer =  new PacketBuffer();
+            CCustomPayloadPacket packet = new CCustomPayloadPacket(new ResourceLocation(References.MODID, "PacketXpInfoListener"), packetBuffer);*/
+            //Minecraft.getInstance().player.connection.sendPacket(new PacketXpInfoListener());
+
+            NetworkRegistryHandler.bukkit_channel.send(PacketDistributor.SERVER.noArg(), new PacketXpInfoListener());
         }
         private static final ResourceLocation texture = new ResourceLocation(References.MODID, "textures/gui/gui_metier.png");
         @Override

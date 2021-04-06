@@ -20,6 +20,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
@@ -30,6 +32,7 @@ import java.util.Map;
 import static fr.envium.enviummod.addons.probe.theoneprobe.api.TextStyleClass.*;
 import static fr.envium.enviummod.addons.probe.theoneprobe.rendering.RenderHelper.drawTexturedModalRect;
 
+@OnlyIn(Dist.CLIENT)
 public class GuiConfig extends Screen {
     private static final int WIDTH = 230;
     private static final int HEIGHT = 230;

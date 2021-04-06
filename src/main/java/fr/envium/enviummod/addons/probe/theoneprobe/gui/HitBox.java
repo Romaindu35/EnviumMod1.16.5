@@ -1,5 +1,9 @@
 package fr.envium.enviummod.addons.probe.theoneprobe.gui;
 
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+
+@OnlyIn(Dist.CLIENT)
 class HitBox {
     private final int x1;
     private final int y1;

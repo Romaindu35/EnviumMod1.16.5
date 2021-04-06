@@ -21,7 +21,6 @@ import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.tileentity.IChestLid;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityMerger;
 import net.minecraft.util.*;
@@ -165,7 +164,7 @@ public class EnviumChest extends Block {
 		return direction.rotateYCCW();
 	}
 
-	@OnlyIn(Dist.CLIENT)
+	/*@OnlyIn(Dist.CLIENT)
 	public static TileEntityMerger.ICallback<TileEnviumChest, Float2FloatFunction> getLid(final IChestLid p_226917_0_) {
 		return new TileEntityMerger.ICallback<TileEnviumChest, Float2FloatFunction>() {
 			@Override
@@ -186,7 +185,7 @@ public class EnviumChest extends Block {
 			}
 		};
 	}
-
+*/
 	@Override
 	public BlockState mirror(BlockState state, Mirror mirrorIn) {
 		return state.rotate(mirrorIn.toRotation(state.get(FACING)));

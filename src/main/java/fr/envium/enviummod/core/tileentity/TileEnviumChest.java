@@ -22,7 +22,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import org.jetbrains.annotations.Nullable;
 
-public class TileEnviumChest extends LockableTileEntity implements ITickableTileEntity, ISidedInventory, IChestLid {
+public class TileEnviumChest extends LockableTileEntity implements ITickableTileEntity, ISidedInventory {
 
 	private NonNullList<ItemStack> stacks = NonNullList.withSize(96, ItemStack.EMPTY);
 
@@ -183,10 +183,5 @@ public class TileEnviumChest extends LockableTileEntity implements ITickableTile
 
 			this.world.playSound((PlayerEntity)null, d0, d1, d2, soundIn, SoundCategory.BLOCKS, 0.5F, this.world.rand.nextFloat() * 0.1F + 0.9F);
 		}
-	}
-
-	@Override
-	public float getLidAngle(float partialTicks) {
-		return MathHelper.lerp(partialTicks, this.prevLidAngle, this.lidAngle);
 	}
 }

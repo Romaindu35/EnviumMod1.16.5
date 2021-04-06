@@ -1,6 +1,8 @@
 package fr.envium.enviummod.addons.probe.theoneprobe.keys;
 
 import fr.envium.enviummod.addons.probe.theoneprobe.config.Config;
+import fr.envium.enviummod.addons.probe.theoneprobe.gui.GuiConfig;
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -14,6 +16,8 @@ public class KeyInputHandler {
             if (!Config.holdKeyToMakeVisible.get()) {
                 Config.setVisible(!Config.isVisible.get());
             }
+        } else if (KeyBindings.keyBindingTheOneProbeConfigGui.isPressed()) {
+            Minecraft.getInstance().displayGuiScreen(new GuiConfig());
         }
     }
 }

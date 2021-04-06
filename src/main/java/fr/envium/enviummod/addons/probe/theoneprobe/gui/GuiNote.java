@@ -10,12 +10,15 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import static fr.envium.enviummod.addons.probe.theoneprobe.config.Config.*;
 import static fr.envium.enviummod.addons.probe.theoneprobe.rendering.RenderHelper.drawTexturedModalRect;
 import static net.minecraft.util.text.TextFormatting.BOLD;
 import static net.minecraft.util.text.TextFormatting.GREEN;
 
+@OnlyIn(Dist.CLIENT)
 public class GuiNote extends Screen {
     private static final int WIDTH = 256;
     private static final int HEIGHT = 160;

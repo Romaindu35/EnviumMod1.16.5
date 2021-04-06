@@ -22,7 +22,6 @@ import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.stats.Stat;
 import net.minecraft.stats.Stats;
 import net.minecraft.tileentity.ChestTileEntity;
-import net.minecraft.tileentity.IChestLid;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityMerger;
 import net.minecraft.util.*;
@@ -201,7 +200,7 @@ public class ChestEnvium extends Block implements IWaterLoggable {
     }
 
 
-    @OnlyIn(Dist.CLIENT)
+    /*@OnlyIn(Dist.CLIENT)
     public static TileEntityMerger.ICallback<ChestTileEntity, Float2FloatFunction> getLid(final IChestLid p_226917_0_) {
         return new TileEntityMerger.ICallback<ChestTileEntity, Float2FloatFunction>() {
             @Override
@@ -221,7 +220,7 @@ public class ChestEnvium extends Block implements IWaterLoggable {
                 return p_226917_0_::getLidAngle;
             }
         };
-    }
+    }*/
 
 
     public static TileEntityMerger.Type getMergerType(BlockState blockState) {

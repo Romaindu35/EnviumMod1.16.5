@@ -9,11 +9,14 @@ import net.minecraft.resources.IAsyncReloader;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.awt.*;
 import java.util.Optional;
 import java.util.function.Consumer;
 
+@OnlyIn(Dist.CLIENT)
 public class GuiLoading extends LoadingGui {
     private static final ResourceLocation ENVIUM_BACKGROUND_TEXTURE = new ResourceLocation(References.MODID, "textures/gui/fond_ecran_minecraft.png");
     private static final ResourceLocation ENVIUM_LOGO = new ResourceLocation(References.MODID, "textures/gui/title/envium_title.png");

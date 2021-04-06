@@ -65,7 +65,7 @@ public class RegisterBlock {
                 new BlockItem(envium_ore, new Item.Properties().group(EnviumTab.TAB)).setRegistryName(envium_ore.getRegistryName()),
                 new BlockItem(cave_block, new Item.Properties().group(EnviumTab.TAB)).setRegistryName(cave_block.getRegistryName()),
                 new BlockItem(envium_furnace, new Item.Properties().group(EnviumTab.TAB)).setRegistryName(envium_furnace.getRegistryName()),
-                new BlockItem(envium_chest, new Item.Properties().group(EnviumTab.TAB).setISTER(RegisterBlock::enviumChestRenderer)).setRegistryName(envium_chest.getRegistryName()),
+                new BlockItem(envium_chest, new Item.Properties().group(EnviumTab.TAB)).setRegistryName(envium_chest.getRegistryName()),/*.setISTER(RegisterBlock::enviumChestRenderer)).setRegistryName(envium_chest.getRegistryName()),*/
                 new BlockItem(pillow, new Item.Properties().group(EnviumTab.TAB)).setRegistryName(pillow.getRegistryName())
                 /*new BlockItem(warped_stem, new Item.Properties().group(EnviumTab.TAB)).setRegistryName(warped_stem.getRegistryName()),
                 new BlockItem(warped_plank, new Item.Properties().group(EnviumTab.TAB)).setRegistryName(warped_plank.getRegistryName()),

@@ -64,6 +64,9 @@ public class EnviumMod
         MinecraftForge.EVENT_BUS.addListener(WorldEventCustom::onWorldLoaded);
         MinecraftForge.EVENT_BUS.addListener(WorldEventCustom::onWorldSaved);
         MinecraftForge.EVENT_BUS.addListener(this::serverStarting);
+
+        MinecraftForge.EVENT_BUS.addListener(BukkitPacketListener::packetListener);
+        MinecraftForge.EVENT_BUS.addListener(BukkitPacketListener::packetListener2);
     }
 
     private void setup(final FMLCommonSetupEvent event)
