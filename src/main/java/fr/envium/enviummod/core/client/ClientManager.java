@@ -111,11 +111,4 @@ public class ClientManager {
         ObfuscationReflectionHelper.setPrivateValue(Field.class, sessionField, sessionField.getModifiers() & ~Modifier.FINAL, "modifiers");
         ObfuscationReflectionHelper.setPrivateValue(Minecraft.class, Minecraft.getInstance(), new JobsToastGui(), "toast");
     }
-
-    /*@SubscribeEvent
-    public void setupPlayerRotations(PlayerModelEvent.SetupAngles.Post event)
-    {
-            event.getModelPlayer().getModelHead().rotateAngleX = (float) Math.toRadians(90f);
-            event.getModelPlayer().bipedBody.rotateAngleX = (float) Math.toRadians(180F);
-    }*/
 }
