@@ -45,6 +45,7 @@ public class EnviumMod
         bus.addListener(new ClientManager()::clientSetup);
         bus.addListener(new ClientManager()::loadComplete);
         bus.addListener(this::setup);
+        bus.addListener(new RegisterEntity()::registerAttributes);
         //bus.addListener(this::serverStarting);
         //bus.addListener(ModOreGen::gen);
 

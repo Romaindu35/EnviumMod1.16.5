@@ -3,7 +3,6 @@ package fr.envium.enviummod.core.packets;
 import fr.envium.enviummod.core.client.gui.MetierScreen;
 import fr.envium.enviummod.core.client.gui.toast.JobsToast;
 import fr.envium.enviummod.core.client.gui.toast.JobsToastGui;
-import fr.envium.enviummod.core.client.render.RenderOverlay;
 import fr.envium.enviummod.core.server.enums.ActionResponseClient;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.PacketBuffer;
