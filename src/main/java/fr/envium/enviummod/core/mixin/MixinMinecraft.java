@@ -47,8 +47,8 @@ public class MixinMinecraft {
         System.out.println("Minecraft was been initialise");
     }*/
 
-    @Inject(at = @At("HEAD"), method = "getWindowTitle", cancellable = true)
-    private void func_230149_ax_(CallbackInfoReturnable<String> cir) {
+    @Inject(at = @At("HEAD"), method = "Lnet/minecraft/client/Minecraft;getWindowTitle()Ljava/lang/String;", cancellable = true)
+    private void getWindowTitle(CallbackInfoReturnable<String> cir) {
         StringBuilder stringbuilder = new StringBuilder("Envium");
         stringbuilder.append(" - ");
         stringbuilder.append(Minecraft.getInstance().getSession().getUsername());
