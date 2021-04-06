@@ -8,6 +8,7 @@ import fr.envium.enviummod.animals.entity.Toucan;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -37,4 +38,9 @@ public class RegisterEntity {
                             .sized(0.9F, 1.2F)
                             .build(new ResourceLocation(References.MODID, "meerkat_entity").toString()));
 
+
+    public void registerAttributes(EntityAttributeCreationEvent event) {
+        System.out.println("attributes register");
+        event.put(RegisterEntity.TOUCAN_ENTITY.get(), Toucan.createAttributes().build());
+    }
 }
