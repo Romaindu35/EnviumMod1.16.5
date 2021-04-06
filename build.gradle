@@ -22,10 +22,9 @@ apply plugin: 'maven-publish'
 apply plugin: 'java-library'
 apply plugin: "com.wynprice.cursemaven"
 apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: 'org.spongepowered.mixin'
 
 archivesBaseName = 'enviummod'
-
-apply plugin: 'org.spongepowered.mixin'
 
 allprojects {
     version = '1.0'
