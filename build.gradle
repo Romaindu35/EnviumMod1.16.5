@@ -162,6 +162,7 @@ dependencies {
 }
 // Example for how to get properties into the manifest for reading by the runtime..
     jar {
+        classifier "slim"
         manifest {
             //attributes 'FMLAT': 'enviummod_at.cfg',
             attributes([
@@ -177,6 +178,23 @@ dependencies {
         }
     }
 
+
+shadowJar {
+    classifier ''
+    configurations = [project.configurations.shadow]
+
+    dependencies{
+        exclude(dependency('org.jetbrains:annotations'))
+        exclude(dependency('com.google.code.findbugs:jsr305'))
+    }
+}
+
+reobf {
+    shadowJar {
+        dependsOn createMcpToSrg
+        mappings = createMcpToSrg.output
+    }
+}
 // Example configuration to allow publishing using the maven-publish task
 // This is the preferred method to reobfuscate your jar file
 jar.finalizedBy('reobfJar') 
@@ -201,3 +219,5 @@ apply plugin: 'org.spongepowered.mixin'
 mixin {
     add sourceSets.main, "enviummod.refmap.json"
 }
+
+tasks.build.dependsOn tasks.shadowJar
