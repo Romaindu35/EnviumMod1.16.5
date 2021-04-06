@@ -23,6 +23,8 @@ apply plugin: "com.wynprice.cursemaven"
 
 archivesBaseName = 'enviummod'
 
+apply plugin: 'org.spongepowered.mixin'
+
 allprojects {
     version = '1.0'
     sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
@@ -121,6 +123,7 @@ repositories {
     maven {
         url "https://www.cursemaven.com"
     }
+    maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
 }
 
 configurations {
@@ -153,6 +156,7 @@ dependencies {
     compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.15'
     runtime "mysql:mysql-connector-java:8.0.15"
 
+    annotationProcessor 'org.spongepowered:mixin:0.8.2:processor'
 }
 // Example for how to get properties into the manifest for reading by the runtime..
     jar {
