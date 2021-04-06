@@ -20,6 +20,13 @@ public class NetworkRegistryHandler
             .networkProtocolVersion(() -> PROTOCOL_VERSION)
             .simpleChannel();
 
+    public static final SimpleChannel bukkit_channel = NetworkRegistry.ChannelBuilder
+            .named(new ResourceLocation(References.MODID, "packet_xp_info_listener"))
+            .clientAcceptedVersions(PROTOCOL_VERSION::equals)
+            .serverAcceptedVersions(PROTOCOL_VERSION::equals)
+            .networkProtocolVersion(() -> PROTOCOL_VERSION)
+            .simpleChannel();
+
     /*public static void registerClientMessages()
     {
         int id = 0;
@@ -57,5 +64,8 @@ public class NetworkRegistryHandler
         network.registerMessage(id++, ReponseClientPacket.class, ReponseClientPacket::encode, ReponseClientPacket::decode, ReponseClientPacket.ClientHandler::handle, distClient());
         network.registerMessage(id++, PacketUpdateTileEntityData.class, PacketUpdateTileEntityData::encode, PacketUpdateTileEntityData::decode, PacketUpdateTileEntityData.ClientHandler::handle, distClient());
         network.registerMessage(id++, MetierPackets.class, MetierPackets::encode, MetierPackets::decode, MetierPackets::handle, distServer());
+
+
+        bukkit_channel.registerMessage(id++, PacketXpInfoListener.class, PacketXpInfoListener::encode, PacketXpInfoListener::decode, PacketXpInfoListener::handle, distServer());
     }
 }
