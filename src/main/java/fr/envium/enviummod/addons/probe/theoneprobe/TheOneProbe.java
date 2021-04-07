@@ -90,7 +90,7 @@ public class TheOneProbe {
         TheOneProbe.theOneProbeImp.registerEntityProvider(new DebugProbeInfoEntityProvider());
         TheOneProbe.theOneProbeImp.registerEntityProvider(new EntityProbeInfoEntityProvider());
 
-        PacketHandler.registerMessages("theoneprobe");
+        PacketHandler.registerMessages("theoneprobe_envium");
 
         configureProviders();
         configureEntityProviders();
