@@ -1,39 +1,52 @@
 package fr.envium.enviummod.animals.entity;
 
 import fr.envium.enviummod.api.init.RegisterEntity;
-import net.minecraft.entity.AgeableEntity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.SpawnReason;
+import net.minecraft.block.Blocks;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.controller.FlyingMovementController;
+import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.IFlyingAnimal;
 import net.minecraft.entity.passive.ShoulderRidingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.pathfinding.FlyingPathNavigator;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.pathfinding.PathNodeType;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import org.jetbrains.annotations.Nullable;
 
-public class Toucan extends ShoulderRidingEntity implements IFlyingAnimal {
-    
+public class Toucan extends AnimalEntity implements IFlyingAnimal {
+
+    public float flap;
+    public float flapSpeed;
+    public float oFlapSpeed;
+    public float oFlap;
+    private float flapping = 1.0F;
+
     public Toucan(EntityType<? extends Toucan> type, World worldIn) {
         super(type, worldIn);
+        super.aiStep();
         this.moveControl = new FlyingMovementController(this, 10, false);
         this.setPathfindingMalus(PathNodeType.DANGER_FIRE, -1.0F);
         this.setPathfindingMalus(PathNodeType.DAMAGE_FIRE, -1.0F);
         this.setPathfindingMalus(PathNodeType.COCOA, -1.0F);
     }
 
+
+
     @Nullable
     @Override
     public AgeableEntity getBreedOffspring(ServerWorld world, AgeableEntity entity) {
-        Toucan marmot = new Toucan(RegisterEntity.TOUCAN_ENTITY.get(), world);
-        marmot.finalizeSpawn(world, world.getCurrentDifficultyAt(marmot.blockPosition()), SpawnReason.BREEDING, null, null);
+        Toucan toucan = new Toucan(RegisterEntity.TOUCAN_ENTITY.get(), world);
+        toucan.finalizeSpawn(world, world.getCurrentDifficultyAt(toucan.blockPosition()), SpawnReason.BREEDING, null, null);
 
-        return marmot;
+        return toucan;
     }
 
     public static AttributeModifierMap.MutableAttribute createAttributes() {
@@ -41,11 +54,49 @@ public class Toucan extends ShoulderRidingEntity implements IFlyingAnimal {
     }
 
     @Override
-    protected PathNavigator createNavigation(World p_175447_1_) {
-        FlyingPathNavigator flyingpathnavigator = new FlyingPathNavigator(this, p_175447_1_);
+    protected void registerGoals() {
+        this.goalSelector.addGoal(0, new PanicGoal(this, 1.25D));
+        this.goalSelector.addGoal(0, new SwimGoal(this));
+        this.goalSelector.addGoal(1, new LookAtGoal(this, PlayerEntity.class, 8.0F));
+        this.goalSelector.addGoal(2, new WaterAvoidingRandomFlyingGoal(this, 1.0D));
+        this.goalSelector.addGoal(3, new FollowMobGoal(this, 1.0D, 3.0F, 7.0F));
+    }
+
+    @Override
+    protected float getStandingEyeHeight(Pose p_213348_1_, EntitySize p_213348_2_) {
+        return p_213348_2_.height * 0.6F;
+    }
+
+    @Override
+    protected PathNavigator createNavigation(World world) {
+        FlyingPathNavigator flyingpathnavigator = new FlyingPathNavigator(this, world);
         flyingpathnavigator.setCanOpenDoors(false);
         flyingpathnavigator.setCanFloat(true);
         flyingpathnavigator.setCanPassDoors(true);
         return flyingpathnavigator;
+    }
+
+    @Override
+    public void aiStep() {
+        super.aiStep();
+        this.calculateFlapping();
+    }
+
+    private void calculateFlapping() {
+        this.oFlap = this.flap;
+        this.oFlapSpeed = this.flapSpeed;
+        this.flapSpeed = (float)((double)this.flapSpeed + (double)(!this.onGround && !this.isPassenger() ? 4 : -1) * 0.3D);
+        this.flapSpeed = MathHelper.clamp(this.flapSpeed, 0.0F, 1.0F);
+        if (!this.onGround && this.flapping < 1.0F) {
+            this.flapping = 1.0F;
+        }
+
+        this.flapping = (float)((double)this.flapping * 0.9D);
+        Vector3d vec3d = this.getDeltaMovement();
+        if (!this.onGround && vec3d.y < 0.0D) {
+            this.setDeltaMovement(vec3d.multiply(1.0D, 0.6D, 1.0D));
+        }
+
+        this.flap += this.flapping * 2.0F;
     }
 }
