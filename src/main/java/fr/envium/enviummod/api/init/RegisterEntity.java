@@ -42,5 +42,6 @@ public class RegisterEntity {
     public void registerAttributes(EntityAttributeCreationEvent event) {
         System.out.println("attributes register");
         event.put(RegisterEntity.TOUCAN_ENTITY.get(), Toucan.createAttributes().build());
+        event.put(RegisterEntity.LIRONDEL_ENTITY.get(), Lirondel.createAttributes().build());
     }
 }
