@@ -39,11 +39,11 @@ jobs:
         run: ./gradlew clean build
         env:
           CI: yes
-      - name: 📂 Sync files
-        uses: kevinpainchaud/simple-ftp-deploy-action@v1.2.1
-        with:
-          ftp_host: ${{ secrets.SERVER_FTP }}
-          ftp_username: ${{ secrets.USERNAME }}
-          ftp_password: ${{ secrets.PASSWORD }}
-          local_source_dir: "/github/workspace/"
-          dist_target_dir: "/var/www/envium/file/EnviumMod1.16.5/"
+      - uses: actions/checkout@master
+      - name: FTP-Deploy-Action
+        uses: SamKirkland/FTP-Deploy-Action@2.0.0
+        env:
+         FTP_SERVER: ${{ secrets.SERVER_FTP }}
+         FTP_USERNAME: ${{ secrets.USERNAME }}
+         FTP_PASSWORD: ${{ secrets.PASSWORD }}
+         # --delete arg will delete files on the server if you've deleted them in git
