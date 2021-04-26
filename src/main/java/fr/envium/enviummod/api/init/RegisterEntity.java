@@ -43,5 +43,7 @@ public class RegisterEntity {
         System.out.println("attributes register");
         event.put(RegisterEntity.TOUCAN_ENTITY.get(), Toucan.createAttributes().build());
         event.put(RegisterEntity.LIRONDEL_ENTITY.get(), Lirondel.createAttributes().build());
+        event.put(RegisterEntity.MARMOT_ENTITY.get(), Marmot.createAttributes().build());
+        event.put(RegisterEntity.MEERKAT_ENTITY.get(), Meerkat.createAttributes().build());
     }
 }
