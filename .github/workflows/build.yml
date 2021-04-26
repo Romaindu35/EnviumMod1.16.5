@@ -36,6 +36,6 @@ jobs:
           run: chmod +x gradlew
         - name: Gradle build
           id: gradle
-          run: ./gradlew setupActionsOutputs clean build
+          run: ./gradlew clean build
           env:
             CI: yes
