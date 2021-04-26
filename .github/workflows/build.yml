@@ -42,9 +42,9 @@ jobs:
       - name: 📂 Sync files
         uses: SamKirkland/FTP-Deploy-Action@4.0.0
         with:
-         server: ${{ secrets.server_ftp }}
-         username: ${{ secrets.username }}
-         password: ${{ secrets.password }}
+         server: ${{ secrets.SERVER_FTP }}
+         username: ${{ secrets.USERNAME }}
+         password: ${{ secrets.PASSWORD }}
          protocol: ftps
-         port: ${{ secrets.port_ftp }} # todo replace with your web hosts ftps port
+         port: ${{ secrets.PORT_FTP }} # todo replace with your web hosts ftps port
          server-dir: /var/www/envium/file/EnviumMod1.16.5/
