@@ -39,3 +39,12 @@ jobs:
         run: ./gradlew clean build
         env:
           CI: yes
+      - name: 📂 Sync files
+        uses: SamKirkland/FTP-Deploy-Action@4.0.0
+        with:
+         server: ${{ secrets.server_ftp }}
+         username: ${{ secrets.username }}
+         password: ${{ secrets.password }}
+         protocol: ftps
+         port: ${{ secrets.port_ftp }} # todo replace with your web hosts ftps port
+         server-dir: /var/www/envium/file/EnviumMod1.16.5/
