@@ -46,7 +46,7 @@ jobs:
         run: ./gradlew clean build
         env:
           CI: yes
-          VERSION: $BUILD_NUMBER
+          VERSION: echo "$BUILD_NUMBER"
       - name: FTP-Deploy-Action
         uses: SamKirkland/FTP-Deploy-Action@2.0.0
         env:
