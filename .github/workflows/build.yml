@@ -45,4 +45,4 @@ jobs:
           ftp_host: ${{ secrets.SERVER_FTP }}
           ftp_username: ${{ secrets.USERNAME }}
           ftp_password: ${{ secrets.PASSWORD }}
-          dist_target_dir: "/var/www/envium/file/EnviumMod1.16.5/"
+          dist_target_dir: "www/envium/file/EnviumMod1.16.5/"
