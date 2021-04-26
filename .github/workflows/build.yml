@@ -46,4 +46,5 @@ jobs:
          FTP_SERVER: ${{ secrets.SERVER_FTP }}
          FTP_USERNAME: ${{ secrets.USERNAME }}
          FTP_PASSWORD: ${{ secrets.PASSWORD }}
+         LOCAL_DIR: home.runner.work.EnviumMod1.16.5.EnviumMod1.16.5.build.libs
          # --delete arg will delete files on the server if you've deleted them in git
