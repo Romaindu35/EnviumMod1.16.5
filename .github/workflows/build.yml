@@ -34,11 +34,19 @@ jobs:
            restore-keys: ${{ runner.os }}-gradle-wrapper-
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
+      - name: Generate build number
+        uses: einaregilsson/build-number@v3
+        with:
+          token: ${{secrets.github_token}}
+      - name: Print new build number
+        run: echo "Build number is $BUILD_NUMBER"
+
       - name: Gradle build
         id: gradle
         run: ./gradlew clean build
         env:
           CI: yes
+          VERSION: $BUILD_NUMBER
       - name: FTP-Deploy-Action
         uses: SamKirkland/FTP-Deploy-Action@2.0.0
         env:

@@ -24,8 +24,16 @@ apply plugin: 'org.spongepowered.mixin'
 
 archivesBaseName = 'enviummod'
 
+final isCiBuilding = System.getenv().containsKey('CI')
+
+
+
 allprojects {
-    version = '1.0'
+    if (isCiBuilding) {
+        logger.warn 'CI build.'
+        version = System.getenv('VERSION')
+    }
+    version = 'DEV'
     sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
     group = 'fr.envium.enviummod'
 }
@@ -213,12 +221,6 @@ publishing {
 
 mixin {
     add sourceSets.main, "enviummod.refmap.json"
-}
-
-final isCiBuilding = System.getenv().containsKey('CI')
-
-if (isCiBuilding) {
-    logger.warn 'CI build. Certain modules will be omitted from this build'
 }
 
 tasks.build.dependsOn tasks.shadowJar
