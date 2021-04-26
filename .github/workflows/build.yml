@@ -40,11 +40,9 @@ jobs:
         env:
           CI: yes
       - name: 📂 Sync files
-        uses: SamKirkland/FTP-Deploy-Action@4.0.0
+        uses: kevinpainchaud/simple-ftp-deploy-action@v1.2.1
         with:
-         server: ${{ secrets.SERVER_FTP }}
-         username: ${{ secrets.USERNAME }}
-         password: ${{ secrets.PASSWORD }}
-         protocol: ftps
-         port: ${{ secrets.PORT_FTP }} # todo replace with your web hosts ftps port
-         server-dir: /var/www/envium/file/EnviumMod1.16.5/
+          ftp_host: ${{ secrets.SERVER_FTP }}
+          ftp_username: ${{ secrets.USERNAME }}
+          ftp_password: ${{ secrets.PASSWORD }}
+          dist_target_dir: "/var/www/envium/file/EnviumMod1.16.5/"
