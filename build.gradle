@@ -29,11 +29,11 @@ final isCiBuilding = System.getenv().containsKey('CI')
 
 
 allprojects {
+    version = '1.16.5-DEV'
     if (isCiBuilding) {
         logger.warn 'CI build.'
-        version = System.getenv('VERSION')
+        version = '1.16.5-build-' + System.getenv('VERSION')
     }
-    version = 'DEV'
     sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
     group = 'fr.envium.enviummod'
 }
