@@ -65,7 +65,7 @@ public class JobsToastGui extends ToastGui {
             }
         }
 
-        return (T)null;
+        return null;
     }
 
     @Nullable
@@ -84,11 +84,11 @@ public class JobsToastGui extends ToastGui {
             }
         }
 
-        return (T)null;
+        return null;
     }
 
     public void clear() {
-        Arrays.fill(this.visible, (Object)null);
+        Arrays.fill(this.visible, null);
         this.toastsQueue.clear();
     }
 

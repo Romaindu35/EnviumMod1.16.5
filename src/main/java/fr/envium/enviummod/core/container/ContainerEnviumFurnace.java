@@ -19,10 +19,10 @@ import java.util.Map;
 
 public class ContainerEnviumFurnace extends ContainerData {
 
-    private TileEnviumFurnace tile;
-    private PlayerInventory inv;
-    private int	timePassed = 0;
-    private int	burnTimeLeft = 0;
+    private final TileEnviumFurnace tile;
+    private final PlayerInventory inv;
+    private final int	timePassed = 0;
+    private final int	burnTimeLeft = 0;
     private Map<String, Integer> data;
 
 
@@ -116,7 +116,7 @@ public class ContainerEnviumFurnace extends ContainerData {
 
     public class SlotSingleItem extends Slot {
 
-        private Item[] item;
+        private final Item[] item;
 
         public SlotSingleItem(IInventory inventoryIn, int index, int xPosition, int yPosition, Item... item) {
             super(inventoryIn, index, xPosition, yPosition);
@@ -137,7 +137,7 @@ public class ContainerEnviumFurnace extends ContainerData {
 
     public class SlotEnviumShard extends Slot {
 
-        private Item item;
+        private final Item item;
 
         public SlotEnviumShard(IInventory inventoryIn, int index, int xPosition, int yPosition, Item item) {
             super(inventoryIn, index, xPosition, yPosition);
@@ -146,10 +146,7 @@ public class ContainerEnviumFurnace extends ContainerData {
 
         @Override
         public boolean mayPlace(ItemStack stack) {
-            if(stack.getItem() instanceof EnviumShard) {
-                return true;
-            }
-            return false;
+            return stack.getItem() instanceof EnviumShard;
         }
     }
 

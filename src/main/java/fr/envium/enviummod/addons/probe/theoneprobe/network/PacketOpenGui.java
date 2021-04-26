@@ -12,7 +12,7 @@ public class PacketOpenGui {
     public static int GUI_CONFIG = 0;
     public static int GUI_NOTE = 1;
 
-    private int gui;
+    private final int gui;
 
     public PacketOpenGui(PacketBuffer buf) {
         gui = buf.readInt();

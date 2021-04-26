@@ -5,7 +5,7 @@ package fr.envium.enviummod.addons.probe.theoneprobe.api;
  */
 public interface IProbeConfig {
 
-    public static enum ConfigMode {
+    enum ConfigMode {
         NOT,            // Don't show
         NORMAL,         // Show
         EXTENDED        // Show only when sneaking

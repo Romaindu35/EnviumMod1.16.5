@@ -41,8 +41,8 @@ public class Config {
     public static IntValue waitingForServerTimeout; // Client-side
     public static IntValue maxPacketToServer;       // Client-side
 
-    private static IntValue defaultRFMode;
-    private static IntValue defaultTankMode;
+    private static final IntValue defaultRFMode;
+    private static final IntValue defaultTankMode;
 
     public static BooleanValue supportBaubles;
     public static BooleanValue spawnNote;
@@ -50,9 +50,9 @@ public class Config {
     // Chest related settings
     public static IntValue showSmallChestContentsWithoutSneaking;
     public static IntValue showItemDetailThresshold;
-    private static ConfigValue<List<String>> showContentsWithoutSneaking;
-    private static ConfigValue<List<String>> dontShowContentsUnlessSneaking;
-    private static ConfigValue<List<String>> dontSendNBT;
+    private static final ConfigValue<List<String>> showContentsWithoutSneaking;
+    private static final ConfigValue<List<String>> dontShowContentsUnlessSneaking;
+    private static final ConfigValue<List<String>> dontSendNBT;
     private static Set<ResourceLocation> inventoriesToShow = null;
     private static Set<ResourceLocation> inventoriesToNotShow = null;
     private static Set<ResourceLocation> dontSendNBTSet = null;
@@ -86,12 +86,12 @@ public class Config {
 
     public static DoubleValue tooltipScale;
 
-    private static ConfigValue<String> cfgRfbarFilledColor;
-    private static ConfigValue<String> cfgRfbarAlternateFilledColor;
-    private static ConfigValue<String> cfgRfbarBorderColor;
-    private static ConfigValue<String> cfgTankbarFilledColor;
-    private static ConfigValue<String> cfgTankbarAlternateFilledColor;
-    private static ConfigValue<String> cfgTankbarBorderColor;
+    private static final ConfigValue<String> cfgRfbarFilledColor;
+    private static final ConfigValue<String> cfgRfbarAlternateFilledColor;
+    private static final ConfigValue<String> cfgRfbarBorderColor;
+    private static final ConfigValue<String> cfgTankbarFilledColor;
+    private static final ConfigValue<String> cfgTankbarAlternateFilledColor;
+    private static final ConfigValue<String> cfgTankbarBorderColor;
     public static int rfbarFilledColor = 0xffdd0000;
     public static int rfbarAlternateFilledColor = 0xff430000;
     public static int rfbarBorderColor = 0xff555555;
@@ -118,7 +118,7 @@ public class Config {
     private static IEnumConfig<IProbeConfig.ConfigMode> cfgshowHorseStatSetting;
     private static IEnumConfig<IProbeConfig.ConfigMode> cfgshowSilverfish;
 
-    private static ForgeConfigSpec.ConfigValue<List<? extends String>> renderBlacklist;
+    private static final ForgeConfigSpec.ConfigValue<List<? extends String>> renderBlacklist;
     private static Set<ResourceLocation> renderBlacklistSet = null;
 
 
@@ -437,7 +437,7 @@ public class Config {
         for (String s : splitted) {
             TextFormatting format = TextFormatting.getByName(s);
             if (format != null) {
-                builder.append(format.toString());
+                builder.append(format);
             }
         }
         return builder.toString();

@@ -9,6 +9,7 @@ import fr.envium.enviummod.EnviumMod;
 import fr.envium.enviummod.References;
 import fr.envium.enviummod.Status;
 import fr.envium.enviummod.core.client.gui.button.ScreenButton;
+import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.screen.*;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.gui.widget.button.Button;
@@ -58,7 +59,7 @@ public class CustomMainMenuScreen extends Screen {
     //private net.minecraftforge.client.gui.NotificationModUpdateScreen modUpdateNotification;
 
     private final ServerPinger serverPinger = new ServerPinger();
-    private ServerData server = new ServerData("envium", "mc.envium.fr:25565", false);
+    private final ServerData server = new ServerData("envium", "mc.envium.fr:25565", false);
     private static final ThreadPoolExecutor EXECUTOR = new ScheduledThreadPoolExecutor(5, (new ThreadFactoryBuilder()).setNameFormat("Server Pinger #%d").setDaemon(true).build());
 
 
@@ -162,13 +163,13 @@ public class CustomMainMenuScreen extends Screen {
         if ((l & -67108864) != 0) {
             this.minecraft.getTextureManager().bind(MINECRAFT_TITLE_TEXTURES);
             RenderSystem.color4f(1.0F, 1.0F, 1.0F, f1);
-            this.blit(matrixStack, this.width / 2 - 50, this.height/ 2 - 90, 0.0F, 0.0F, 100, 100, 100, 100);
+            blit(matrixStack, this.width / 2 - 50, this.height/ 2 - 90, 0.0F, 0.0F, 100, 100, 100, 100);
             //x, y, ?, ?, postion_x, taille_X, position_y, taille_Y
 
             this.widthCopyrightRest = this.width - this.font.width("Copyright Mojang AB.") - 2;
-            this.drawString(matrixStack, this.font, "Copyright Mojang AB.", this.widthCopyrightRest, this.height - 20, 16777215 | l);
+            drawString(matrixStack, this.font, "Copyright Mojang AB.", this.widthCopyrightRest, this.height - 20, 16777215 | l);
             this.widthCopyrightRest = this.width - this.font.width("Not affiliated with Mojang AB.") - 2;
-            this.drawString(matrixStack, this.font, "Not affiliated with Mojang AB.", this.widthCopyrightRest, this.height - 10, 16777215 | l);
+            drawString(matrixStack, this.font, "Not affiliated with Mojang AB.", this.widthCopyrightRest, this.height - 10, 16777215 | l);
             for(Widget widget : this.buttons) {
                 widget.setAlpha(f1);
             }
@@ -222,8 +223,8 @@ public class CustomMainMenuScreen extends Screen {
 
     private void serverInfoRender(MatrixStack matrixStack) {
         if(this.server.ping >= 0L) {
-            this.drawString(matrixStack, this.minecraft.font, new StringTextComponent(this.server.status.getString() + TextFormatting.RESET + " joueurs"), 2, 2, 0x245791);
-            this.drawString(matrixStack, this.minecraft.font, this.server.ping + " ms", 2, 12, 0x245791);
+            drawString(matrixStack, this.minecraft.font, new StringTextComponent(this.server.status.getString() + TextFormatting.RESET + " joueurs"), 2, 2, 0x245791);
+            drawString(matrixStack, this.minecraft.font, this.server.ping + " ms", 2, 12, 0x245791);
 
         }
     }

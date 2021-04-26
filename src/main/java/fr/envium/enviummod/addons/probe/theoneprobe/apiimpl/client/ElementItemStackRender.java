@@ -20,11 +20,11 @@ public class ElementItemStackRender {
             } else if (size < 100000) {
                 amount = String.valueOf(size);
             } else if (size < 1000000) {
-                amount = String.valueOf(size / 1000) + "k";
+                amount = size / 1000 + "k";
             } else if (size < 1000000000) {
-                amount = String.valueOf(size / 1000000) + "m";
+                amount = size / 1000000 + "m";
             } else {
-                amount = String.valueOf(size / 1000000000) + "g";
+                amount = size / 1000000000 + "g";
             }
 
             if (!RenderHelper.renderItemStack(Minecraft.getInstance(), itemRender, itemStack, matrixStack, x + (style.getWidth() - 18) / 2, y + (style.getHeight() - 18) / 2, amount)) {

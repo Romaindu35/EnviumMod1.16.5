@@ -78,7 +78,7 @@ public class ElementEntityRender {
     // @todo 1.13
 //    private static final EntityId FIXER = new EntityId();
     // copied from vanilla until this is fixed in forge
-    private static final Map OLD_TO_NEW_ID_MAP = (Map) DataFixUtils.make(Maps.newHashMap(), (p_209312_0_) -> {
+    private static final Map OLD_TO_NEW_ID_MAP = DataFixUtils.make(Maps.newHashMap(), (p_209312_0_) -> {
         p_209312_0_.put("AreaEffectCloud", "minecraft:area_effect_cloud");
         p_209312_0_.put("ArmorStand", "minecraft:armor_stand");
         p_209312_0_.put("Arrow", "minecraft:arrow");

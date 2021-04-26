@@ -9,7 +9,7 @@ import java.util.Map;
 public class ThrowableIdentity {
     private final String identifier;
 
-    private static Map<ThrowableIdentity, Long> catchedThrowables = new HashMap<>();
+    private static final Map<ThrowableIdentity, Long> catchedThrowables = new HashMap<>();
 
     public static void registerThrowable(Throwable e) {
         ThrowableIdentity identity = new ThrowableIdentity(e);
@@ -46,9 +46,7 @@ public class ThrowableIdentity {
 
         ThrowableIdentity that = (ThrowableIdentity) o;
 
-        if (identifier != null ? !identifier.equals(that.identifier) : that.identifier != null) return false;
-
-        return true;
+        return identifier != null ? identifier.equals(that.identifier) : that.identifier == null;
     }
 
     @Override

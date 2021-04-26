@@ -41,7 +41,7 @@ public class TileEnviumFurnace extends LockableTileEntity implements ITickableTi
     private int	timePassed = 0;
     private int	burningTimeLeft	= 0;
     private int id;
-    private Map<String, Integer> data = new HashMap<>();
+    private final Map<String, Integer> data = new HashMap<>();
 
     protected TileEnviumFurnace(TileEntityType<?> typeIn) {
         super(typeIn);
@@ -55,7 +55,7 @@ public class TileEnviumFurnace extends LockableTileEntity implements ITickableTi
     @Override
     public void load(BlockState state, CompoundNBT compound) {
         super.load(state, compound);
-        this.stacks = NonNullList.<ItemStack>withSize(this.getContainerSize(), ItemStack.EMPTY);
+        this.stacks = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
         ItemStackHelper.loadAllItems(compound, this.stacks);
 
         if (compound.hasUUID("CustomName")) {
@@ -183,7 +183,7 @@ public class TileEnviumFurnace extends LockableTileEntity implements ITickableTi
 
     @Override
     public boolean stillValid(PlayerEntity player) {
-        return this.level.getBlockEntity(this.worldPosition) != this ? false : player
+        return this.level.getBlockEntity(this.worldPosition) == this && player
                 .distanceToSqr((double) this.worldPosition.getX() + 0.5D,
                         (double) this.worldPosition.getY() + 0.5D,
                         (double) this.worldPosition.getZ() + 0.5D) <= 64.0D;
@@ -220,9 +220,7 @@ public class TileEnviumFurnace extends LockableTileEntity implements ITickableTi
                 return true;
             if (slot3.getItem() == result.getItem() && slot3.getDamageValue() == result.getDamageValue()) {
                 int newStackSize = slot3.getCount() + result.getCount();
-                if (newStackSize <= this.getMaxStackSize() && newStackSize <= slot3.getMaxStackSize()) {
-                    return true;
-                }
+                return newStackSize <= this.getMaxStackSize() && newStackSize <= slot3.getMaxStackSize();
             }
         }
         return false;

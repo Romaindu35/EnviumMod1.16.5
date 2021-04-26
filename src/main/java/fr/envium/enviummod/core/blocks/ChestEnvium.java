@@ -144,7 +144,7 @@ public class ChestEnvium extends Block implements IWaterLoggable {
     public boolean triggerEvent(BlockState state, World worldIn, BlockPos pos, int id, int param) {
         super.triggerEvent(state, worldIn, pos, id, param);
         TileEntity tileentity = worldIn.getBlockEntity(pos);
-        return tileentity == null ? false : tileentity.triggerEvent(id, param);
+        return tileentity != null && tileentity.triggerEvent(id, param);
     }
 
     private static boolean isBlocked(IWorld iWorld, BlockPos blockPos) {
@@ -157,7 +157,7 @@ public class ChestEnvium extends Block implements IWaterLoggable {
     }
 
     private static boolean isCatSittingOn(IWorld iWorld, BlockPos blockPos) {
-        List<CatEntity> list = iWorld.getEntitiesOfClass(CatEntity.class, new AxisAlignedBB((double) blockPos.getX(), (double) (blockPos.getY() + 1), (double) blockPos.getZ(), (double) (blockPos.getX() + 1), (double) (blockPos.getY() + 2), (double) (blockPos.getZ() + 1)));
+        List<CatEntity> list = iWorld.getEntitiesOfClass(CatEntity.class, new AxisAlignedBB(blockPos.getX(), blockPos.getY() + 1, blockPos.getZ(), blockPos.getX() + 1, blockPos.getY() + 2, blockPos.getZ() + 1));
         if (!list.isEmpty()) {
             for (CatEntity catentity : list) {
                 if (catentity.orderedToSit) {

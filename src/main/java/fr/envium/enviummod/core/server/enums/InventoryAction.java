@@ -4,6 +4,6 @@ public enum  InventoryAction {
 
     SAVE,
     READ,
-    SAVE_READ;
+    SAVE_READ
 
 }

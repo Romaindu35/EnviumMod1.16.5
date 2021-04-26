@@ -42,7 +42,7 @@ public class ElementProgress implements IElement {
                 .armorBar(buf.readBoolean());
     }
 
-    private static DecimalFormat dfCommas = new DecimalFormat("###,###");
+    private static final DecimalFormat dfCommas = new DecimalFormat("###,###");
 
     /**
      * If the suffix starts with 'm' we can possibly drop that
@@ -50,11 +50,11 @@ public class ElementProgress implements IElement {
     public static String format(long in, NumberFormat style, String suffix) {
         switch (style) {
             case FULL:
-                return Long.toString(in) + suffix;
+                return in + suffix;
             case COMPACT: {
                 int unit = 1000;
                 if (in < unit) {
-                    return Long.toString(in) + " " + suffix;
+                    return in + " " + suffix;
                 }
                 int exp = (int) (Math.log(in) / Math.log(unit));
                 char pre;

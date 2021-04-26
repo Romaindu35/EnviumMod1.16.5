@@ -12,7 +12,7 @@ import javax.annotation.Nullable;
 
 public class PropertiesDispatcher implements ICapabilityProvider, INBTSerializable<CompoundNBT> {
 
-    private PlayerGotNote playerGotNote = new PlayerGotNote();
+    private final PlayerGotNote playerGotNote = new PlayerGotNote();
 
     @Nonnull
     @Override

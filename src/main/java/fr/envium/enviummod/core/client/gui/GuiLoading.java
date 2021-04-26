@@ -4,6 +4,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import fr.envium.enviummod.References;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.LoadingGui;
 import net.minecraft.resources.IAsyncReloader;
 import net.minecraft.util.ResourceLocation;
@@ -59,7 +60,7 @@ public class GuiLoading extends LoadingGui {
                 this.mc.screen.render(matrixStack, p_render_1_, p_render_2_, p_render_3_);
             }
 
-            int j1 = MathHelper.ceil(MathHelper.clamp((double)f1, 0.15D, 1.0D) * 255.0D);
+            int j1 = MathHelper.ceil(MathHelper.clamp(f1, 0.15D, 1.0D) * 255.0D);
             fill(matrixStack, 0, 0, width, height, 16777215 | j1 << 24);
             f2 = MathHelper.clamp(f1, 0.0F, 1.0F);
         } else {
@@ -69,11 +70,11 @@ public class GuiLoading extends LoadingGui {
         this.mc.getTextureManager().bind(ENVIUM_BACKGROUND_TEXTURE);
         RenderSystem.enableBlend();
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.blit(matrixStack, 0, 0, 0.0F, 0.0F, 430, 250, 430, 250);
+        blit(matrixStack, 0, 0, 0.0F, 0.0F, 430, 250, 430, 250);
 
         this.mc.getTextureManager().bind(ENVIUM_LOGO);
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.blit(matrixStack, width / 2 - 50, height/ 2 - 90, 0.0F, 0.0F, 100, 100, 100, 100);
+        blit(matrixStack, width / 2 - 50, height/ 2 - 90, 0.0F, 0.0F, 100, 100, 100, 100);
 
         float f3 = this.asyncReloader.getActualProgress();
         this.progress = MathHelper.clamp(this.progress * 0.95F + f3 * 0.050000012F, 0.0F, 1.0F);
@@ -85,7 +86,7 @@ public class GuiLoading extends LoadingGui {
         }
 
         if (f >= 2.0F) {
-            this.mc.setOverlay((LoadingGui)null);
+            this.mc.setOverlay(null);
         }
 
         if (this.fadeOutStart == -1L && this.asyncReloader.isDone() && (!this.reloading || f1 >= 2.0F)) {

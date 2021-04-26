@@ -27,10 +27,10 @@ public class MetierScreen {
 
     @OnlyIn(Dist.CLIENT)
     public static class PrincipalScreen extends Screen {
-        private int xSize;
-        private int ySize;
-        private int leftTopX;
-        private int leftTopY;
+        private final int xSize;
+        private final int ySize;
+        private final int leftTopX;
+        private final int leftTopY;
         public static String xp_miner;
         public static String xp_lumberjack;
         public static String xp_chasseur;
@@ -109,8 +109,8 @@ public class MetierScreen {
     @OnlyIn(Dist.CLIENT)
     static class MetierInfo extends Screen {
         private static final ResourceLocation TEXTURE = new ResourceLocation(References.MODID, "textures/gui/gui_metier.png");
-        private int xSize = 300;
-        private int ySize = 200;
+        private final int xSize = 300;
+        private final int ySize = 200;
 
         protected MetierInfo(String button) {
             super(new StringTextComponent("enviummod.metier_info"));

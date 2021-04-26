@@ -17,8 +17,8 @@ import net.minecraftforge.fml.network.PacketDistributor;
 @OnlyIn(Dist.CLIENT)
 public class GuiAdmin extends Screen {
 
-    private int xSize = 250;
-    private int ySize = 200;
+    private final int xSize = 250;
+    private final int ySize = 200;
 
     public static final ResourceLocation TEXTURE = new ResourceLocation(References.MODID, "textures/gui/gui_admin.png");
 

@@ -7,7 +7,7 @@ import java.util.function.Supplier;
 
 public class MySimplePacket {
 
-    private int value;
+    private final int value;
 
     public MySimplePacket(int value)
     {

@@ -18,13 +18,13 @@ public class TheOneProbeImp implements ITheOneProbe {
     public static int ELEMENT_ICON;
     public static int ELEMENT_ITEMLABEL;
 
-    private List<IProbeConfigProvider> configProviders = new ArrayList<>();
+    private final List<IProbeConfigProvider> configProviders = new ArrayList<>();
 
     private List<IProbeInfoProvider> providers = new ArrayList<>();
     private List<IProbeInfoEntityProvider> entityProviders = new ArrayList<>();
-    private List<IBlockDisplayOverride> blockOverrides = new ArrayList<>();
-    private List<IEntityDisplayOverride> entityOverrides = new ArrayList<>();
-    private Map<Integer, IElementFactory> factories = new HashMap<>();
+    private final List<IBlockDisplayOverride> blockOverrides = new ArrayList<>();
+    private final List<IEntityDisplayOverride> entityOverrides = new ArrayList<>();
+    private final Map<Integer, IElementFactory> factories = new HashMap<>();
     private int lastId = 0;
 
     public TheOneProbeImp() {

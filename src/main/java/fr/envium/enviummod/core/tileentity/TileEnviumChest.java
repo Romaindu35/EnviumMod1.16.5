@@ -43,7 +43,7 @@ public class TileEnviumChest extends LockableTileEntity implements ITickableTile
 	@Override
 	public void load(BlockState state, CompoundNBT nbt) {
 		super.load(state, nbt);
-		this.stacks = NonNullList.<ItemStack>withSize(this.getContainerSize(), ItemStack.EMPTY);
+		this.stacks = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
 		ItemStackHelper.loadAllItems(nbt, this.stacks);
 	}
 
@@ -122,7 +122,7 @@ public class TileEnviumChest extends LockableTileEntity implements ITickableTile
 
 	@Override
 	public boolean stillValid(PlayerEntity player) {
-		return this.level.getBlockEntity(this.worldPosition) != this ? false : player.distanceToSqr((double) this.worldPosition.getX() + 0.5D, (double) this.worldPosition.getY() + 0.5D, (double) this.worldPosition.getZ() + 0.5D) <= 64.0D;
+		return this.level.getBlockEntity(this.worldPosition) == this && player.distanceToSqr((double) this.worldPosition.getX() + 0.5D, (double) this.worldPosition.getY() + 0.5D, (double) this.worldPosition.getZ() + 0.5D) <= 64.0D;
 	}
 
 	@Override
@@ -181,7 +181,7 @@ public class TileEnviumChest extends LockableTileEntity implements ITickableTile
 				d2 += (double)direction.getStepZ() * 0.5D;
 			}
 
-			this.level.playSound((PlayerEntity)null, d0, d1, d2, soundIn, SoundCategory.BLOCKS, 0.5F, this.level.random.nextFloat() * 0.1F + 0.9F);
+			this.level.playSound(null, d0, d1, d2, soundIn, SoundCategory.BLOCKS, 0.5F, this.level.random.nextFloat() * 0.1F + 0.9F);
 		}
 	}
 }

@@ -12,13 +12,13 @@ import net.minecraft.network.PacketBuffer;
 public class ContainerEnviumChest extends Container {
 
     public TileEnviumChest tile;
-    private PlayerInventory inv;
+    private final PlayerInventory inv;
 
 
     public ContainerEnviumChest(int windowId, PlayerInventory playerInv, PacketBuffer data) {
         super(RegisterContainer.ENVIUM_CHEST.get(), windowId);
 
-        this.tile = (TileEnviumChest) playerInv.player.level.getBlockEntity(data.readBlockPos());;
+        this.tile = (TileEnviumChest) playerInv.player.level.getBlockEntity(data.readBlockPos());
         this.inv = playerInv;
 
         int i;
