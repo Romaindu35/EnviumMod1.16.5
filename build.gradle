@@ -215,4 +215,10 @@ mixin {
     add sourceSets.main, "enviummod.refmap.json"
 }
 
+final isCiBuilding = System.getenv().containsKey('CI')
+
+if (isCiBuilding) {
+    logger.warn 'CI build. Certain modules will be omitted from this build'
+}
+
 tasks.build.dependsOn tasks.shadowJar
