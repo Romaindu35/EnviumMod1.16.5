@@ -9,7 +9,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.1+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1+', changing: true
         classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
         classpath 'com.github.jengelman.gradle.plugins:shadow:5.2.0'
     }
@@ -149,7 +149,7 @@ dependencies {
     runtimeOnly fg.deobf("curse.maven:SpaceBosstools-377448:3269047")
     /*compileOnly fg.deobf("curse.maven:Obfuscate-289380:3148131")
     runtimeOnly fg.deobf("curse.maven:Obfuscate-289380:3148131")*/
-    compile fg.deobf("curse.maven:obfuscate-289380:3067472")
+    implementation fg.deobf("curse.maven:obfuscate-289380:3067472")
     runtimeOnly fg.deobf("curse.maven:StorageDrawer-223852:3180569")
     /*runtimeOnly fg.deobf("curse.maven:Mekanism-268560:3206392")
     runtimeOnly fg.deobf("curse.maven:Mekanism_all-268560:3206394")*/
@@ -160,8 +160,8 @@ dependencies {
     implementation 'org.jetbrains:annotations:19.0.0'
     api 'org.apache.commons:commons-math3:3.6.1'
     testImplementation 'junit:junit:4.12'
-    compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.15'
-    runtime "mysql:mysql-connector-java:8.0.15"
+    implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.15'
+    //runtime "mysql:mysql-connector-java:8.0.15"
 
     annotationProcessor 'org.spongepowered:mixin:0.8.2:processor'
 }
